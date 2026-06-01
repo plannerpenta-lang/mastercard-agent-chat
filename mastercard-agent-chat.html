@@ -659,14 +659,15 @@ body::after {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(184,150,46,0.3);
   border-radius: 16px;
-  padding: 20px 18px;
+  padding: 24px 22px;
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+  gap: 18px;
   opacity: 0;
   transform: translateY(12px);
   transition: opacity 0.5s, transform 0.5s, border-color 0.3s, box-shadow 0.3s;
   overflow: visible;
+  min-height: 120px;
 }
 .step5-step.show {
   opacity: 1;
@@ -759,12 +760,12 @@ body::after {
 
 /* Step number badge + counter */
 .step5-step-num {
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-bottom: 5px;
-  padding: 3px 7px;
+  margin-bottom: 8px;
+  padding: 4px 10px;
   border-radius: 20px;
   display: inline-block;
   transition: transform 0.2s;
@@ -777,10 +778,10 @@ body::after {
 
 /* Icon container */
 .step5-step-icon {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  border-radius: 10px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -807,16 +808,17 @@ body::after {
 /* Step text */
 .step5-step-text { flex: 1; }
 .step5-step-title {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: rgba(255,255,255,0.9);
-  margin-bottom: 5px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.95);
+  margin-bottom: 8px;
   letter-spacing: 0.01em;
+  line-height: 1.2;
 }
 .step5-step-desc {
-  font-size: 0.72rem;
-  color: rgba(255,255,255,0.38);
-  line-height: 1.5;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
 }
 
 /* Time card premium */
