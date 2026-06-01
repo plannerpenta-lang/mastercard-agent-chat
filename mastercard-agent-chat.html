@@ -602,6 +602,9 @@ body::after {
   margin-top: 4px;
   font-weight: 500;
 }
+/* ════════════════════════════
+   STEP 5: PREMIUM CARDS (Face ID inspired)
+   ════════════════════════════ */
 .step5-summary {
   display: none;
   position: fixed;
@@ -612,72 +615,206 @@ body::after {
   max-width: 1080px;
   padding: 16px 16px 100px;
   overflow-y: auto;
-  gap: 16px;
+  gap: 12px;
   opacity: 0;
   transition: opacity 0.5s;
   z-index: 10;
-  background: var(--mc-bg);
+  background: transparent;
   box-sizing: border-box;
 }
-
 .step5-summary.show {
   display: flex;
   flex-direction: column;
   align-items: center;
   opacity: 1;
 }
-/* Stats bar */
-.step5-stats {
+
+/* Flow grid */
+.step5-flow {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  max-width: 440px;
-  padding: 12px 0 18px;
-  border-bottom: 1px solid var(--mc-border);
-  margin-bottom: 16px;
-  gap: 8px;
+  max-width: 1080px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
-.step5-stat {
-  text-align: center;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.4s, transform 0.4s;
-}
-.step5-stat.show { opacity: 1; transform: translateY(0); }
-.stat-num {
-  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-  font-weight: 700;
-  background: var(--mc-agent-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1;
-  margin-bottom: 3px;
-}
-.stat-label {
-  font-size: 0.62rem;
-  color: var(--mc-muted);
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  font-weight: 400;
+.step5-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
 }
 
-/* Time card */
-.time-card {
-  background: var(--mc-white);
-  border: 1px solid rgba(184,150,46,0.2);
-  border-left: 3px solid var(--mc-gold);
-  border-radius: 12px;
-  padding: 14px 16px;
-  width: 100%;
-  max-width: 440px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 12px rgba(22,33,62,0.06);
+/* Premium card base */
+.step5-step {
+  position: relative;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(184,150,46,0.3);
+  border-radius: 16px;
+  padding: 20px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
   opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.5s, transform 0.5s;
+  transform: translateY(12px);
+  transition: opacity 0.5s, transform 0.5s, border-color 0.3s, box-shadow 0.3s;
+  overflow: hidden;
 }
-.time-card.show { opacity: 1; transform: translateY(0); }
+.step5-step.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.step5-step::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(184,150,46,0.05) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.step5-step:hover {
+  border-color: rgba(184,150,46,0.55);
+  box-shadow: 0 0 20px rgba(184,150,46,0.08), inset 0 0 20px rgba(184,150,46,0.03);
+}
+.step5-step:hover::before { opacity: 1; }
+
+/* Corner brackets */
+.step5-step .bracket {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  opacity: 0;
+  animation: s5-bracket-in 0.4s ease forwards;
+}
+.step5-step .bracket-tl { top: 8px; left: 8px; border-top: 2px solid rgba(184,150,46,0.5); border-left: 2px solid rgba(184,150,46,0.5); animation-delay: 0.1s; }
+.step5-step .bracket-tr { top: 8px; right: 8px; border-top: 2px solid rgba(184,150,46,0.5); border-right: 2px solid rgba(184,150,46,0.5); animation-delay: 0.15s; }
+.step5-step .bracket-bl { bottom: 8px; left: 8px; border-bottom: 2px solid rgba(184,150,46,0.5); border-left: 2px solid rgba(184,150,46,0.5); animation-delay: 0.2s; }
+.step5-step .bracket-br { bottom: 8px; right: 8px; border-bottom: 2px solid rgba(184,150,46,0.5); border-right: 2px solid rgba(184,150,46,0.5); animation-delay: 0.25s; }
+@keyframes s5-bracket-in {
+  from { opacity: 0; transform: scale(1.4); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Step number badge */
+.step5-step-num {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  padding: 3px 7px;
+  border-radius: 20px;
+  display: inline-block;
+}
+.s5-step1 .step5-step-num { background: rgba(255,95,0,0.12); color: rgba(255,95,0,0.8); }
+.s5-step2 .step5-step-num { background: rgba(0,168,90,0.12); color: rgba(0,168,90,0.8); }
+.s5-step3 .step5-step-num { background: rgba(235,0,27,0.12); color: rgba(235,0,27,0.8); }
+.s5-step4 .step5-step-num { background: rgba(184,150,46,0.12); color: rgba(184,150,46,0.8); }
+
+/* Icon container */
+.step5-step-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(184,150,46,0.08);
+  border: 1px solid rgba(184,150,46,0.2);
+  position: relative;
+  overflow: hidden;
+}
+.step5-step-icon::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.06) 50%, transparent 60%);
+  animation: icon-shimmer 3s ease-in-out infinite;
+}
+@keyframes icon-shimmer {
+  0%   { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) rotate(45deg); }
+}
+
+/* Step text */
+.step5-step-text { flex: 1; }
+.step5-step-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 5px;
+  letter-spacing: 0.01em;
+}
+.step5-step-desc {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.38);
+  line-height: 1.5;
+}
+
+/* Time card premium */
+.time-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(184,150,46,0.3);
+  border-radius: 16px;
+  padding: 18px 20px;
+  width: 100%;
+  max-width: 1080px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s, transform 0.5s, border-color 0.3s, box-shadow 0.3s;
+}
+.time-card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.time-card:hover {
+  border-color: rgba(184,150,46,0.55);
+  box-shadow: 0 0 20px rgba(184,150,46,0.08);
+}
+.time-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(184,150,46,0.4), transparent);
+}
+
+/* Corner brackets for time card */
+.time-card .bracket {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  opacity: 0;
+  animation: s5-bracket-in 0.4s ease forwards;
+}
+.time-card .bracket-tl { top: 8px; left: 8px; border-top: 2px solid rgba(184,150,46,0.5); border-left: 2px solid rgba(184,150,46,0.5); animation-delay: 0.3s; }
+.time-card .bracket-tr { top: 8px; right: 8px; border-top: 2px solid rgba(184,150,46,0.5); border-right: 2px solid rgba(184,150,46,0.5); animation-delay: 0.35s; }
+.time-card .bracket-bl { bottom: 8px; left: 8px; border-bottom: 2px solid rgba(184,150,46,0.5); border-left: 2px solid rgba(184,150,46,0.5); animation-delay: 0.4s; }
+.time-card .bracket-br { bottom: 8px; right: 8px; border-bottom: 2px solid rgba(184,150,46,0.5); border-right: 2px solid rgba(184,150,46,0.5); animation-delay: 0.45s; }
+
+/* Top shimmer line */
+.time-card::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 300%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(184,150,46,0.3), rgba(184,150,46,0.6), rgba(184,150,46,0.3), transparent);
+  animation: time-shimmer 4s ease-in-out infinite;
+}
+@keyframes time-shimmer {
+  0%   { top: -100%; }
+  100% { top: calc(100% + 10px); }
+}
 
 .time-card-header {
   display: flex;
@@ -687,9 +824,53 @@ body::after {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--mc-gold);
+  color: rgba(184,150,46,0.8);
   margin-bottom: 10px;
 }
+.time-card-num {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, rgba(255,77,0,0.9), #B8962E);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 14px;
+}
+.time-card-num span {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.05em;
+  -webkit-text-fill-color: rgba(255,255,255,0.4);
+}
+.time-card-bars { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.time-bar-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 36px;
+  align-items: center;
+  gap: 10px;
+}
+.time-bar-label { font-size: 0.62rem; color: rgba(255,255,255,0.38); font-weight: 500; }
+.time-bar-track { height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+.time-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: 0;
+}
+.time-bar-fill:not(.gold) { background: rgba(255,255,255,0.15); }
+.time-bar-fill.gold {
+  background: linear-gradient(90deg, rgba(255,77,0,0.6), #B8962E);
+  box-shadow: 0 0 8px rgba(184,150,46,0.3);
+}
+.time-bar-val { font-size: 0.65rem; color: rgba(255,255,255,0.5); text-align: right; }
+.time-card-footer {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.35);
+  margin-top: 4px;
+}
+.time-card-footer strong { color: rgba(184,150,46,0.8); font-weight: 700; }
 
 .time-card-body {
   margin-bottom: 12px;
@@ -1746,12 +1927,16 @@ body::after {
 
   </div><!-- /main -->
 
-  <!-- Step 5: Full summary (outside main, full viewport) -->
+  <!-- Step 5: Full summary (Face ID premium style) -->
   <div class="step5-summary" id="step5-summary">
 
     <div class="step5-flow">
       <div class="step5-row">
-        <div class="step5-step" id="s5-step1">
+        <div class="step5-step s5-step1" id="s5-step1">
+          <div class="bracket bracket-tl"></div>
+          <div class="bracket bracket-tr"></div>
+          <div class="bracket bracket-bl"></div>
+          <div class="bracket bracket-br"></div>
           <div class="step5-step-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="8" stroke="#B8962E" stroke-width="1"/><circle cx="10" cy="10" r="2.5" fill="#B8962E"/></svg></div>
           <div class="step5-step-text">
             <div class="step5-step-num">01</div>
@@ -1759,7 +1944,11 @@ body::after {
             <div class="step5-step-desc">Solo agentes registrados en Mastercard pueden transactar</div>
           </div>
         </div>
-        <div class="step5-step" id="s5-step2">
+        <div class="step5-step s5-step2" id="s5-step2">
+          <div class="bracket bracket-tl"></div>
+          <div class="bracket bracket-tr"></div>
+          <div class="bracket bracket-bl"></div>
+          <div class="bracket bracket-br"></div>
           <div class="step5-step-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.5 7.5L18.5 8.5L14 13L15.5 19L10 16L4.5 19L6 13L1.5 8.5L7.5 7.5L10 2Z" stroke="#B8962E" stroke-width="1" stroke-linejoin="round"/></svg></div>
           <div class="step5-step-text">
             <div class="step5-step-num">02</div>
@@ -1769,7 +1958,11 @@ body::after {
         </div>
       </div>
       <div class="step5-row">
-        <div class="step5-step" id="s5-step3">
+        <div class="step5-step s5-step3" id="s5-step3">
+          <div class="bracket bracket-tl"></div>
+          <div class="bracket bracket-tr"></div>
+          <div class="bracket bracket-bl"></div>
+          <div class="bracket bracket-br"></div>
           <div class="step5-step-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 4L10 16M4 10L16 10" stroke="#B8962E" stroke-width="1" stroke-linecap="round"/></svg></div>
           <div class="step5-step-text">
             <div class="step5-step-num">03</div>
@@ -1777,7 +1970,11 @@ body::after {
             <div class="step5-step-desc">Tu tarjeta real nunca se expone. Un token único por transacción.</div>
           </div>
         </div>
-        <div class="step5-step" id="s5-step4">
+        <div class="step5-step s5-step4" id="s5-step4">
+          <div class="bracket bracket-tl"></div>
+          <div class="bracket bracket-tr"></div>
+          <div class="bracket bracket-bl"></div>
+          <div class="bracket bracket-br"></div>
           <div class="step5-step-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="8" stroke="#B8962E" stroke-width="1"/><circle cx="10" cy="10" r="4" stroke="#B8962E" stroke-width="1"/></svg></div>
           <div class="step5-step-text">
             <div class="step5-step-num">04</div>
@@ -1789,8 +1986,12 @@ body::after {
     </div>
 
     <div class="time-card" id="time-card">
+      <div class="bracket bracket-tl"></div>
+      <div class="bracket bracket-tr"></div>
+      <div class="bracket bracket-bl"></div>
+      <div class="bracket bracket-br"></div>
       <div class="time-card-header">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B8962E" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(184,150,46,0.8)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         <span>Tiempo ahorrado</span>
       </div>
       <div class="time-card-body">
@@ -2451,18 +2652,13 @@ function updateUI() {
 //  ANIMATE STEP 5
 // ══════════════════
 function animateStep5() {
-  // Stats stagger
-  ['s5-stat1','s5-stat2','s5-stat3'].forEach((id, i) => {
-    setTimeout(() => document.getElementById(id)?.classList.add('show'), 300 + i * 150);
-  });
-
-  // Time card
-  setTimeout(() => document.getElementById('time-card')?.classList.add('show'), 500);
-
-  // Step rows stagger (2 rows of 2 steps)
+  // Step cards stagger (4 cards in grid, 2 cols)
   ['s5-step1','s5-step2','s5-step3','s5-step4'].forEach((id, i) => {
-    setTimeout(() => document.getElementById(id)?.classList.add('show'), 800 + i * 200);
+    setTimeout(() => document.getElementById(id)?.classList.add('show'), 200 + i * 180);
   });
+
+  // Time card appears after cards
+  setTimeout(() => document.getElementById('time-card')?.classList.add('show'), 900);
 }
 
 function renderMessages(step) {
