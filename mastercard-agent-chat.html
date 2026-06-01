@@ -1094,69 +1094,180 @@ body::after {
 }
 .notify-btn.deny { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.4); margin-top: 6px; font-weight: 400; }
 
-/* STEP 3: Biometric */
+/* STEP 3: Biometric - iOS Face ID style */
 .step-biometric { display: flex; flex-direction: column; height: 100%; padding-top: 28px; }
-.biometric-header { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.8rem; font-weight: 600; color: var(--mc-text); }
-.biometric-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
-.biometric-face {
-  width: 100px; height: 100px;
-  border-radius: 50%;
-  background: rgba(255,77,0,0.05);
-  border: 1px solid rgba(255,77,0,0.25);
+.biometric-header { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.5); text-align: center; letter-spacing: 0.05em; }
+
+/* Face ID scan area */
+.face-scan-area {
+  flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
-  margin-bottom: 16px;
-  animation: face-scan 1.5s ease-in-out infinite;
-  box-shadow: 0 4px 20px rgba(255,77,0,0.1);
+  position: relative;
+  padding: 20px;
 }
-@keyframes face-scan {
-  0%   { border-color: rgba(255,77,0,0.25); box-shadow: 0 4px 20px rgba(255,77,0,0.1); }
-  50%  { border-color: rgba(255,77,0,0.6); box-shadow: 0 4px 24px rgba(255,77,0,0.2); }
-  100% { border-color: rgba(255,77,0,0.25); box-shadow: 0 4px 20px rgba(255,77,0,0.1); }
+
+/* Corner brackets */
+.face-brackets {
+  width: 160px;
+  height: 200px;
+  position: relative;
+  margin-bottom: 24px;
 }
-.biometric-text { font-size: 0.85rem; text-align: center; color: var(--mc-text); margin-bottom: 6px; }
-.biometric-sub { font-size: 0.72rem; color: rgba(255,255,255,0.4); text-align: center; }
-.biometric-scan { margin-top: 16px; width: 80px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.08); overflow: hidden; position: relative; }
-.biometric-scan-bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--mc-red), var(--mc-yellow));
+.bracket {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  opacity: 0;
+  animation: bracket-in 0.4s ease forwards;
+}
+.bracket-tl { top: 0; left: 0; border-top: 2px solid #B8962E; border-left: 2px solid #B8962E; animation-delay: 0.2s; }
+.bracket-tr { top: 0; right: 0; border-top: 2px solid #B8962E; border-right: 2px solid #B8962E; animation-delay: 0.3s; }
+.bracket-bl { bottom: 0; left: 0; border-bottom: 2px solid #B8962E; border-left: 2px solid #B8962E; animation-delay: 0.4s; }
+.bracket-br { bottom: 0; right: 0; border-bottom: 2px solid #B8962E; border-right: 2px solid #B8962E; animation-delay: 0.5s; }
+@keyframes bracket-in {
+  from { opacity: 0; transform: scale(1.5); }
+  to   { opacity: 0.8; transform: scale(1); }
+}
+
+/* Face oval - dashed outline */
+.face-oval {
+  width: 90px;
+  height: 110px;
+  border: 1.5px dashed rgba(184,150,46,0.4);
+  border-radius: 50%;
+  margin-bottom: 20px;
+  animation: oval-pulse 2s ease-in-out infinite;
+}
+@keyframes oval-pulse {
+  0%,100% { border-color: rgba(184,150,46,0.2); box-shadow: none; }
+  50%      { border-color: rgba(184,150,46,0.6); box-shadow: 0 0 12px rgba(184,150,46,0.1); }
+}
+
+/* White ring animation around brackets */
+.face-ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0);
+  animation: ring-expand 2s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes ring-expand {
+  0%   { border-color: rgba(255,255,255,0.3); transform: translate(-50%,-50%) scale(0.85); opacity: 1; }
+  100% { border-color: rgba(255,255,255,0);   transform: translate(-50%,-50%) scale(1.1);  opacity: 0; }
+}
+
+/* Status text */
+.face-status {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.03em;
+  margin-bottom: 10px;
+  transition: opacity 0.3s;
+  text-align: center;
+}
+.face-status.scanning { animation: text-fade 3s ease-in-out infinite; }
+@keyframes text-fade {
+  0%,100% { opacity: 0.45; }
+  50%      { opacity: 0.8; }
+}
+
+/* Progress bar */
+.face-progress {
+  width: 140px;
+  height: 3px;
+  background: rgba(255,255,255,0.12);
   border-radius: 2px;
-  animation: scan 1.8s ease-in-out infinite;
+  overflow: hidden;
   position: relative;
 }
-.biometric-scan-bar::after {
+.face-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, rgba(184,150,46,0.5), #B8962E);
+  border-radius: 2px;
+  animation: face-progress-fill 2.5s ease forwards;
+  position: relative;
+}
+.face-progress-fill::after {
   content: '';
   position: absolute;
-  right: 0; top: -3px;
-  width: 3px; height: 10px;
-  background: white;
-  border-radius: 2px;
-  box-shadow: 0 0 6px rgba(255,255,255,0.8);
+  right: 0; top: -2px;
+  width: 2px; height: 7px;
+  background: #B8962E;
+  border-radius: 1px;
+  box-shadow: 0 0 6px rgba(184,150,46,0.8);
 }
-@keyframes scan {
+@keyframes face-progress-fill {
   0%   { width: 0%; }
-  50%  { width: 100%; }
-  100% { width: 0%; margin-left: 100%; }
+  70%  { width: 85%; }
+  100% { width: 100%; }
 }
-.biometric-ok { display: none; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding-top: 45%; }
-.biometric-ok.show { display: flex; }
-.biometric-ok-icon {
-  width: 80px; height: 80px;
+
+/* Face ID label */
+.face-id-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 22px;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.25);
+}
+.face-id-label svg { width: 18px; height: 18px; }
+.face-id-label span { letter-spacing: 0.1em; }
+
+/* Success state */
+.biometric-success {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  inset: 0;
+  animation: success-pop 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+.biometric-success.show { display: flex; }
+.success-ring {
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  background: rgba(255,77,0,0.1);
-  border: 3px solid var(--mc-yellow);
+  background: rgba(0,168,90,0.08);
+  border: 2px solid #00A85A;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
   margin-bottom: 14px;
-  animation: ok-zoom 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 4px 20px rgba(255,77,0,0.25);
+  box-shadow: 0 0 30px rgba(0,168,90,0.25), inset 0 0 20px rgba(0,168,90,0.05);
+  animation: ring-glow 1s ease infinite;
 }
-@keyframes ok-zoom {
-  from { transform: scale(0); opacity: 0; }
+@keyframes ring-glow {
+  0%,100% { box-shadow: 0 0 20px rgba(0,168,90,0.2), inset 0 0 15px rgba(0,168,90,0.05); }
+  50%      { box-shadow: 0 0 35px rgba(0,168,90,0.35), inset 0 0 25px rgba(0,168,90,0.08); }
+}
+.success-check {
+  width: 44px;
+  height: 44px;
+}
+.success-text {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #00A85A;
+  letter-spacing: 0.05em;
+}
+.success-sub {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.35);
+  margin-top: 4px;
+  letter-spacing: 0.08em;
+}
+@keyframes success-pop {
+  from { transform: scale(0.5); opacity: 0; }
   to   { transform: scale(1); opacity: 1; }
 }
 .biometric-ok-text { font-size: 0.85rem; font-weight: 600; color: var(--mc-yellow); animation: ok-text 0.5s 0.3s both; }
@@ -1556,31 +1667,46 @@ body::after {
             </div>
             </div>
 
-            <!-- STEP 3: Biometric -->
+            <!-- STEP 3: Biometric - iOS Face ID -->
             <div class="phone-screen-content step-biometric" id="phone-3" style="display:none;">
               <div class="phone-status-bar">
                 <span style="color: #fff;">9:44</span>
                 <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
               </div>
-              <div class="biometric-header">
-                <span>Verificación biométrica</span>
+              <div class="biometric-header">Face ID</div>
+
+              <!-- Scanning state -->
+              <div class="face-scan-area" id="face-scan-area">
+                <div class="face-brackets">
+                  <div class="bracket bracket-tl"></div>
+                  <div class="bracket bracket-tr"></div>
+                  <div class="bracket bracket-bl"></div>
+                  <div class="bracket bracket-br"></div>
+                  <div class="face-ring"></div>
+                </div>
+                <div class="face-oval"></div>
+                <div class="face-status scanning">Buscando rostro...</div>
+                <div class="face-progress">
+                  <div class="face-progress-fill" id="face-progress-fill"></div>
+                </div>
+                <div class="face-id-label">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="5" y="11" width="14" height="10" rx="2" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
+                    <path d="M8 11V7a4 4 0 018 0v4" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
+                  </svg>
+                  <span>Face ID</span>
+                </div>
               </div>
-              <div class="biometric-body">
-                <div class="biometric-face">
-                  <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" style="width:60px;height:60px;">
-                    <circle cx="30" cy="30" r="28" stroke="#B8962E" stroke-width="1" fill="none"/>
-                    <circle cx="20" cy="24" r="3" fill="#B8962E"/>
-                    <circle cx="40" cy="24" r="3" fill="#B8962E"/>
-                    <path d="M18 42 Q30 52 42 42" stroke="#B8962E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+              <!-- Success state -->
+              <div class="biometric-success" id="biometric-success">
+                <div class="success-ring">
+                  <svg class="success-check" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <polyline points="13,22 20,29 31,15" stroke="#00A85A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </div>
-                <div class="biometric-ok" id="biometric-ok">
-                  <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" style="width:60px;height:60px;">
-                    <circle cx="30" cy="30" r="28" stroke="#00A85A" stroke-width="1.5" fill="none"/>
-                    <polyline points="18,30 26,38 42,22" stroke="#00A85A" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  <div class="biometric-msg">Verificado</div>
-                </div>
+                <div class="success-text">Verificado</div>
+                <div class="success-sub">identidad confirmada</div>
               </div>
             </div>
 
@@ -2304,12 +2430,23 @@ function updateUI() {
   }
 
   if (currentStep === 3) {
+    // Reset Face ID states
+    const faceArea = document.getElementById('face-scan-area');
+    const success = document.getElementById('biometric-success');
+    const progressFill = document.getElementById('face-progress-fill');
+    if (faceArea) faceArea.style.display = 'flex';
+    if (success) success.classList.remove('show');
+    // Reset and retrigger progress bar animation
+    if (progressFill) {
+      progressFill.style.animation = 'none';
+      progressFill.offsetHeight; // trigger reflow
+      progressFill.style.animation = 'face-progress-fill 2.5s ease forwards';
+    }
+    // Show success after progress completes
     setTimeout(() => {
-      const body = document.getElementById('biometric-body');
-      const ok = document.getElementById('biometric-ok');
-      if (body) body.style.display = 'none';
-      if (ok) ok.classList.add('show');
-    }, 1800);
+      if (faceArea) faceArea.style.display = 'none';
+      if (success) success.classList.add('show');
+    }, 2500);
   }
 
   if (currentStep === 4) {
