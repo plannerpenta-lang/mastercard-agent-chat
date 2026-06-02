@@ -5,28 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mastercard Agent Pay — Conversación Interactiva</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --mc-red: #FF0033;
-  --mc-yellow: #FF4D00;
-  --mc-bg: #060606;
-  --mc-white: #FFFFFF;
-  --mc-text: #FFFFFF;
-  --mc-muted: #888888;
+  --mc-red: #EB001B;
+  --mc-yellow: #FF5F00;
+  --mc-dark: #0a0a1a;
+  --mc-card: #111128;
   --mc-border: rgba(255,255,255,0.08);
-  --mc-border-strong: rgba(255,255,255,0.15);
-  --mc-agent-gradient: linear-gradient(135deg, #FF4D00, #FF0033);
-  --mc-gold: #FF4D00;
-  --mc-cyan: #00D4FF;
-  --mc-surface: #0D0D0D;
+  --mc-text: rgba(255,255,255,0.9);
+  --mc-muted: rgba(255,255,255,0.4);
+  --mc-agent-gradient: linear-gradient(135deg, #FF5F00, #EB001B);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
-  background: var(--mc-bg);
+  font-family: 'Noto Sans', Arial, sans-serif;
+  background: var(--mc-dark);
   color: var(--mc-text);
   overflow: hidden;
   height: 100vh;
@@ -34,38 +30,13 @@ body {
   user-select: none;
 }
 
-/* ─── Background image with luminosity only ─── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: url('https://pentamarketing.co/mc/bgmcref.png') center/cover no-repeat, var(--mc-bg);
-  background-blend-mode: luminosity, normal;
-  z-index: -2;
-  pointer-events: none;
-}
-
-/* ─── Ambient glow ─── */
-body::after {
-  content: '';
-  position: fixed;
-  top: -20%;
-  right: -10%;
-  width: 60%;
-  height: 60%;
-  background: radial-gradient(ellipse at center, rgba(255,77,0,0.08) 0%, rgba(255,0,51,0.04) 40%, transparent 70%);
-  pointer-events: none;
-  z-index: -1;
-}
-
 /* ─── Brand bar ─── */
 .brand-bar {
   position: fixed;
   top: 0; left: 0; right: 0;
-  height: 3px;
+  height: 5px;
   background: linear-gradient(90deg, var(--mc-red) 0%, var(--mc-red) 50%, var(--mc-yellow) 50%, var(--mc-yellow) 100%);
   z-index: 1000;
-  box-shadow: 0 0 12px rgba(255,0,51,0.5), 0 0 24px rgba(255,77,0,0.3);
 }
 
 /* ─── Floating background particles ─── */
@@ -78,16 +49,10 @@ body::after {
 }
 .bg-particle {
   position: absolute;
-  width: 2px; height: 2px;
+  width: 3px; height: 3px;
   border-radius: 50%;
   opacity: 0;
-  background: var(--mc-yellow);
-  box-shadow: 0 0 4px var(--mc-yellow);
   animation: float-up 8s infinite;
-}
-.bg-particle.cyan {
-  background: var(--mc-cyan);
-  box-shadow: 0 0 4px var(--mc-cyan);
 }
 @keyframes float-up {
   0%   { opacity: 0; transform: translateY(100vh) scale(0); }
@@ -109,7 +74,6 @@ body::after {
   width: 8px; height: 8px;
   top: -10px;
   opacity: 0;
-  border-radius: 2px;
   animation: confetti-fall 2.5s ease-out forwards;
 }
 @keyframes confetti-fall {
@@ -121,106 +85,60 @@ body::after {
 .nav-bar {
   position: fixed;
   bottom: 0; left: 0; right: 0;
-  height: 64px;
-  background: rgba(13,13,13,0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-top: 1px solid rgba(255,77,0,0.2);
+  height: 60px;
+  background: rgba(10,10,26,0.95);
+  border-top: 1px solid var(--mc-border);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 24px;
-  z-index: 100;
-  box-shadow: 0 -4px 24px rgba(0,0,0,0.4);
+  gap: 32px;
+  z-index: 1000;
+  backdrop-filter: blur(12px);
 }
-
-/* ─── Neon arrow buttons ─── */
+.nav-step-label {
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--mc-muted);
+  min-width: 140px;
+  text-align: center;
+}
 .nav-btn {
   width: 44px; height: 44px;
   border-radius: 50%;
-  border: 1.5px solid rgba(255,77,0,0.5);
-  background: rgba(255,77,0,0.08);
-  color: var(--mc-yellow);
+  border: 2px solid rgba(255,255,255,0.15);
+  background: transparent;
+  color: var(--mc-text);
+  font-size: 1.2rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 0 12px rgba(255,77,0,0.2), inset 0 0 8px rgba(255,77,0,0.05);
-  position: relative;
-  overflow: hidden;
+  transition: all 0.3s;
+  font-family: monospace;
 }
-.nav-btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: radial-gradient(circle at center, rgba(255,77,0,0.15), transparent 70%);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.nav-btn:hover {
-  border-color: var(--mc-yellow);
-  transform: scale(1.1);
-  box-shadow: 0 0 24px rgba(255,77,0,0.5), 0 0 48px rgba(255,77,0,0.2);
-  background: rgba(255,77,0,0.15);
-}
-.nav-btn:hover::before { opacity: 1; }
+.nav-btn:hover { border-color: var(--mc-yellow); color: var(--mc-yellow); transform: scale(1.1); }
 .nav-btn:active { transform: scale(0.95); }
-.nav-btn:disabled { opacity: 0.2; cursor: not-allowed; transform: none; box-shadow: none; }
-.nav-btn svg { width: 20px; height: 20px; position: relative; z-index: 1; }
-
-/* ─── Dot progress ─── */
-.nav-progress { display: flex; gap: 8px; align-items: center; }
+.nav-progress {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
 .nav-dot {
   width: 8px; height: 8px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.15);
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  cursor: pointer;
+  background: rgba(255,255,255,0.2);
+  transition: all 0.4s;
 }
-.nav-dot:hover { transform: scale(1.4); background: rgba(255,77,0,0.4); border-color: rgba(255,77,0,0.4); }
-.nav-dot.active {
-  background: var(--mc-yellow);
-  border-color: var(--mc-yellow);
-  transform: scale(1.5);
-  box-shadow: 0 0 8px var(--mc-yellow), 0 0 16px rgba(255,77,0,0.4);
-  animation: dot-pulse 2s ease-in-out infinite;
-}
-.nav-dot.done { background: rgba(0,212,255,0.4); border-color: rgba(0,212,255,0.6); }
-@keyframes dot-pulse {
-  0%,100% { box-shadow: 0 0 8px var(--mc-yellow), 0 0 16px rgba(255,77,0,0.3); }
-  50% { box-shadow: 0 0 14px var(--mc-yellow), 0 0 28px rgba(255,77,0,0.5); }
-}
+.nav-dot.active { background: var(--mc-yellow); transform: scale(1.3); }
+.nav-dot.done { background: rgba(255,255,255,0.35); }
+
 /* ─── Main layout ─── */
 .main {
   display: grid;
   grid-template-columns: 1fr 1fr;
   height: calc(100vh - 65px);
-  max-width: 1024px;
-  margin: 0 auto;
   padding-top: 5px;
-  position: relative;
-}
-
-.main:not(.step5-active) .chat-panel { grid-column: 1; }
-.main:not(.step5-active) .phone-panel { grid-column: 2; }
-
-.main.step5-active { grid-template-columns: 1fr; }
-
-.main.step5-active .chat-panel,
-.main.step5-active .phone-panel {
-  display: none !important;
-}
-
-.main:not(.step5-active) .step5-summary {
-  display: none !important;
-}
-
-.main.step5-active .step5-summary {
-  display: flex;
-  grid-column: 1;
 }
 
 /* ════════════════════════════
@@ -229,20 +147,13 @@ body::after {
 .chat-panel {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   height: 100%;
   padding: 40px 40px 80px;
   overflow: hidden;
   position: relative;
-  width: 100%;
-  box-sizing: border-box;
-  background: transparent;
 }
 
 .chat-header {
-  width: 100%;
-  max-width: 440px;
   margin-bottom: 28px;
   opacity: 0;
   transform: translateY(-10px);
@@ -250,12 +161,9 @@ body::after {
 }
 .chat-header.show { opacity: 1; transform: translateY(0); }
 .chat-header h1 {
-  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
   font-weight: 700;
-  margin-bottom: 8px;
-  color: var(--mc-text);
-  letter-spacing: -0.01em;
-  line-height: 1.2;
+  margin-bottom: 6px;
 }
 .chat-header h1 .accent {
   background: var(--mc-agent-gradient);
@@ -268,24 +176,10 @@ body::after {
   color: var(--mc-muted);
   font-weight: 300;
 }
-.header-logos {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 12px;
-}
-.header-logos img {
-  height: 27px;
-  width: auto;
-}
-.logo-bancolombia {
-  height: 36px;
-}
 
 .chat-messages {
-  width: 100%;
-  max-width: 440px;
-  overflow: visible;
+  flex: 1;
+  overflow: hidden;
   position: relative;
 }
 
@@ -308,28 +202,15 @@ body::after {
   justify-content: center;
   font-size: 1.1rem;
 }
-.msg-avatar.user {
-  background: var(--mc-white);
-  border: 1px solid rgba(184,150,46,0.2);
-}
-.msg-avatar.agent {
-  background: var(--mc-white);
-  border: 1px solid rgba(184,150,46,0.2);
-  box-shadow: 0 2px 6px rgba(22,33,62,0.06);
-}
+.msg-avatar.user { background: rgba(255,255,255,0.1); }
+.msg-avatar.agent { background: var(--mc-agent-gradient); }
 .msg-avatar.mastercard {
-  background: var(--mc-white);
-  border: 1px solid var(--mc-border-strong);
-  width: 32px;
-  height: 32px;
+  background: linear-gradient(135deg, var(--mc-red), var(--mc-yellow));
+  width: 32px; height: 32px;
   min-width: 32px;
-  padding: 0;
-  box-shadow: 0 2px 6px rgba(22,33,62,0.08);
-}
-.msg-avatar.mastercard svg {
-  width: 100%;
-  height: 100%;
-  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: white;
 }
 
 .msg-bubble-wrap { flex: 1; }
@@ -344,53 +225,37 @@ body::after {
 }
 
 .msg-bubble {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--mc-border);
   border-radius: 16px 16px 16px 4px;
   padding: 12px 16px;
   line-height: 1.55;
   font-size: 0.95rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
 }
 
 .msg-bubble.user-bubble {
-  background: rgba(255,77,0,0.12);
-  border-color: rgba(255,77,0,0.25);
+  background: rgba(255,255,255,0.08);
   border-radius: 16px 16px 4px 16px;
 }
 
 .msg-bubble.agent-bubble {
-  background: rgba(255,77,0,0.08);
-  border-color: rgba(255,77,0,0.2);
+  background: rgba(255, 95, 0, 0.08);
+  border-color: rgba(255, 95, 0, 0.2);
   animation: bubble-glow 3s ease-in-out infinite;
 }
 @keyframes bubble-glow {
-  0%,100% { box-shadow: 0 2px 12px rgba(255,77,0,0.1); }
-  50%     { box-shadow: 0 2px 20px rgba(255,77,0,0.2); }
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,95,0,0); }
+  50%     { box-shadow: 0 0 12px rgba(255,95,0,0.15); }
 }
 
 .msg-bubble.mastercard-bubble {
-  background: rgba(255,0,51,0.08);
-  border-color: rgba(255,0,51,0.2);
+  background: rgba(235, 0, 27, 0.08);
+  border-color: rgba(235, 0, 27, 0.2);
   animation: bubble-glow-red 3s ease-in-out infinite;
 }
 @keyframes bubble-glow-red {
-  0%,100% { box-shadow: 0 2px 12px rgba(255,0,51,0.1); }
-  50%     { box-shadow: 0 2px 20px rgba(255,0,51,0.2); }
-}
-
-.avatar-ring {
-  position: absolute;
-  inset: -3px;
-  border-radius: 50%;
-  border: 1.5px solid transparent;
-  background: linear-gradient(var(--mc-bg), var(--mc-bg)) padding-box,
-              var(--mc-agent-gradient) border-box;
-  animation: ring-pulse 2s ease-in-out infinite;
-}
-@keyframes ring-pulse {
-  0%,100% { opacity: 0.5; }
-  50%     { opacity: 1; }
+  0%,100% { box-shadow: 0 0 0 0 rgba(235,0,27,0); }
+  50%     { box-shadow: 0 0 12px rgba(235,0,27,0.15); }
 }
 
 /* Typing indicator */
@@ -403,7 +268,7 @@ body::after {
 .typing-dot {
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: rgba(201,168,76,0.5);
+  background: rgba(255,95,0,0.6);
   animation: typing-bounce 1.2s ease-in-out infinite;
 }
 .typing-dot:nth-child(2) { animation-delay: 0.2s; }
@@ -423,12 +288,12 @@ body::after {
 /* Highlight box */
 .msg-highlight {
   margin-top: 8px;
-  background: rgba(22,33,62,0.04);
-  border: 1px solid var(--mc-border);
+  background: rgba(255,95,0,0.1);
+  border: 1px solid rgba(255,95,0,0.25);
   border-radius: 10px;
   padding: 10px 14px;
   font-size: 0.88rem;
-  color: var(--mc-text);
+  color: rgba(255,255,255,0.85);
 }
 
 /* Scroll fade */
@@ -436,7 +301,7 @@ body::after {
   position: absolute;
   bottom: 0; left: 0; right: 0;
   height: 60px;
-  background: linear-gradient(transparent, var(--mc-bg));
+  background: linear-gradient(transparent, var(--mc-dark));
   pointer-events: none;
 }
 
@@ -450,12 +315,11 @@ body::after {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 48px 24px 88px;
+  padding: 40px 20px 80px;
   z-index: 50;
   opacity: 0;
-  transition: opacity 0.6s;
+  transition: opacity 0.5s;
   overflow-y: auto;
-  background: var(--mc-bg);
 }
 #step5-screen.show {
   display: flex;
@@ -464,41 +328,56 @@ body::after {
 
 /* Logo */
 .s5-logo-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
   margin-bottom: 28px;
   position: relative;
 }
-.s5-logo-core {
-  width: 80px;
-  height: 80px;
+.s5-logo-ring {
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  background: var(--mc-white);
-  border: 2px solid var(--mc-border);
+  border: 2px dashed rgba(255,95,0,0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(22,33,62,0.08);
+  animation: s5-ring-spin 12s linear infinite, s5-ring-pulse 3s ease-in-out infinite;
 }
-.s5-logo-core svg {
-  width: 48px;
-  height: 48px;
+@keyframes s5-ring-spin { to { transform: rotate(360deg); } }
+@keyframes s5-ring-pulse {
+  0%,100% { border-color: rgba(255,95,0,0.2); }
+  50%     { border-color: rgba(255,95,0,0.6); }
+}
+.s5-logo-core {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--mc-red), var(--mc-yellow));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: white;
+  box-shadow: 0 0 30px rgba(255,95,0,0.5), 0 0 60px rgba(235,0,27,0.25);
+  animation: s5-core-glow 2.5s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+}
+@keyframes s5-core-glow {
+  0%,100% { box-shadow: 0 0 25px rgba(255,95,0,0.5), 0 0 50px rgba(235,0,27,0.25); }
+  50%     { box-shadow: 0 0 40px rgba(255,95,0,0.8), 0 0 80px rgba(235,0,27,0.4); }
 }
 
 /* Separator */
 .s5-sep {
   width: 100%;
-  max-width: 320px;
+  max-width: 400px;
   height: 1px;
-  background: var(--mc-gold);
-  opacity: 0.25;
-  margin: 24px 0;
+  background: linear-gradient(90deg, transparent, rgba(255,95,0,0.3), transparent);
+  margin: 20px 0;
   opacity: 0;
-  transition: opacity 0.6s;
+  transition: opacity 0.5s;
 }
-.s5-sep.show { opacity: 0.35; }
+.s5-sep.show { opacity: 1; }
 
 /* Stats */
 .s5-stats {
@@ -515,22 +394,21 @@ body::after {
 }
 .s5-stat.show { opacity: 1; transform: translateY(0); }
 .s5-stat-num {
-  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
   font-weight: 700;
   background: linear-gradient(135deg, var(--mc-red), var(--mc-yellow));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   line-height: 1;
-  margin-bottom: 6px;
-  letter-spacing: -0.02em;
+  margin-bottom: 4px;
 }
 .s5-stat-label {
-  font-size: 0.6rem;
-  color: var(--mc-muted);
-  letter-spacing: 0.12em;
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 1px;
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 /* Steps list */
@@ -549,8 +427,7 @@ body::after {
   opacity: 0;
   transform: translateY(16px);
   transition: opacity 0.5s, transform 0.5s;
-  border-bottom: 1px solid var(--mc-border);
-  background: transparent;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
 }
 .s5-step-item.show { opacity: 1; transform: translateY(0); }
 .s5-step-item:last-child { border-bottom: none; }
@@ -563,34 +440,36 @@ body::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--mc-white);
-  border: 1px solid rgba(184,150,46,0.2);
-  box-shadow: 0 2px 8px rgba(22,33,62,0.06);
+  font-size: 1.3rem;
 }
+.s5-step-item:nth-child(1) .s5-step-icon { background: rgba(255,95,0,0.12); border: 1px solid rgba(255,95,0,0.3); }
+.s5-step-item:nth-child(2) .s5-step-icon { background: rgba(0,200,80,0.10); border: 1px solid rgba(0,200,80,0.3); }
+.s5-step-item:nth-child(3) .s5-step-icon { background: rgba(235,0,27,0.10); border: 1px solid rgba(235,0,27,0.3); }
+.s5-step-item:nth-child(4) .s5-step-icon { background: rgba(255,200,0,0.10); border: 1px solid rgba(255,200,0,0.3); }
 
 .s5-step-body { flex: 1; padding-top: 4px; }
 .s5-step-num {
   font-size: 0.58rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--mc-muted);
+  color: rgba(255,255,255,0.3);
   margin-bottom: 4px;
 }
-.s5-step-item:nth-child(1) .s5-step-num { color: rgba(255,95,0,0.65); }
-.s5-step-item:nth-child(2) .s5-step-num { color: rgba(0,168,90,0.65); }
-.s5-step-item:nth-child(3) .s5-step-num { color: rgba(235,0,27,0.65); }
-.s5-step-item:nth-child(4) .s5-step-num { color: rgba(184,150,46,0.75); }
+.s5-step-item:nth-child(1) .s5-step-num { color: rgba(255,95,0,0.6); }
+.s5-step-item:nth-child(2) .s5-step-num { color: rgba(0,200,80,0.6); }
+.s5-step-item:nth-child(3) .s5-step-num { color: rgba(235,0,27,0.6); }
+.s5-step-item:nth-child(4) .s5-step-num { color: rgba(255,200,0,0.6); }
 
 .s5-step-title {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--mc-text);
+  color: rgba(255,255,255,0.9);
   margin-bottom: 4px;
 }
 .s5-step-desc {
   font-size: 0.78rem;
-  color: var(--mc-muted);
+  color: rgba(255,255,255,0.4);
   line-height: 1.5;
 }
 
@@ -604,552 +483,94 @@ body::after {
 }
 .s5-footer.show { opacity: 1; transform: translateY(0); }
 .s5-footer-brand {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  color: var(--mc-text);
-  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 1px;
 }
 .s5-footer-tagline {
-  font-size: 0.62rem;
-  color: var(--mc-muted);
-  letter-spacing: 0.18em;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   margin-top: 4px;
-  font-weight: 500;
 }
-/* ════════════════════════════
-   STEP 5: PREMIUM CARDS (Face ID inspired)
-   ════════════════════════════ */
 .step5-summary {
   display: none;
-  position: fixed;
-  top: 65px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 1080px;
-  padding: 16px 16px 100px;
-  overflow: visible;
-  gap: 12px;
+  flex-direction: column;
+  height: 100%;
+  padding: 0 10px 80px;
+  gap: 0;
   opacity: 0;
   transition: opacity 0.5s;
+  position: relative;
   z-index: 10;
-  background: transparent;
-  box-sizing: border-box;
 }
 .step5-summary.show {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   opacity: 1;
 }
 
-/* Ambient glow system per card */
-@keyframes ambient-glow {
-  0%   { opacity: 0; }
-  30%  { opacity: 0.6; }
-  100% { opacity: 0; }
-}
-
-/* Flow grid */
-.step5-flow {
+/* Stats bar */
+.step5-stats {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 1080px;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-.step5-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  width: 100%;
-}
-
-/* Premium card base */
-.step5-step {
-  position: relative;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(184,150,46,0.3);
-  border-radius: 16px;
-  padding: 24px 22px;
-  display: flex;
-  align-items: flex-start;
-  gap: 18px;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.5s, transform 0.5s, border-color 0.3s, box-shadow 0.3s;
-  overflow: visible;
-  min-height: 120px;
-}
-.step5-step.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-.step5-step::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  background: linear-gradient(135deg, rgba(184,150,46,0.05) 0%, transparent 60%);
-  opacity: 0;
-  transition: opacity 0.4s;
-}
-.step5-step:hover {
-  transform: translateY(-4px) scale(1.02);
-  border-color: rgba(184,150,46,0.7);
-  box-shadow: 0 12px 40px rgba(184,150,46,0.15), 0 0 20px rgba(184,150,46,0.08);
-  z-index: 10;
-}
-.step5-step:hover::before { opacity: 1; }
-
-/* Extra detail on hover */
-.step5-step .s5-extra {
-  display: none;
-  margin-top: 8px;
-  font-size: 0.62rem;
-  color: rgba(255,255,255,0.4);
-  padding-top: 8px;
-  border-top: 1px solid rgba(184,150,46,0.15);
-  letter-spacing: 0.04em;
-}
-.step5-step:hover .s5-extra { display: flex; align-items: center; gap: 5px; }
-
-/* Glow blob behind card */
-.step5-step .glow-blob {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: -1;
-  filter: blur(40px);
-  opacity: 0;
-  animation: ambient-glow 1.5s ease forwards;
-}
-.s5-step1 .glow-blob { background: rgba(255,95,0,0.25); animation-delay: 0.3s; }
-.s5-step2 .glow-blob { background: rgba(0,168,90,0.25); animation-delay: 0.5s; }
-.s5-step3 .glow-blob { background: rgba(235,0,27,0.25); animation-delay: 0.7s; }
-.s5-step4 .glow-blob { background: rgba(184,150,46,0.25); animation-delay: 0.9s; }
-
-/* Corner brackets */
-.step5-step .bracket {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  opacity: 0;
-  animation: s5-bracket-in 0.4s ease forwards;
-}
-.step5-step .bracket-tl { top: 8px; left: 8px; border-top: 2px solid rgba(184,150,46,0.5); border-left: 2px solid rgba(184,150,46,0.5); animation-delay: 0.1s; }
-.step5-step .bracket-tr { top: 8px; right: 8px; border-top: 2px solid rgba(184,150,46,0.5); border-right: 2px solid rgba(184,150,46,0.5); animation-delay: 0.15s; }
-.step5-step .bracket-bl { bottom: 8px; left: 8px; border-bottom: 2px solid rgba(184,150,46,0.5); border-left: 2px solid rgba(184,150,46,0.5); animation-delay: 0.2s; }
-.step5-step .bracket-br { bottom: 8px; right: 8px; border-bottom: 2px solid rgba(184,150,46,0.5); border-right: 2px solid rgba(184,150,46,0.5); animation-delay: 0.25s; }
-@keyframes s5-bracket-in {
-  from { opacity: 0; transform: scale(1.4); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-/* Scan line across card */
-.step5-step::after {
-  content: '';
-  position: absolute;
-  left: -100%;
-  top: 0;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(184,150,46,0.12), transparent);
-  pointer-events: none;
-  opacity: 0;
-}
-@keyframes scan-line {
-  from { left: -100%; }
-  to   { left: 200%; }
-}
-
-/* Step number badge + counter */
-.step5-step-num {
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  display: inline-block;
-  transition: transform 0.2s;
-}
-.step5-step:hover .step5-step-num { transform: scale(1.1); }
-.s5-step1 .step5-step-num { background: rgba(255,95,0,0.12); color: rgba(255,95,0,0.8); }
-.s5-step2 .step5-step-num { background: rgba(0,168,90,0.12); color: rgba(0,168,90,0.8); }
-.s5-step3 .step5-step-num { background: rgba(235,0,27,0.12); color: rgba(235,0,27,0.8); }
-.s5-step4 .step5-step-num { background: rgba(184,150,46,0.12); color: rgba(184,150,46,0.8); }
-
-/* Icon container */
-.step5-step-icon {
-  width: 48px;
-  height: 48px;
-  min-width: 48px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(184,150,46,0.08);
-  border: 1px solid rgba(184,150,46,0.2);
-  position: relative;
-  overflow: hidden;
-}
-.step5-step-icon::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.06) 50%, transparent 60%);
-  animation: icon-shimmer 3s ease-in-out infinite;
-}
-@keyframes icon-shimmer {
-  0%   { transform: translateX(-100%) rotate(45deg); }
-  100% { transform: translateX(100%) rotate(45deg); }
-}
-
-/* Step text */
-.step5-step-text { flex: 1; }
-.step5-step-title {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: rgba(255,255,255,0.95);
-  margin-bottom: 8px;
-  letter-spacing: 0.01em;
-  line-height: 1.2;
-}
-.step5-step-desc {
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.5);
-  line-height: 1.6;
-}
-
-/* Time card premium */
-.time-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(184,150,46,0.3);
-  border-radius: 16px;
-  padding: 18px 20px;
-  width: 100%;
-  max-width: 1080px;
-  position: relative;
-  overflow: visible;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.5s, transform 0.5s, border-color 0.3s, box-shadow 0.3s;
-}
-.time-card.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-.time-card:hover {
-  transform: translateY(-4px) scale(1.01);
-  border-color: rgba(184,150,46,0.7);
-  box-shadow: 0 12px 40px rgba(184,150,46,0.15), 0 0 20px rgba(184,150,46,0.08);
-}
-.time-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(184,150,46,0.4), transparent);
-}
-
-/* Time card glow blob */
-.time-card .glow-blob {
-  position: absolute;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: -1;
-  filter: blur(50px);
-  opacity: 0;
-  background: rgba(255,77,0,0.15);
-  animation: ambient-glow 1.5s ease forwards;
-  animation-delay: 1s;
-}
-
-/* Corner brackets for time card */
-.time-card .bracket {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  opacity: 0;
-  animation: s5-bracket-in 0.4s ease forwards;
-}
-.time-card .bracket-tl { top: 8px; left: 8px; border-top: 2px solid rgba(184,150,46,0.5); border-left: 2px solid rgba(184,150,46,0.5); animation-delay: 0.3s; }
-.time-card .bracket-tr { top: 8px; right: 8px; border-top: 2px solid rgba(184,150,46,0.5); border-right: 2px solid rgba(184,150,46,0.5); animation-delay: 0.35s; }
-.time-card .bracket-bl { bottom: 8px; left: 8px; border-bottom: 2px solid rgba(184,150,46,0.5); border-left: 2px solid rgba(184,150,46,0.5); animation-delay: 0.4s; }
-.time-card .bracket-br { bottom: 8px; right: 8px; border-bottom: 2px solid rgba(184,150,46,0.5); border-right: 2px solid rgba(184,150,46,0.5); animation-delay: 0.45s; }
-
-/* Scan line for time card */
-.time-card::after {
-  content: '';
-  position: absolute;
-  left: -100%;
-  top: 0;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,77,0,0.15), transparent);
-  animation: scan-line 0.8s ease forwards;
-  animation-delay: 1.1s;
-  pointer-events: none;
-}
-
-/* Top shimmer line */
-.time-shimmer {
-  position: absolute;
-  top: -100%;
-  left: -100%;
-  width: 300%;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, rgba(184,150,46,0.3), rgba(184,150,46,0.6), rgba(184,150,46,0.3), transparent);
-  animation: time-shimmer 4s ease-in-out infinite;
-}
-@keyframes time-shimmer {
-  0%   { top: -100%; }
-  100% { top: calc(100% + 10px); }
-}
-
-.time-card-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(184,150,46,0.8);
-  margin-bottom: 10px;
-}
-.time-card-num {
-  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
-  font-weight: 800;
-  background: linear-gradient(135deg, rgba(255,77,0,0.9), #B8962E);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1;
-  margin-bottom: 14px;
-}
-.time-card-num span {
-  font-size: 0.65rem;
-  font-weight: 500;
-  color: rgba(255,255,255,0.4);
-  letter-spacing: 0.05em;
-  -webkit-text-fill-color: rgba(255,255,255,0.4);
-}
-.time-card-bars { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-.time-bar-row {
-  display: grid;
-  grid-template-columns: 120px 1fr 36px;
-  align-items: center;
-  gap: 10px;
-}
-.time-bar-label { font-size: 0.62rem; color: rgba(255,255,255,0.38); font-weight: 500; }
-.time-bar-track { height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
-.time-bar-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  width: 0;
-}
-.time-bar-fill:not(.gold) { background: rgba(255,255,255,0.15); }
-.time-bar-fill.gold {
-  background: linear-gradient(90deg, rgba(255,77,0,0.6), #B8962E);
-  box-shadow: 0 0 8px rgba(184,150,46,0.3);
-}
-.time-bar-val { font-size: 0.65rem; color: rgba(255,255,255,0.5); text-align: right; }
-.time-card-footer {
-  font-size: 0.68rem;
-  color: rgba(255,255,255,0.35);
-  margin-top: 4px;
-}
-.time-card-footer strong { color: rgba(184,150,46,0.8); font-weight: 700; }
-
-.time-card-body {
-  margin-bottom: 12px;
-}
-.time-card-num {
-  font-size: clamp(1.8rem, 4vw, 2.4rem);
-  font-weight: 800;
-  background: linear-gradient(135deg, #EB001B, #B8962E);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1;
-}
-.time-card-num span {
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: var(--mc-muted);
-  letter-spacing: 0.05em;
-  -webkit-text-fill-color: var(--mc-muted);
-}
-
-.time-card-bars {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-.time-bar-row {
-  display: grid;
-  grid-template-columns: 110px 1fr 30px;
-  align-items: center;
-  gap: 8px;
-}
-.time-bar-label {
-  font-size: 0.58rem;
-  color: var(--mc-muted);
-  font-weight: 500;
-}
-.time-bar-track {
-  height: 4px;
-  background: rgba(22,33,62,0.08);
-  border-radius: 3px;
-  overflow: hidden;
-}
-.time-bar-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  width: 0;
-}
-.time-bar-fill:not(.gold) {
-  background: rgba(22,33,62,0.2);
-}
-.time-bar-fill.gold {
-  background: var(--mc-gold);
-}
-.time-card.show .time-bar-fill:not(.gold) { width: 100%; }
-.time-card.show .time-bar-fill.gold { width: 51%; }
-.time-bar-val {
-  font-size: 0.62rem;
-  font-weight: 700;
-  color: var(--mc-text);
-  text-align: right;
-}
-
-.time-card-main {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
+  justify-content: space-around;
+  padding: 12px 0 18px;
+  border-bottom: 1px solid var(--mc-border);
   margin-bottom: 16px;
+  gap: 8px;
 }
-.time-big {
-  font-size: clamp(2.2rem, 5vw, 3rem);
+.step5-stat {
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s, transform 0.4s;
+}
+.step5-stat.show { opacity: 1; transform: translateY(0); }
+.stat-num {
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
   font-weight: 700;
   background: var(--mc-agent-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   line-height: 1;
+  margin-bottom: 3px;
 }
-.time-unit {
-  font-size: 0.75rem;
+.stat-label {
+  font-size: 0.62rem;
   color: var(--mc-muted);
-  font-weight: 500;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: 400;
 }
 
-.time-card-bar {
+/* Flow diagram */
+.step5-flow {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 12px;
-}
-.time-bar-label {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.6rem;
-  color: var(--mc-muted);
-  font-weight: 500;
-}
-.time-bar-track {
-  height: 5px;
-  background: var(--mc-border);
-  border-radius: 3px;
-  overflow: hidden;
-}
-.time-bar-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.time-bar-fill.traditional {
-  width: 0;
-  background: rgba(22,33,62,0.2);
-}
-.time-bar-fill.agentpay {
-  width: 0;
-  background: var(--mc-gold);
-}
-.time-card.show .time-bar-fill.traditional { width: 100%; }
-.time-card.show .time-bar-fill.agentpay { width: 48%; }
-
-.time-card-footer {
-  font-size: 0.65rem;
-  color: var(--mc-muted);
-  text-align: center;
-  letter-spacing: 0.03em;
-}
-.time-card-footer strong {
-  color: var(--mc-text);
-  font-weight: 700;
+  justify-content: center;
+  gap: 0;
+  position: relative;
 }
 
-/* Flow diagram [DEPRECATED - see premium at ~640] */
-/*.step5-flow {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 440px;
-  gap: 10px;
-  margin-bottom: 16px;
-}*/
-
-/*.step5-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  width: 100%;
-}*/
-
-/* [.step5-step old summary - DEPRECATED]
 .step5-step {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 12px 10px;
-  background: var(--mc-white);
-  border: 1px solid var(--mc-border);
-  border-radius: 12px;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 8px;
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateX(-20px);
   transition: opacity 0.5s, transform 0.5s;
-  box-shadow: 0 2px 8px rgba(22,33,62,0.04);
 }
-.step5-step.show { opacity: 1; transform: translateY(0); }
+.step5-step.show { opacity: 1; transform: translateX(0); }
+.step5-step.right-align {
+  flex-direction: row-reverse;
+  transform: translateX(20px);
+}
 .step5-step.right-align.show { transform: translateX(0); }
-*/
 
-/* [.step5-step-icon old summary - DEPRECATED]
 .step5-step-icon {
   width: 42px;
   height: 42px;
@@ -1166,9 +587,7 @@ body::after {
 .step5-step:nth-child(2) .step5-step-icon { background: rgba(0,200,80,0.12); border: 1px solid rgba(0,200,80,0.35); }
 .step5-step:nth-child(3) .step5-step-icon { background: rgba(235,0,27,0.12); border: 1px solid rgba(235,0,27,0.35); }
 .step5-step:nth-child(4) .step5-step-icon { background: rgba(255,215,0,0.12); border: 1px solid rgba(255,215,0,0.35); }
-*/
 
-/* [.step5-step-text old summary - DEPRECATED]
 .step5-step-text { flex: 1; }
 .step5-step-num {
   font-size: 0.6rem;
@@ -1178,7 +597,10 @@ body::after {
   color: var(--mc-muted);
   margin-bottom: 2px;
 }
-*/
+.step5-step-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 2px; }
+.step5-step-desc { font-size: 0.72rem; color: var(--mc-muted); line-height: 1.4; }
+
+.step5-step.right-align .step5-step-text { text-align: right; }
 
 /* Connector line between steps */
 .step5-connector {
@@ -1234,8 +656,6 @@ body::after {
   justify-content: center;
   padding: 40px;
   position: relative;
-  width: 100%;
-  box-sizing: border-box;
 }
 /* Phone wrapper */
 .phone-wrapper {
@@ -1251,22 +671,18 @@ body::after {
 
 /* Phone glow when approved */
 .phone-wrapper.glow {
-  filter: drop-shadow(0 4px 24px rgba(201,168,76,0.3)) drop-shadow(0 8px 40px rgba(22,33,62,0.1));
+  filter: drop-shadow(0 0 30px rgba(255, 95, 0, 0.5)) drop-shadow(0 0 60px rgba(235, 0, 27, 0.3));
 }
 
 .phone-body {
   width: 280px;
   height: 560px;
-  background: #0D0D0D;
+  background: #111;
   border-radius: 40px;
-  border: 1.5px solid rgba(255,77,0,0.3);
+  border: 3px solid #222;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 30px rgba(255,77,0,0.1), inset 0 1px 0 rgba(255,255,255,0.05);
-}
-
-.phone-wrapper.glow {
-  filter: drop-shadow(0 4px 24px rgba(255,77,0,0.4)) drop-shadow(0 8px 40px rgba(255,0,51,0.2));
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
 }
 
 .phone-notch {
@@ -1274,16 +690,15 @@ body::after {
   top: 0; left: 50%;
   transform: translateX(-50%);
   width: 100px; height: 28px;
-  background: #0D0D0D;
+  background: #111;
   border-radius: 0 0 18px 18px;
   z-index: 10;
-  border-bottom: 1px solid rgba(255,77,0,0.3);
 }
 
 .phone-screen {
   width: 100%;
   height: 100%;
-  background: #0A0A0A;
+  background: #0d0d1a;
   overflow: hidden;
   position: relative;
 }
@@ -1294,7 +709,7 @@ body::after {
   align-items: center;
   padding: 8px 16px 0;
   font-size: 0.65rem;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.5);
   height: 28px;
 }
 
@@ -1307,52 +722,51 @@ body::after {
 
 /* STEP 0: Email / agenda */
 .step-email { display: flex; flex-direction: column; height: 100%; padding-top: 28px; }
-.email-header { padding: 14px 16px 10px; border-bottom: 1px solid rgba(255,255,255,0.08); }
-.email-header span { font-size: 0.7rem; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; }
+.email-header { padding: 14px 16px 10px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.email-header span { font-size: 0.7rem; color: var(--mc-muted); letter-spacing: 1px; text-transform: uppercase; }
 .email-body { padding: 16px; flex: 1; }
-.email-from { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--mc-text); }
-.email-subject { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; color: var(--mc-text); }
-.email-text { font-size: 0.82rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
-.email-time { font-size: 0.68rem; color: rgba(255,255,255,0.35); margin-top: 14px; }
+.email-from { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
+.email-subject { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; }
+.email-text { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+.email-time { font-size: 0.68rem; color: var(--mc-muted); margin-top: 14px; }
 
 /* STEP 1: Agent searching */
 .step-search { display: flex; flex-direction: column; height: 100%; padding-top: 28px; }
-.search-header { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; }
-.search-header span { font-size: 0.8rem; font-weight: 600; color: var(--mc-text); }
+.search-header { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; }
+.search-header span { font-size: 0.8rem; font-weight: 600; }
 .search-dots { display: flex; gap: 4px; }
-.search-dots span { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.4); animation: dot-bounce 1.4s infinite; }
+.search-dots span { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); animation: dot-bounce 1.4s infinite; }
 .search-dots span:nth-child(2) { animation-delay: 0.2s; }
 .search-dots span:nth-child(3) { animation-delay: 0.4s; }
 @keyframes dot-bounce { 0%,80%,100% { opacity: 0.3; } 40% { opacity: 1; } }
 
 .search-results { padding: 12px 16px; flex: 1; overflow: hidden; }
-.flight-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateX(-10px); transition: opacity 0.4s, transform 0.4s; }
+.flight-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateX(-10px); transition: opacity 0.4s, transform 0.4s; }
 .flight-card.show { opacity: 1; transform: translateX(0); }
-.flight-card.selected { border-color: var(--mc-yellow); background: rgba(255,77,0,0.08); }
+.flight-card.selected { border-color: var(--mc-yellow); background: rgba(255,95,0,0.08); }
 .flight-info { font-size: 0.8rem; }
-.flight-airline { font-weight: 600; margin-bottom: 2px; color: var(--mc-text); }
-.flight-time { color: rgba(255,255,255,0.45); font-size: 0.75rem; }
+.flight-airline { font-weight: 600; margin-bottom: 2px; }
+.flight-time { color: rgba(255,255,255,0.5); font-size: 0.75rem; }
 .flight-price { font-weight: 700; font-size: 0.95rem; color: var(--mc-yellow); }
 
 /* STEP 2: Notification */
 .step-notification { display: flex; flex-direction: column; height: 100%; padding-top: 28px; }
-.notify-header { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; }
-.notify-header span { font-size: 0.72rem; color: rgba(255,255,255,0.4); }
+.notify-header { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; }
+.notify-header span { font-size: 0.72rem; color: var(--mc-muted); }
 .notify-app { padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
 .notify-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--mc-agent-gradient); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
-.notify-app-name { font-size: 0.8rem; font-weight: 600; color: var(--mc-text); }
-.notify-app-sub { font-size: 0.68rem; color: rgba(255,255,255,0.4); }
+.notify-app-name { font-size: 0.8rem; font-weight: 600; }
+.notify-app-sub { font-size: 0.68rem; color: var(--mc-muted); }
 
 .notify-card {
   margin: 8px 14px 0;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,77,0,0.3);
+  background: rgba(20,20,40,0.95);
+  border: 1px solid rgba(255,95,0,0.3);
   border-radius: 16px;
   overflow: hidden;
   opacity: 0;
   transform: translateY(-30px) scale(0.95);
   transition: opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 4px 20px rgba(255,77,0,0.15), 0 0 30px rgba(255,0,51,0.05);
 }
 .notify-card.show {
   opacity: 1;
@@ -1366,12 +780,12 @@ body::after {
   align-items: center;
   gap: 8px;
 }
-.notify-card-header span { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px; color: white; }
+.notify-card-header span { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.5px; }
 .notify-card-body { padding: 14px; }
-.notify-amount { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; color: var(--mc-text); }
-.notify-concept { font-size: 0.78rem; color: rgba(255,255,255,0.45); margin-bottom: 14px; }
+.notify-amount { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+.notify-concept { font-size: 0.78rem; color: rgba(255,255,255,0.55); margin-bottom: 14px; }
 .notify-token { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
-.notify-token span:first-child { font-size: 0.68rem; background: rgba(255,77,0,0.15); border: 1px solid rgba(255,77,0,0.3); border-radius: 4px; padding: 2px 6px; color: var(--mc-yellow); font-weight: 600; }
+.notify-token span:first-child { font-size: 0.68rem; background: rgba(255,95,0,0.12); border: 1px solid rgba(255,95,0,0.2); border-radius: 4px; padding: 2px 6px; color: var(--mc-yellow); font-weight: 600; }
 .notify-token span:last-child { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
 .notify-btn { width: 100%; padding: 12px; border-radius: 10px; border: none; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: 'Noto Sans', Arial, sans-serif; transition: transform 0.2s, box-shadow 0.2s; }
 .notify-btn.auth {
@@ -1380,266 +794,136 @@ body::after {
   animation: btn-pulse 2s ease-in-out infinite;
 }
 @keyframes btn-pulse {
-  0%,100% { box-shadow: 0 0 0 0 rgba(255,77,0,0.4); }
-  50%     { box-shadow: 0 0 0 8px rgba(255,77,0,0); }
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,95,0,0.4); }
+  50%     { box-shadow: 0 0 0 8px rgba(255,95,0,0); }
 }
-.notify-btn.deny { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.4); margin-top: 6px; font-weight: 400; }
+.notify-btn.deny { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); margin-top: 6px; font-weight: 400; }
 
-/* STEP 3: Biometric - iOS Face ID style */
+/* STEP 3: Biometric */
 .step-biometric { display: flex; flex-direction: column; height: 100%; padding-top: 28px; }
-.biometric-header { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.5); text-align: center; letter-spacing: 0.05em; }
-
-/* Face ID scan area */
-.face-scan-area {
-  flex: 1;
+.biometric-header { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.8rem; font-weight: 600; }
+.biometric-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+.biometric-face {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: rgba(255,95,0,0.1);
+  border: 2px solid rgba(255,95,0,0.3);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: relative;
-  padding: 20px;
+  font-size: 3rem;
+  margin-bottom: 16px;
+  animation: face-scan 1.5s ease-in-out infinite;
+  box-shadow: 0 0 0 0 rgba(255,95,0,0.6);
 }
-
-/* Corner brackets */
-.face-brackets {
-  width: 160px;
-  height: 200px;
-  position: relative;
-  margin-bottom: 24px;
+@keyframes face-scan {
+  0%   { border-color: rgba(255,95,0,0.3); box-shadow: 0 0 0 0 rgba(255,95,0,0.4); }
+  50%  { border-color: rgba(255,95,0,0.9); box-shadow: 0 0 0 15px rgba(255,95,0,0); }
+  100% { border-color: rgba(255,95,0,0.3); box-shadow: 0 0 0 0 rgba(255,95,0,0.4); }
 }
-.bracket {
-  position: absolute;
-  width: 28px;
-  height: 28px;
-  opacity: 0;
-  animation: bracket-in 0.4s ease forwards;
-}
-.bracket-tl { top: 0; left: 0; border-top: 2px solid #B8962E; border-left: 2px solid #B8962E; animation-delay: 0.2s; }
-.bracket-tr { top: 0; right: 0; border-top: 2px solid #B8962E; border-right: 2px solid #B8962E; animation-delay: 0.3s; }
-.bracket-bl { bottom: 0; left: 0; border-bottom: 2px solid #B8962E; border-left: 2px solid #B8962E; animation-delay: 0.4s; }
-.bracket-br { bottom: 0; right: 0; border-bottom: 2px solid #B8962E; border-right: 2px solid #B8962E; animation-delay: 0.5s; }
-@keyframes bracket-in {
-  from { opacity: 0; transform: scale(1.5); }
-  to   { opacity: 0.8; transform: scale(1); }
-}
-
-/* Face oval - dashed outline */
-.face-oval {
-  width: 90px;
-  height: 110px;
-  border: 1.5px dashed rgba(184,150,46,0.4);
-  border-radius: 50%;
-  margin-bottom: 20px;
-  animation: oval-pulse 2s ease-in-out infinite;
-}
-@keyframes oval-pulse {
-  0%,100% { border-color: rgba(184,150,46,0.2); box-shadow: none; }
-  50%      { border-color: rgba(184,150,46,0.6); box-shadow: 0 0 12px rgba(184,150,46,0.1); }
-}
-
-/* White ring animation around brackets */
-.face-ring {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0);
-  animation: ring-expand 2s ease-out infinite;
-  pointer-events: none;
-}
-@keyframes ring-expand {
-  0%   { border-color: rgba(255,255,255,0.3); transform: translate(-50%,-50%) scale(0.85); opacity: 1; }
-  100% { border-color: rgba(255,255,255,0);   transform: translate(-50%,-50%) scale(1.1);  opacity: 0; }
-}
-
-/* Status text */
-.face-status {
-  font-size: 0.78rem;
-  color: rgba(255,255,255,0.45);
-  letter-spacing: 0.03em;
-  margin-bottom: 10px;
-  transition: opacity 0.3s;
-  text-align: center;
-}
-.face-status.scanning { animation: text-fade 3s ease-in-out infinite; }
-@keyframes text-fade {
-  0%,100% { opacity: 0.45; }
-  50%      { opacity: 0.8; }
-}
-
-/* Progress bar */
-.face-progress {
-  width: 140px;
-  height: 3px;
-  background: rgba(255,255,255,0.12);
-  border-radius: 2px;
-  overflow: hidden;
-  position: relative;
-}
-.face-progress-fill {
+.biometric-text { font-size: 0.85rem; text-align: center; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+.biometric-sub { font-size: 0.72rem; color: var(--mc-muted); text-align: center; }
+.biometric-scan { margin-top: 16px; width: 80px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.1); overflow: hidden; position: relative; }
+.biometric-scan-bar {
   height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, rgba(184,150,46,0.5), #B8962E);
+  background: linear-gradient(90deg, var(--mc-red), var(--mc-yellow));
   border-radius: 2px;
-  animation: face-progress-fill 2.5s ease forwards;
+  animation: scan 1.8s ease-in-out infinite;
   position: relative;
 }
-.face-progress-fill::after {
+.biometric-scan-bar::after {
   content: '';
   position: absolute;
-  right: 0; top: -2px;
-  width: 2px; height: 7px;
-  background: #B8962E;
-  border-radius: 1px;
-  box-shadow: 0 0 6px rgba(184,150,46,0.8);
+  right: 0; top: -3px;
+  width: 3px; height: 10px;
+  background: white;
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(255,255,255,0.8);
 }
-@keyframes face-progress-fill {
+@keyframes scan {
   0%   { width: 0%; }
-  70%  { width: 85%; }
-  100% { width: 100%; }
+  50%  { width: 100%; }
+  100% { width: 0%; margin-left: 100%; }
 }
-
-/* Face ID label */
-.face-id-label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 22px;
-  font-size: 0.7rem;
-  color: rgba(255,255,255,0.25);
-}
-.face-id-label svg { width: 18px; height: 18px; }
-.face-id-label span { letter-spacing: 0.1em; }
-
-/* Success state */
-.biometric-success {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  inset: 0;
-  animation: success-pop 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
-}
-.biometric-success.show { display: flex; }
-.success-ring {
-  width: 90px;
-  height: 90px;
+.biometric-ok { display: none; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
+.biometric-ok.show { display: flex; }
+.biometric-ok-icon {
+  width: 80px; height: 80px;
   border-radius: 50%;
-  background: rgba(0,168,90,0.08);
-  border: 2px solid #00A85A;
+  background: rgba(0,200,80,0.15);
+  border: 3px solid rgba(0,200,80,0.8);
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 2.5rem;
   margin-bottom: 14px;
-  box-shadow: 0 0 30px rgba(0,168,90,0.25), inset 0 0 20px rgba(0,168,90,0.05);
-  animation: ring-glow 1s ease infinite;
+  animation: ok-zoom 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 30px rgba(0,200,80,0.4);
 }
-@keyframes ring-glow {
-  0%,100% { box-shadow: 0 0 20px rgba(0,168,90,0.2), inset 0 0 15px rgba(0,168,90,0.05); }
-  50%      { box-shadow: 0 0 35px rgba(0,168,90,0.35), inset 0 0 25px rgba(0,168,90,0.08); }
-}
-.success-check {
-  width: 44px;
-  height: 44px;
-}
-.success-text {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #00A85A;
-  letter-spacing: 0.05em;
-}
-.success-sub {
-  font-size: 0.68rem;
-  color: rgba(255,255,255,0.35);
-  margin-top: 4px;
-  letter-spacing: 0.08em;
-}
-@keyframes success-pop {
-  from { transform: scale(0.5); opacity: 0; }
+@keyframes ok-zoom {
+  from { transform: scale(0); opacity: 0; }
   to   { transform: scale(1); opacity: 1; }
 }
-.biometric-ok-text { font-size: 0.85rem; font-weight: 600; color: var(--mc-yellow); animation: ok-text 0.5s 0.3s both; }
+.biometric-ok-text { font-size: 0.85rem; font-weight: 600; color: rgba(0,200,80,0.9); animation: ok-text 0.5s 0.3s both; }
 @keyframes ok-text { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* STEP 4: Approved */
 .step-approved { display: flex; flex-direction: column; height: 100%; padding-top: 28px; }
-.approved-header { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; }
-.approved-header span { font-size: 0.75rem; color: rgba(255,255,255,0.4); }
+.approved-header { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; }
+.approved-header span { font-size: 0.75rem; color: var(--mc-muted); }
 .approved-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
 .approved-icon {
   width: 90px; height: 90px;
   border-radius: 50%;
-  background: rgba(255,77,0,0.1);
-  border: 2px solid var(--mc-yellow);
+  background: linear-gradient(135deg, var(--mc-red), var(--mc-yellow));
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2.8rem;
   margin-bottom: 20px;
   animation: approved-pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  box-shadow: 0 8px 32px rgba(255,77,0,0.2);
+  box-shadow: 0 0 40px rgba(255,95,0,0.5), 0 0 80px rgba(235,0,27,0.3);
 }
 @keyframes approved-pop {
   0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
   60%  { transform: scale(1.2) rotate(5deg); }
   100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
-.approved-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; text-align: center; color: var(--mc-text); animation: fade-up 0.5s 0.3s both; }
-.approved-sub { font-size: 0.78rem; color: rgba(255,255,255,0.4); text-align: center; margin-bottom: 20px; animation: fade-up 0.5s 0.4s both; }
-.approved-tokens { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,77,0,0.2); border-radius: 12px; padding: 12px; animation: fade-up 0.5s 0.5s both; }
+.approved-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; text-align: center; animation: fade-up 0.5s 0.3s both; }
+.approved-sub { font-size: 0.78rem; color: var(--mc-muted); text-align: center; margin-bottom: 20px; animation: fade-up 0.5s 0.4s both; }
+.approved-tokens { width: 100%; background: rgba(255,255,255,0.04); border-radius: 12px; padding: 12px; animation: fade-up 0.5s 0.5s both; }
 .approved-token-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.75rem; }
 .approved-token-row:last-child { margin-bottom: 0; }
-.approved-token-label { color: rgba(255,255,255,0.4); }
+.approved-token-label { color: var(--mc-muted); }
 .approved-token-val { color: var(--mc-yellow); font-weight: 600; }
 .approved-mc-circles { display: flex; gap: 4px; margin-top: 16px; justify-content: center; animation: fade-up 0.5s 0.6s both; }
-.approved-mc-circles svg { animation: circle-pop 0.5s 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.approved-mc-circle {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: white;
+  animation: circle-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.approved-mc-circle:nth-child(1) { animation-delay: 0.7s; background: var(--mc-red); }
+.approved-mc-circle:nth-child(2) { animation-delay: 0.8s; background: var(--mc-yellow); animation-delay: 0.75s; }
 @keyframes circle-pop {
   from { transform: scale(0); opacity: 0; }
   to   { transform: scale(1); opacity: 1; }
 }
-.approved-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; gap: 12px; }
-.approved-check { animation: approve-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
-@keyframes approve-pop { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-.approved-mc-logo { margin: 4px 0; }
-.approved-from { font-size: 0.85rem; font-weight: 600; color: var(--mc-text); }
-.approved-amount { font-size: 1.5rem; font-weight: 700; color: var(--mc-text); }
 
-/* STEP 5: Summary (dark overlay) [DEPRECATED - using premium version at line ~608] */
-/*.step5-summary { display: none; position: fixed; top: 65px; left: 50%; transform: translateX(-50%); width: 100%; max-width: 1080px; padding: 16px 16px 100px; overflow-y: auto; gap: 16px; opacity: 0; transition: opacity 0.5s; z-index: 10; background: transparent; box-sizing: border-box; }*/
-/*.step5-summary.show { display: flex; flex-direction: column; align-items: center; opacity: 1; }*/
-
-.step5-stats { display: flex; gap: 12px; width: 100%; max-width: 1080px; }
-.step5-stat { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,77,0,0.25); border-radius: 16px; padding: 14px 8px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.stat-num { font-size: 1.5rem; font-weight: 700; color: var(--mc-yellow); }
-.stat-label { font-size: 0.68rem; color: var(--mc-muted); text-align: center; text-transform: uppercase; letter-spacing: 0.08em; }
-
-/* [DEPRECATED .step5-step at 608 - commented]
-.step5-step { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,77,0,0.2); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
-.step5-step-icon { width: 28px; height: 28px; }
-.step5-step-icon svg { width: 100%; height: 100%; }
-.step5-step-num { font-size: 0.6rem; font-weight: 700; color: var(--mc-yellow); letter-spacing: 0.15em; text-transform: uppercase; }
-.step5-step-title { font-size: 0.82rem; font-weight: 600; color: var(--mc-text); }
-.step5-step-desc { font-size: 0.68rem; color: var(--mc-muted); line-height: 1.5; }
-*/
-
-/* Time card */
-.time-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,77,0,0.2); border-radius: 16px; padding: 14px; width: 100%; max-width: 1080px; }
-.time-card-header { display: flex; align-items: center; gap: 6px; font-size: 0.62rem; font-weight: 700; color: var(--mc-yellow); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; }
-.time-card-body { margin-bottom: 12px; }
-.time-card-num { font-size: 1.6rem; font-weight: 700; color: var(--mc-text); }
-.time-card-num span { font-size: 0.85rem; font-weight: 400; color: var(--mc-muted); }
-.time-card-bars { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-.time-bar-row { display: flex; align-items: center; gap: 8px; }
-.time-bar-label { font-size: 0.68rem; color: var(--mc-muted); min-width: 100px; }
-.time-bar-track { flex: 1; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
-.time-bar-fill { height: 100%; background: rgba(255,255,255,0.2); border-radius: 3px; }
-.time-bar-fill.gold { background: var(--mc-yellow); }
-.time-bar-val { font-size: 0.72rem; font-weight: 600; color: var(--mc-text); min-width: 30px; }
-.time-card-footer { font-size: 0.72rem; color: var(--mc-muted); text-align: center; }
-.time-card-footer strong { color: var(--mc-yellow); }
+/* STEP 5: Summary */
+.step-summary {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 28px;
+  position: relative;
+  background: radial-gradient(ellipse at center, rgba(255,95,0,0.06) 0%, transparent 70%);
+}
 .summary-header {
   padding: 10px 16px;
   font-size: 0.72rem;
@@ -1655,28 +939,79 @@ body::after {
 .summary-center {
   flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
-  gap: 16px;
+}
+.token-orbit {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: orbit-spin 20s linear infinite;
+}
+@keyframes orbit-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.token-orbit::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255,95,0,0.3);
+  animation: orbit-pulse 3s ease-in-out infinite;
+}
+@keyframes orbit-pulse {
+  0%,100% { opacity: 0.3; transform: scale(1); }
+  50%     { opacity: 0.7; transform: scale(1.05); }
 }
 .token-core {
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background: var(--mc-white);
-  border: 2px solid var(--mc-border);
+  background: linear-gradient(135deg, var(--mc-red), var(--mc-yellow));
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(22,33,62,0.08);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: white;
+  box-shadow: 0 0 30px rgba(255,95,0,0.5), 0 0 60px rgba(235,0,27,0.3);
+  z-index: 2;
+  animation: token-glow 2s ease-in-out infinite;
+  position: relative;
 }
-.token-core svg {
-  width: 44px;
-  height: 44px;
+@keyframes token-glow {
+  0%,100% { box-shadow: 0 0 25px rgba(255,95,0,0.5), 0 0 50px rgba(235,0,27,0.3); }
+  50%     { box-shadow: 0 0 40px rgba(255,95,0,0.7), 0 0 80px rgba(235,0,27,0.5); }
 }
+.token-orbit-electron {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--mc-yellow);
+  box-shadow: 0 0 6px var(--mc-yellow);
+}
+.token-orbit-electron:nth-child(2) { top: 0; left: 50%; transform: translateX(-50%); }
+.token-orbit-electron:nth-child(3) { bottom: 0; left: 50%; transform: translateX(-50%); }
+.token-orbit-electron:nth-child(4) { left: 0; top: 50%; transform: translateY(-50%); }
+.token-orbit-electron:nth-child(5) { right: 0; top: 50%; transform: translateY(-50%); }
 
+/* Node pills around the orbit */
+.summary-node {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.5s, transform 0.5s;
+  white-space: nowrap;
+}
 .summary-node.show { opacity: 1; transform: scale(1); }
 .node-icon {
   width: 36px;
@@ -1687,11 +1022,8 @@ body::after {
   justify-content: center;
   font-size: 1.1rem;
   flex-shrink: 0;
-  background: var(--mc-white);
-  border: 1px solid var(--mc-border);
-  box-shadow: 0 2px 8px rgba(22,33,62,0.06);
 }
-.node-text { font-size: 0.72rem; font-weight: 600; line-height: 1.3; color: var(--mc-text); }
+.node-text { font-size: 0.72rem; font-weight: 600; line-height: 1.3; }
 .node-sub { font-size: 0.62rem; color: var(--mc-muted); font-weight: 400; }
 
 /* Node positions */
@@ -1700,6 +1032,12 @@ body::after {
 .node-tr { top: 20px; right: 8px; flex-direction: row-reverse; text-align: right; }
 .node-bl { bottom: 20px; left: 8px; }
 .node-br { bottom: 20px; right: 8px; flex-direction: row-reverse; text-align: right; }
+
+/* Connector lines (SVG-like using CSS) */
+.node-tl .node-icon { background: rgba(255,95,0,0.15); border: 1px solid rgba(255,95,0,0.4); }
+.node-tr .node-icon { background: rgba(0,200,80,0.15); border: 1px solid rgba(0,200,80,0.4); }
+.node-bl .node-icon { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); }
+.node-br .node-icon { background: rgba(235,0,27,0.15); border: 1px solid rgba(235,0,27,0.4); }
 
 /* Connector lines */
 .summary-connectors {
@@ -1712,7 +1050,7 @@ body::after {
 .summary-connectors.show { opacity: 1; }
 .connector {
   position: absolute;
-  background: linear-gradient(90deg, rgba(22,33,62,0.08), rgba(22,33,62,0.04));
+  background: linear-gradient(90deg, rgba(255,95,0,0.4), rgba(255,95,0,0.1));
 }
 .conn-h { height: 1px; }
 .conn-v { width: 1px; }
@@ -1725,8 +1063,8 @@ body::after {
 .flow-arrow {
   position: absolute;
   font-size: 0.6rem;
-  color: var(--mc-gold);
-  opacity: 0.5;
+  color: var(--mc-yellow);
+  opacity: 0.6;
   animation: arrow-pulse 1.5s ease-in-out infinite;
 }
 .flow-arrow.top { top: 42px; left: 50%; transform: translateX(-50%); animation-delay: 0s; }
@@ -1734,23 +1072,23 @@ body::after {
 .flow-arrow.bottom { bottom: 42px; left: 50%; transform: translateX(-50%) rotate(180deg); animation-delay: 0.8s; }
 .flow-arrow.left { left: 34px; top: 50%; transform: translateY(-50%) rotate(90deg); animation-delay: 1.2s; }
 @keyframes arrow-pulse {
-  0%,100% { opacity: 0.2; transform: translateX(-50%) scale(0.9); }
-  50%     { opacity: 0.6; transform: translateX(-50%) scale(1.1); }
+  0%,100% { opacity: 0.3; transform: translateX(-50%) scale(0.9); }
+  50%     { opacity: 0.8; transform: translateX(-50%) scale(1.1); }
 }
 .flow-arrow.right { animation-name: arrow-pulse-r; }
 .flow-arrow.bottom { animation-name: arrow-pulse-b; }
 .flow-arrow.left { animation-name: arrow-pulse-l; }
 @keyframes arrow-pulse-r {
-  0%,100% { opacity: 0.2; transform: translateY(-50%) rotate(-90deg) scale(0.9); }
-  50%     { opacity: 0.6; transform: translateY(-50%) rotate(-90deg) scale(1.1); }
+  0%,100% { opacity: 0.3; transform: translateY(-50%) rotate(-90deg) scale(0.9); }
+  50%     { opacity: 0.8; transform: translateY(-50%) rotate(-90deg) scale(1.1); }
 }
 @keyframes arrow-pulse-b {
-  0%,100% { opacity: 0.2; transform: translateX(-50%) rotate(180deg) scale(0.9); }
-  50%     { opacity: 0.6; transform: translateX(-50%) rotate(180deg) scale(1.1); }
+  0%,100% { opacity: 0.3; transform: translateX(-50%) rotate(180deg) scale(0.9); }
+  50%     { opacity: 0.8; transform: translateX(-50%) rotate(180deg) scale(1.1); }
 }
 @keyframes arrow-pulse-l {
-  0%,100% { opacity: 0.2; transform: translateY(-50%) rotate(90deg) scale(0.9); }
-  50%     { opacity: 0.6; transform: translateY(-50%) rotate(90deg) scale(1.1); }
+  0%,100% { opacity: 0.3; transform: translateY(-50%) rotate(90deg) scale(0.9); }
+  50%     { opacity: 0.8; transform: translateY(-50%) rotate(90deg) scale(1.1); }
 }
 
 /* Bottom tagline */
@@ -1758,7 +1096,7 @@ body::after {
   padding: 8px 16px 12px;
   text-align: center;
   font-size: 0.68rem;
-  color: var(--mc-muted);
+  color: rgba(255,255,255,0.25);
   letter-spacing: 1px;
   animation: fade-up 0.5s 0.6s both;
 }
@@ -1772,7 +1110,7 @@ body::after {
   font-size: 0.7rem;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--mc-muted);
+  color: rgba(255,255,255,0.25);
   white-space: nowrap;
 }
 
@@ -1789,15 +1127,16 @@ body::after {
 /* ─── Loading overlay ─── */
 #loading {
   position: fixed; inset: 0;
-  background: var(--mc-bg);
+  background: var(--mc-dark);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   z-index: 9999;
   transition: opacity 0.6s;
 }
 #loading.hidden { opacity: 0; pointer-events: none; }
-.loading-logo { display: flex; align-items: center; justify-content: center; margin-bottom: 24px; }
-.loading-logo svg { animation: loading-spin 1s linear infinite; }
+.loading-logo { display: flex; align-items: center; gap: 0; margin-bottom: 24px; }
+.loading-circle { width: 40px; height: 40px; border-radius: 50%; background: var(--mc-red); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.1rem; animation: loading-spin 1s linear infinite; }
+.loading-circle.yellow { background: var(--mc-yellow); margin-left: -8px; animation: loading-spin 1s linear infinite reverse; animation-delay: 0.5s; }
 @keyframes loading-spin { to { transform: rotate(360deg); } }
 .loading-text { font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase; color: var(--mc-muted); }
 
@@ -1814,6 +1153,155 @@ body::after {
   0%,100% { filter: drop-shadow(0 0 20px rgba(255,95,0,0.4)); }
   50%     { filter: drop-shadow(0 0 40px rgba(255,95,0,0.7)); }
 }
+
+/* ════════════════════════════
+   REWARD BLOCK (step 5)
+════════════════════════════ */
+.s5-reward {
+  margin: 0 auto 18px;
+  max-width: 640px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.s5-reward.show { opacity: 1; transform: translateY(0); }
+
+.s5-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 14px 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,215,0,0.25);
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.s5-badge::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, rgba(235,0,27,0.4), rgba(255,95,0,0.4), rgba(255,215,0,0.4));
+  border-radius: 16px;
+  z-index: -1;
+  filter: blur(12px);
+  opacity: 0.6;
+  animation: badge-glow 3s ease-in-out infinite;
+}
+@keyframes badge-glow {
+  0%,100% { opacity: 0.4; }
+  50%     { opacity: 0.8; }
+}
+.s5-badge-medal {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFD700, #FF5F00);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+  box-shadow: 0 0 24px rgba(255,215,0,0.5);
+  animation: badge-spin 4s linear infinite;
+}
+@keyframes badge-spin {
+  0%   { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+.s5-badge-title {
+  font-size: 0.7rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(255,215,0,0.9);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.s5-badge-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.s5-badge-sub {
+  font-size: 0.72rem;
+  color: var(--mc-muted);
+  line-height: 1.4;
+}
+
+.s5-claim {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 14px 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--mc-border);
+  border-radius: 14px;
+}
+.s5-claim-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.s5-claim-sub {
+  font-size: 0.7rem;
+  color: var(--mc-muted);
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+.s5-claim-qr {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  background:
+    repeating-linear-gradient(0deg, #333 0 4px, #444 4px 8px),
+    repeating-linear-gradient(90deg, #333 0 4px, #444 4px 8px);
+  background-blend-mode: multiply;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.65rem;
+  text-align: center;
+  padding: 8px;
+  line-height: 1.2;
+  border: 2px solid rgba(255,255,255,0.1);
+}
+.s5-reset-btn {
+  margin-top: 4px;
+  margin-bottom: 8px;
+  padding: 10px 22px;
+  background: transparent;
+  border: 2px solid var(--mc-yellow);
+  color: var(--mc-yellow);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.s5-reset-btn:hover {
+  background: var(--mc-yellow);
+  color: var(--mc-dark);
+  transform: scale(1.05);
+}
+.s5-reset-btn:active { transform: scale(0.95); }
+
+@media (max-width: 640px) {
+  .s5-reward { grid-template-columns: 1fr; max-width: 360px; gap: 16px; }
+  .s5-badge-medal { width: 70px; height: 70px; font-size: 2rem; }
+}
 </style>
 </head>
 <body>
@@ -1821,10 +1309,8 @@ body::after {
 <!-- Loading -->
 <div id="loading">
   <div class="loading-logo">
-    <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" style="width:56px;height:56px;">
-      <circle cx="28" cy="40" r="22" fill="#EB001B"/>
-      <circle cx="52" cy="40" r="22" fill="#F79E1B"/>
-    </svg>
+    <div class="loading-circle">M</div>
+    <div class="loading-circle yellow">C</div>
   </div>
   <div class="loading-text">Cargando...</div>
 </div>
@@ -1843,311 +1329,100 @@ body::after {
 <div class="main">
 
   <!-- ─── CHAT PANEL ─── -->
-    <div class="chat-panel">
+  <div class="chat-panel">
 
-      <div class="chat-header" id="chat-header">
-        <h1>Pagos a través de <span class="accent">Agentes</span></h1>
-        <div class="header-logos">
-          <img src="https://pentamarketing.co/mc/logo-Mastercard.png" alt="Mastercard">
-          <img src="https://pentamarketing.co/mc/bancolombialogo.webp" alt="Bancolombia" class="logo-bancolombia">
-        </div>
-        <p>Recorre el flujo real de una transacción con Mastercard Agent Pay</p>
-      </div>
-
-      <div class="chat-messages" id="chat-messages">
-        <div id="chat-messages-normal"></div>
-        <div class="chat-scroll-fade"></div>
-      </div>
-
-    </div><!-- /chat-panel -->
-
-    <!-- ─── PHONE PANEL ─── -->
-    <div class="phone-panel">
-
-      <div class="phone-wrapper" id="phone-wrapper">
-        <div class="phone-body">
-
-          <div class="phone-notch"></div>
-
-          <div class="phone-screen">
-
-            <!-- STEP 0: Email agenda -->
-            <div class="phone-screen-content step-email" id="phone-0">
-              <div class="phone-status-bar">
-                <span style="color: #fff;">9:41</span>
-                <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
-              </div>
-              <div class="email-header">
-                <span>Correo · Agenda</span>
-              </div>
-              <div class="email-body">
-                <div class="email-from">Tu asistente</div>
-                <div class="email-subject">Recordatorio: Reunión en Bogotá</div>
-                <div class="email-text">
-                  Tienes una reunión programada mañana a las 9:00 AM en Bogotá, Cundinamarca.<br><br>
-                  ¿Quieres que organice tu transporte?
-                </div>
-                <div class="email-time">Recibido hace 2 minutos</div>
-              </div>
-            </div>
-
-            <!-- STEP 1: Agent searching -->
-            <div class="phone-screen-content step-search" id="phone-1" style="display:none;">
-              <div class="phone-status-bar">
-                <span style="color: #fff;">9:42</span>
-                <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
-              </div>
-              <div class="search-header">
-                <span>Buscando opciones...</span>
-                <div class="search-dots">
-                  <span></span><span></span><span></span>
-                </div>
-              </div>
-              <div class="search-results">
-                <div class="flight-card" id="flight-0">
-                  <div class="flight-info">
-                    <div class="flight-airline">Avianca</div>
-                    <div class="flight-time">6:30 AM → 7:45 AM</div>
-                  </div>
-                  <div class="flight-price">$420</div>
-                </div>
-                <div class="flight-card selected" id="flight-1">
-                  <div class="flight-info">
-                    <div class="flight-airline">LATAM</div>
-                    <div class="flight-time">5:00 AM → 6:15 AM</div>
-                  </div>
-                  <div class="flight-price">$380</div>
-                </div>
-                <div class="flight-card" id="flight-2">
-                  <div class="flight-info">
-                    <div class="flight-airline">Viva Air</div>
-                    <div class="flight-time">5:45 AM → 7:00 AM</div>
-                  </div>
-                  <div class="flight-price">$310</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- STEP 2: Notification -->
-            <div class="phone-screen-content step-notification" id="phone-2" style="display:none;">
-              <div class="phone-status-bar">
-                <span style="color: #fff;">9:43</span>
-                <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
-              </div>
-              <div class="notify-header">
-                <span>Notificaciones</span>
-              </div>
-              <div class="notify-card show">
-                <div class="notify-card-header">
-                  <div class="notify-icon">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <circle cx="12" cy="12" r="10" fill="#EB001B"/>
-                      <circle cx="12" cy="12" r="5" fill="#F79E1B"/>
-                    </svg>
-                  </div>
-                  <span>AGENT PAY</span>
-                </div>
-                <div class="notify-card-body">
-                  <div class="notify-amount">$380 USD</div>
-                  <div class="notify-concept">LATAM Airlines · Bogotá</div>
-                  <div class="notify-token">
-                    <span>TOKEN ÚNICO</span>
-                    <span>Visa••••4242</span>
-                  </div>
-                  <div class="notify-btn auth">✓ Autorizar</div>
-                  <div class="notify-btn deny">✗ Rechazar</div>
-                </div>
-              </div>
-            </div>
-            </div>
-
-            <!-- STEP 3: Biometric - iOS Face ID -->
-            <div class="phone-screen-content step-biometric" id="phone-3" style="display:none;">
-              <div class="phone-status-bar">
-                <span style="color: #fff;">9:44</span>
-                <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
-              </div>
-              <div class="biometric-header">Face ID</div>
-
-              <!-- Scanning state -->
-              <div class="face-scan-area" id="face-scan-area">
-                <div class="face-brackets">
-                  <div class="bracket bracket-tl"></div>
-                  <div class="bracket bracket-tr"></div>
-                  <div class="bracket bracket-bl"></div>
-                  <div class="bracket bracket-br"></div>
-                  <div class="face-ring"></div>
-                </div>
-                <div class="face-oval"></div>
-                <div class="face-status scanning">Buscando rostro...</div>
-                <div class="face-progress">
-                  <div class="face-progress-fill" id="face-progress-fill"></div>
-                </div>
-                <div class="face-id-label">
-                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="5" y="11" width="14" height="10" rx="2" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
-                    <path d="M8 11V7a4 4 0 018 0v4" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
-                  </svg>
-                  <span>Face ID</span>
-                </div>
-              </div>
-
-              <!-- Success state -->
-              <div class="biometric-success" id="biometric-success">
-                <div class="success-ring">
-                  <svg class="success-check" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <polyline points="13,22 20,29 31,15" stroke="#00A85A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </div>
-                <div class="success-text">Verificado</div>
-                <div class="success-sub">identidad confirmada</div>
-              </div>
-            </div>
-
-            <!-- STEP 4: Approved -->
-            <div class="phone-screen-content step-approved" id="phone-4" style="display:none;">
-              <div class="phone-status-bar">
-                <span style="color: #fff;">9:45</span>
-                <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
-              </div>
-              <div class="approved-header">
-                <span>Pago aprobado</span>
-              </div>
-              <div class="approved-body">
-                <div class="approved-check">
-                  <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" style="width:50px;height:50px;">
-                    <circle cx="25" cy="25" r="22" fill="#00A85A" opacity="0.15"/>
-                    <polyline points="15,25 22,32 35,19" stroke="#00A85A" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </div>
-                <div class="approved-mc-logo">
-                  <img src="https://pentamarketing.co/mc/logo-Mastercard.png" alt="Mastercard" style="width:60px;height:auto;">
-                </div>
-                <div class="approved-from">LATAM Airlines</div>
-                <div class="approved-amount">$380 USD</div>
-              </div>
-            </div>
-
-          </div><!-- /phone-screen -->
-        </div><!-- /phone-body -->
-        <div class="phone-label" id="phone-label">Tu teléfono</div>
-      </div><!-- /phone-wrapper -->
-
-    </div><!-- /phone-panel -->
-
-  </div><!-- /main -->
-
-  <!-- Step 5: Full summary (Face ID premium style) -->
-  <div class="step5-summary" id="step5-summary">
-
-    <div class="step5-flow">
-      <div class="step5-row">
-        <div class="step5-step s5-step1" id="s5-step1">
-          <div class="glow-blob"></div>
-          <div class="bracket bracket-tl"></div>
-          <div class="bracket bracket-tr"></div>
-          <div class="bracket bracket-bl"></div>
-          <div class="bracket bracket-br"></div>
-          <div class="step5-step-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="8" stroke="#B8962E" stroke-width="1"/><circle cx="10" cy="10" r="2.5" fill="#B8962E"/></svg></div>
-          <div class="step5-step-text">
-            <div class="step5-step-num">01</div>
-            <div class="step5-step-title">Agente verificado</div>
-            <div class="step5-step-desc">Solo agentes registrados en Mastercard pueden transactar</div>
-            <div class="s5-extra"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(184,150,46,0.5)" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Registro: Q4-2025</div>
-          </div>
-        </div>
-        <div class="step5-step s5-step2" id="s5-step2">
-          <div class="glow-blob"></div>
-          <div class="bracket bracket-tl"></div>
-          <div class="bracket bracket-tr"></div>
-          <div class="bracket bracket-bl"></div>
-          <div class="bracket bracket-br"></div>
-          <div class="step5-step-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.5 7.5L18.5 8.5L14 13L15.5 19L10 16L4.5 19L6 13L1.5 8.5L7.5 7.5L10 2Z" stroke="#B8962E" stroke-width="1" stroke-linejoin="round"/></svg></div>
-          <div class="step5-step-text">
-            <div class="step5-step-num">02</div>
-            <div class="step5-step-title">Intención verificada</div>
-            <div class="step5-step-desc">Tu intención de compra se verifica. Nunca se asume.</div>
-            <div class="s5-extra"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(184,150,46,0.5)" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> ML: 99.2% accuracy</div>
-          </div>
-        </div>
-      </div>
-      <div class="step5-row">
-        <div class="step5-step s5-step3" id="s5-step3">
-          <div class="glow-blob"></div>
-          <div class="bracket bracket-tl"></div>
-          <div class="bracket bracket-tr"></div>
-          <div class="bracket bracket-bl"></div>
-          <div class="bracket bracket-br"></div>
-          <div class="step5-step-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 4L10 16M4 10L16 10" stroke="#B8962E" stroke-width="1" stroke-linecap="round"/></svg></div>
-          <div class="step5-step-text">
-            <div class="step5-step-num">03</div>
-            <div class="step5-step-title">Tokenización</div>
-            <div class="step5-step-desc">Tu tarjeta real nunca se expone. Un token único por transacción.</div>
-            <div class="s5-extra"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(184,150,46,0.5)" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Token: ERC-7526</div>
-          </div>
-        </div>
-        <div class="step5-step s5-step4" id="s5-step4">
-          <div class="glow-blob"></div>
-          <div class="bracket bracket-tl"></div>
-          <div class="bracket bracket-tr"></div>
-          <div class="bracket bracket-bl"></div>
-          <div class="bracket bracket-br"></div>
-          <div class="step5-step-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="8" stroke="#B8962E" stroke-width="1"/><circle cx="10" cy="10" r="4" stroke="#B8962E" stroke-width="1"/></svg></div>
-          <div class="step5-step-text">
-            <div class="step5-step-num">04</div>
-            <div class="step5-step-title">Tú autorizas</div>
-            <div class="step5-step-desc">Biometría. Huella o Face ID. Control absoluto siempre.</div>
-            <div class="s5-extra"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(184,150,46,0.5)" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Biometría: FIDO2</div>
-          </div>
-        </div>
-      </div>
+    <div class="chat-header" id="chat-header">
+      <h1>Pagos a través de <span class="accent">Agentes</span></h1>
+      <p>Recorre el flujo real de una transacción con Mastercard Agent Pay</p>
     </div>
 
-    <div class="time-card" id="time-card">
-      <div class="glow-blob"></div>
-      <div class="bracket bracket-tl"></div>
-      <div class="bracket bracket-tr"></div>
-      <div class="bracket bracket-bl"></div>
-      <div class="bracket bracket-br"></div>
-      <div class="time-shimmer"></div>
-      <div class="time-card-header">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(184,150,46,0.8)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-        <span>Tiempo ahorrado</span>
-      </div>
-      <div class="time-card-body">
-        <div class="time-card-num">2.3 <span>horas/semana</span></div>
-      </div>
-      <div class="time-card-bars">
-        <div class="time-bar-row">
-          <span class="time-bar-label">Compra tradicional</span>
-          <div class="time-bar-track"><div class="time-bar-fill" style="width:100%"></div></div>
-          <span class="time-bar-val">4.5h</span>
-        </div>
-        <div class="time-bar-row">
-          <span class="time-bar-label">Con Agent Pay</span>
-          <div class="time-bar-track"><div class="time-bar-fill gold" style="width:51%"></div></div>
-          <span class="time-bar-val">2.2h</span>
-        </div>
-      </div>
-      <div class="time-card-footer">Recuperas <strong>51%</strong> de tu tiempo en compras</div>
-    </div>
-  </div><!-- /step5-summary -->
+    <div class="chat-messages" id="chat-messages">
 
-<!-- Step 5: Old full overlay (unused, hidden) -->
-<div id="step5-screen" style="display:none;">
+      <!-- Normal messages (steps 0-4) -->
+      <div id="chat-messages-normal"></div>
+
+      <!-- Step 5 summary view -->
+      <div class="step5-summary" id="step5-summary">
+        <div class="step5-stats">
+          <div class="step5-stat" id="s5-stat1">
+            <div class="stat-num">800M</div>
+            <div class="stat-label">usuarios OpenAI</div>
+          </div>
+          <div class="step5-stat" id="s5-stat2">
+            <div class="stat-num">20%</div>
+            <div class="stat-label">e-commerce agéntico</div>
+          </div>
+          <div class="step5-stat" id="s5-stat3">
+            <div class="stat-num">39%</div>
+            <div class="stat-label">consumidores usan IA</div>
+          </div>
+        </div>
+        <div class="step5-flow">
+          <div class="step5-step" id="s5-step1">
+            <div class="step5-step-icon">🤖</div>
+            <div class="step5-step-text">
+              <div class="step5-step-num">Paso 01</div>
+              <div class="step5-step-title">Agente verificado</div>
+              <div class="step5-step-desc">Solo agentes registrados en Mastercard pueden transactar</div>
+            </div>
+          </div>
+          <div class="step5-connector" id="s5-c1"></div>
+          <div class="step5-step right-align" id="s5-step2">
+            <div class="step5-step-icon">🔐</div>
+            <div class="step5-step-text">
+              <div class="step5-step-num">Paso 02</div>
+              <div class="step5-step-title">Intención verificada</div>
+              <div class="step5-step-desc">Tu intención de compra se verifica. Nunca se asume.</div>
+            </div>
+          </div>
+          <div class="step5-connector" id="s5-c2"></div>
+          <div class="step5-step" id="s5-step3">
+            <div class="step5-step-icon">🔒</div>
+            <div class="step5-step-text">
+              <div class="step5-step-num">Paso 03</div>
+              <div class="step5-step-title">Tokenización</div>
+              <div class="step5-step-desc">Tu tarjeta real nunca se expone. Un token único por transacción.</div>
+            </div>
+          </div>
+          <div class="step5-connector" id="s5-c3"></div>
+          <div class="step5-step right-align" id="s5-step4">
+            <div class="step5-step-icon">✅</div>
+            <div class="step5-step-text">
+              <div class="step5-step-num">Paso 04</div>
+              <div class="step5-step-title">Tú autorizas</div>
+              <div class="step5-step-desc">Biometría. Huella o Face ID. Control absoluto siempre.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-scroll-fade"></div>
+    </div>
+
+  </div>
+
+  <!-- ─── PHONE PANEL ─── -->
+  <div class="phone-panel">
+
+    <div class="phone-wrapper" id="phone-wrapper">
+      <div class="phone-body">
+
+        <div class="phone-notch"></div>
+
+        <div class="phone-screen">
 
           <!-- STEP 0: Email agenda -->
           <div class="phone-screen-content step-email" id="phone-0">
             <div class="phone-status-bar">
-              <span style="color: var(--mc-text);">9:41</span>
-              <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
+              <span>9:41</span>
+              <span>📶 📡 🔋</span>
             </div>
             <div class="email-header">
               <span>Correo · Agenda</span>
             </div>
             <div class="email-body">
               <div class="email-from">Tu asistente</div>
-              <div class="email-subject">Recordatorio: Reunión en Bogotá</div>
+              <div class="email-subject">📅 Recordatorio: Reunión en Bogotá</div>
               <div class="email-text">
                 Tienes una reunión programada mañana a las 9:00 AM en Bogotá, Cundinamarca.<br><br>
                 ¿Quieres que organice tu transporte?
@@ -2159,8 +1434,8 @@ body::after {
           <!-- STEP 1: Agent searching -->
           <div class="phone-screen-content step-search" id="phone-1" style="display:none;">
             <div class="phone-status-bar">
-              <span style="color: #fff;">9:42</span>
-              <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
+              <span>9:42</span>
+              <span>📶 📡 🔋</span>
             </div>
             <div class="search-header">
               <span>Buscando opciones...</span>
@@ -2196,19 +1471,14 @@ body::after {
           <!-- STEP 2: Notification -->
           <div class="phone-screen-content step-notification" id="phone-2" style="display:none;">
             <div class="phone-status-bar">
-              <span style="color: #fff;">9:43</span>
-              <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
+              <span>9:43</span>
+              <span>📶 📡 🔋</span>
             </div>
             <div class="notify-header">
               <span>Notificaciones</span>
             </div>
             <div class="notify-app">
-              <div class="notify-icon">
-                <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;">
-                  <circle cx="18" cy="24" r="16" fill="#EB001B" opacity="0.95"/>
-                  <circle cx="30" cy="24" r="16" fill="#F79E1B" opacity="0.95"/>
-                </svg>
-              </div>
+              <div class="notify-icon">M</div>
               <div>
                 <div class="notify-app-name">Mastercard Agent Pay</div>
                 <div class="notify-app-sub">agentpay.mastercard.com</div>
@@ -2216,7 +1486,7 @@ body::after {
             </div>
             <div class="notify-card" id="notify-card">
               <div class="notify-card-header">
-                <span>Solicitud de pago</span>
+                <span>🔒 Solicitud de pago</span>
               </div>
               <div class="notify-card-body">
                 <div class="notify-amount">$380 USD</div>
@@ -2234,14 +1504,14 @@ body::after {
           <!-- STEP 3: Biometric -->
           <div class="phone-screen-content step-biometric" id="phone-3" style="display:none;">
             <div class="phone-status-bar">
-              <span style="color: #fff;">9:43</span>
-              <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
+              <span>9:43</span>
+              <span>📶 📡 🔋</span>
             </div>
             <div class="biometric-header">
               Autorización biométrica
             </div>
             <div class="biometric-body" id="biometric-body">
-              <div class="biometric-face"><svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="16" stroke="#B8962E" stroke-width="1"/><circle cx="20" cy="20" r="6" stroke="#B8962E" stroke-width="1"/></svg></div>
+              <div class="biometric-face">👤</div>
               <div class="biometric-text">Verificación requerida</div>
               <div class="biometric-sub">Usa Face ID o tu huella para autorizar</div>
               <div class="biometric-scan">
@@ -2257,20 +1527,15 @@ body::after {
           <!-- STEP 4: Approved -->
           <div class="phone-screen-content step-approved" id="phone-4" style="display:none;">
             <div class="phone-status-bar">
-              <span style="color: #fff;">9:44</span>
-              <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
+              <span>9:44</span>
+              <span>📶 📡 🔋</span>
             </div>
             <div class="approved-header">
               <span>Pago procesado</span>
               <span style="color:#00c850;">✓ Completado</span>
             </div>
             <div class="approved-body">
-              <div class="approved-icon">
-                <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" style="width:48px;height:48px;">
-                  <circle cx="18" cy="24" r="16" fill="#EB001B" opacity="0.95"/>
-                  <circle cx="30" cy="24" r="16" fill="#F79E1B" opacity="0.95"/>
-                </svg>
-              </div>
+              <div class="approved-icon">✓</div>
               <div class="approved-title">Pago aprobado</div>
               <div class="approved-sub">Vuelo LATAM · $380 USD · Bogotá</div>
               <div class="approved-tokens">
@@ -2287,23 +1552,72 @@ body::after {
                   <span class="approved-token-val">#REG-2847</span>
                 </div>
               </div>
+              <div class="approved-mc-circles">
+                <div class="approved-mc-circle" style="background:var(--mc-red);">M</div>
+                <div class="approved-mc-circle" style="background:var(--mc-yellow);">C</div>
+              </div>
             </div>
           </div>
 
           <!-- STEP 5: Summary - orbital flow -->
           <div class="phone-screen-content step-summary" id="phone-5" style="display:none;">
             <div class="phone-status-bar">
-              <span style="color: #fff;">9:44</span>
-              <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
+              <span>9:44</span>
+              <span>📶 📡 🔋</span>
             </div>
             <div class="summary-header">Cómo funciona Agent Pay</div>
             <div class="summary-center">
-              <!-- Central logo -->
-              <div class="token-core">
-                <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;">
-                  <circle cx="18" cy="24" r="16" fill="#EB001B"/>
-                  <circle cx="30" cy="24" r="16" fill="#F79E1B"/>
-                </svg>
+              <!-- Connectors -->
+              <div class="summary-connectors" id="summary-connectors">
+                <div class="connector conn-h" style="top:36px;left:28%;width:44%;opacity:0.5;"></div>
+                <div class="connector conn-v" style="right:28px;top:42%;height:20%;opacity:0.5;"></div>
+                <div class="connector conn-h" style="bottom:36px;left:28%;width:44%;opacity:0.5;"></div>
+                <div class="connector conn-v" style="left:28px;top:42%;height:20%;opacity:0.5;"></div>
+              </div>
+
+              <!-- Nodes -->
+              <div class="summary-node node-tl" id="node-tl">
+                <div class="node-icon">🤖</div>
+                <div>
+                  <div class="node-text">Agente<br>verificado</div>
+                  <div class="node-sub">Solo agentes MC</div>
+                </div>
+              </div>
+              <div class="summary-node node-tr" id="node-tr">
+                <div class="node-icon">🔐</div>
+                <div>
+                  <div class="node-text">Intención<br>verificada</div>
+                  <div class="node-sub">Nunca se asume</div>
+                </div>
+              </div>
+              <div class="summary-node node-bl" id="node-bl">
+                <div class="node-icon">🔒</div>
+                <div>
+                  <div class="node-text">Tarjeta<br>protegida</div>
+                  <div class="node-sub">Token único</div>
+                </div>
+              </div>
+              <div class="summary-node node-br" id="node-br">
+                <div class="node-icon">✅</div>
+                <div>
+                  <div class="node-text">Tú<br>autorizas</div>
+                  <div class="node-sub">Biometría</div>
+                </div>
+              </div>
+
+              <!-- Arrows -->
+              <div class="flow-arrow top">↓</div>
+              <div class="flow-arrow right">→</div>
+              <div class="flow-arrow bottom">↓</div>
+              <div class="flow-arrow left">←</div>
+
+              <!-- Central orbit -->
+              <div class="token-orbit">
+                <div class="token-orbit-electron"></div>
+                <div class="token-orbit-electron"></div>
+                <div class="token-orbit-electron"></div>
+                <div class="token-orbit-electron"></div>
+                <div class="token-core">M</div>
               </div>
             </div>
             <div class="summary-footer">Mastercard Agent Pay · Seguridad en cada transacción</div>
@@ -2320,13 +1634,9 @@ body::after {
 <!-- Step 5: Full summary overlay -->
 <div id="step5-screen">
   <div class="s5-logo-wrap">
-    <div class="s5-logo-core" style="width:80px;height:80px;">
-      <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" style="width:80px;height:80px;">
-        <circle cx="28" cy="40" r="22" fill="#EB001B"/>
-        <circle cx="52" cy="40" r="22" fill="#F79E1B"/>
-      </svg>
+    <div class="s5-logo-ring">
+      <div class="s5-logo-core">M</div>
     </div>
-    <img src="https://pentamarketing.co/mc/bancolombialogo.webp" alt="Bancolombia" style="height:80px;width:auto;">
   </div>
   <div class="s5-sep" id="s5-sep1"></div>
   <div class="s5-stats">
@@ -2344,44 +1654,9 @@ body::after {
     </div>
   </div>
   <div class="s5-sep" id="s5-sep2"></div>
-
-  <!-- Time card -->
-  <div class="time-card" id="time-card">
-    <div class="time-card-header">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B8962E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <polyline points="12 6 12 12 16 14"/>
-      </svg>
-      <span>Tiempo ahorrado</span>
-    </div>
-    <div class="time-card-body">
-                <div class="time-card-num">2.3 <span>horas/semana</span></div>
-              </div>
-              <div class="time-card-bars">
-                <div class="time-bar-row">
-                  <span class="time-bar-label">Compra tradicional</span>
-                  <div class="time-bar-track"><div class="time-bar-fill" style="width:100%"></div></div>
-                  <span class="time-bar-val">4.5h</span>
-                </div>
-                <div class="time-bar-row">
-                  <span class="time-bar-label">Con Agent Pay</span>
-                  <div class="time-bar-track"><div class="time-bar-fill gold" style="width:51%"></div></div>
-                  <span class="time-bar-val">2.2h</span>
-                </div>
-              </div>
-    <div class="time-card-footer">
-      Recuperas <strong>51%</strong> de tu tiempo en compras
-    </div>
-  </div>
-
   <div class="s5-steps">
     <div class="s5-step-item" id="s5-item1">
-      <div class="s5-step-icon">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="11" cy="11" r="9" stroke="#B8962E" stroke-width="1"/>
-          <circle cx="11" cy="11" r="3" fill="#B8962E"/>
-        </svg>
-      </div>
+      <div class="s5-step-icon">🤖</div>
       <div class="s5-step-body">
         <div class="s5-step-num">Paso 01</div>
         <div class="s5-step-title">Agente verificado</div>
@@ -2389,11 +1664,7 @@ body::after {
       </div>
     </div>
     <div class="s5-step-item" id="s5-item2">
-      <div class="s5-step-icon">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11 2L13.5 7.5L19.5 8.5L15 13L16.5 19L11 16L5.5 19L7 13L2.5 8.5L8.5 7.5L11 2Z" stroke="#B8962E" stroke-width="1" stroke-linejoin="round"/>
-        </svg>
-      </div>
+      <div class="s5-step-icon">🔐</div>
       <div class="s5-step-body">
         <div class="s5-step-num">Paso 02</div>
         <div class="s5-step-title">Intención verificada</div>
@@ -2401,11 +1672,7 @@ body::after {
       </div>
     </div>
     <div class="s5-step-item" id="s5-item3">
-      <div class="s5-step-icon">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11 4L11 18M4 11L18 11" stroke="#B8962E" stroke-width="1" stroke-linecap="round"/>
-        </svg>
-      </div>
+      <div class="s5-step-icon">🔒</div>
       <div class="s5-step-body">
         <div class="s5-step-num">Paso 03</div>
         <div class="s5-step-title">Tokenización</div>
@@ -2413,12 +1680,7 @@ body::after {
       </div>
     </div>
     <div class="s5-step-item" id="s5-item4">
-      <div class="s5-step-icon">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="11" cy="11" r="8" stroke="#B8962E" stroke-width="1"/>
-          <circle cx="11" cy="11" r="4" stroke="#B8962E" stroke-width="1"/>
-        </svg>
-      </div>
+      <div class="s5-step-icon">✅</div>
       <div class="s5-step-body">
         <div class="s5-step-num">Paso 04</div>
         <div class="s5-step-title">Autorización biométrica</div>
@@ -2427,6 +1689,22 @@ body::after {
     </div>
   </div>
   <div class="s5-sep" id="s5-sep3"></div>
+  <div class="s5-reward" id="s5-reward">
+    <div class="s5-badge">
+      <div class="s5-badge-medal" id="s5-badge-medal">🏆</div>
+      <div class="s5-badge-title">Logro desbloqueado</div>
+      <div class="s5-badge-name" id="s5-badge-name">Agent Pay Certified</div>
+      <div class="s5-badge-sub" id="s5-badge-sub">Completaste el recorrido completo de Mastercard Agent Pay.</div>
+    </div>
+    <div class="s5-claim">
+      <div class="s5-claim-title">Reclama tu premio</div>
+      <div class="s5-claim-sub">Escanea y entérate de los regalos en el stand.</div>
+      <div class="s5-claim-qr" id="s5-claim-qr">QR<br>placeholder</div>
+    </div>
+  </div>
+  <div style="text-align:center;">
+    <button class="s5-reset-btn" id="s5-reset-btn">↻ Reiniciar demo</button>
+  </div>
   <div class="s5-footer" id="s5-footer">
     <div class="s5-footer-brand">Mastercard Agent Pay</div>
     <div class="s5-footer-tagline">Seguridad en cada transacción</div>
@@ -2437,23 +1715,16 @@ body::after {
      NAV BAR
 ═══════════════════════════ -->
 <div class="nav-bar">
-  <button class="nav-btn" id="nav-prev">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
-  </button>
+  <button class="nav-btn" id="nav-prev">←</button>
   <div class="nav-progress" id="nav-progress">
     <div class="nav-dot active" data-step="0"></div>
     <div class="nav-dot" data-step="1"></div>
     <div class="nav-dot" data-step="2"></div>
     <div class="nav-dot" data-step="3"></div>
     <div class="nav-dot" data-step="4"></div>
+    <div class="nav-dot" data-step="5"></div>
   </div>
-  <button class="nav-btn" id="nav-next">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="9 18 15 12 9 6"></polyline>
-    </svg>
-  </button>
+  <button class="nav-btn" id="nav-next">→</button>
 </div>
 
 <!-- ═══════════════════════════
@@ -2471,7 +1742,7 @@ const MESSAGES = [
     {
       type: 'system',
       label: 'Tu agenda recibe un recordatorio',
-      bubble: 'Reunión mañana a las 9:00 AM en Bogotá.',
+      bubble: '📅 Reunión mañana a las 9:00 AM en Bogotá.',
       time: 'Hace 2 min',
       phone: 'email',
     }
@@ -2509,7 +1780,7 @@ const MESSAGES = [
     {
       type: 'mastercard',
       label: 'Mastercard Agent Pay',
-      bubble: 'Reservo el vuelo LATAM por $380 USD. Solicitando tu autorización a Mastercard Agent Pay...',
+      bubble: '🔒 Tu agente quiere pagar $380 USD. Verifica tu identidad para continuar.',
       time: '9:43',
     },
   ],
@@ -2533,13 +1804,13 @@ const MESSAGES = [
     {
       type: 'mastercard',
       label: 'Mastercard Agent Pay',
-      bubble: 'Pago aprobado. Token utilizado: #x7K2 · 9m4f. Tu tarjeta real no fue expuesta.',
+      bubble: '✅ Pago aprobado. Token utilizado: #x7K2 · 9m4f. Tu tarjeta real no fue expuesta.',
       time: '9:44',
     },
     {
       type: 'agent',
       label: 'Agente AI',
-      bubble: 'Reserva confirmada. Itinerario enviado a tu correo. Listo para tu reunión en Bogotá.',
+      bubble: 'Reserva confirmada. Itinerario enviado a tu correo. ¡Listo para tu reunión en Bogotá! 🎉',
       time: '9:44',
     },
   ],
@@ -2677,23 +1948,20 @@ function updateUI() {
   labelEl.textContent = labels[currentStep] || '';
   document.querySelector('.nav-bar').insertBefore(labelEl, document.querySelector('.nav-progress'));
 
-  // Step 5 = full summary (one column centered)
-  const mainEl = document.querySelector('.main');
+  // Step 5 = full summary screen (no chat + phone)
   const chatPanel = document.querySelector('.chat-panel');
   const phonePanel = document.querySelector('.phone-panel');
   const step5Screen = document.getElementById('step5-screen');
-  const step5Summary = document.getElementById('step5-summary');
-  const normalMsgs = document.getElementById('chat-messages-normal');
 
   if (currentStep === 5) {
-    mainEl.classList.add('step5-active');
-    step5Screen.classList.remove('show');
-    step5Summary.classList.add('show');
-    setTimeout(animateStep5, 100);
+    chatPanel.style.display = 'none';
+    phonePanel.style.display = 'none';
+    step5Screen.classList.add('show');
+    animateStep5();
   } else {
-    mainEl.classList.remove('step5-active');
     step5Screen.classList.remove('show');
-    step5Summary.classList.remove('show');
+    chatPanel.style.display = '';
+    phonePanel.style.display = '';
   }
 
   // Phone: show correct screen (steps 0-4 only)
@@ -2738,23 +2006,12 @@ function updateUI() {
   }
 
   if (currentStep === 3) {
-    // Reset Face ID states
-    const faceArea = document.getElementById('face-scan-area');
-    const success = document.getElementById('biometric-success');
-    const progressFill = document.getElementById('face-progress-fill');
-    if (faceArea) faceArea.style.display = 'flex';
-    if (success) success.classList.remove('show');
-    // Reset and retrigger progress bar animation
-    if (progressFill) {
-      progressFill.style.animation = 'none';
-      progressFill.offsetHeight; // trigger reflow
-      progressFill.style.animation = 'face-progress-fill 2.5s ease forwards';
-    }
-    // Show success after progress completes
     setTimeout(() => {
-      if (faceArea) faceArea.style.display = 'none';
-      if (success) success.classList.add('show');
-    }, 2500);
+      const body = document.getElementById('biometric-body');
+      const ok = document.getElementById('biometric-ok');
+      if (body) body.style.display = 'none';
+      if (ok) ok.classList.add('show');
+    }, 1800);
   }
 
   if (currentStep === 4) {
@@ -2773,14 +2030,121 @@ function updateUI() {
 //  ANIMATE STEP 5
 // ══════════════════
 function animateStep5() {
-  // Step cards stagger (4 cards in grid, 2 cols)
-  ['s5-step1','s5-step2','s5-step3','s5-step4'].forEach((id, i) => {
-    setTimeout(() => document.getElementById(id)?.classList.add('show'), 200 + i * 180);
+  // Logo core: immediate
+  const core = document.querySelector('.s5-logo-core');
+  core.style.animation = 's5-core-glow 2.5s ease-in-out infinite';
+
+  // Sep 1
+  setTimeout(() => document.getElementById('s5-sep1')?.classList.add('show'), 200);
+
+  // Stats stagger
+  ['s5-stat1','s5-stat2','s5-stat3'].forEach((id, i) => {
+    setTimeout(() => document.getElementById(id)?.classList.add('show'), 300 + i * 150);
   });
 
-  // Time card appears after cards
-  setTimeout(() => document.getElementById('time-card')?.classList.add('show'), 900);
+  // Sep 2
+  setTimeout(() => document.getElementById('s5-sep2')?.classList.add('show'), 700);
+
+  // Items stagger
+  ['s5-item1','s5-item2','s5-item3','s5-item4'].forEach((id, i) => {
+    setTimeout(() => document.getElementById(id)?.classList.add('show'), 900 + i * 250);
+  });
+
+  // Sep 3
+  setTimeout(() => document.getElementById('s5-sep3')?.classList.add('show'), 2000);
+
+  // Reward block: show + confetti
+  setTimeout(() => {
+    renderReward();
+    document.getElementById('s5-reward')?.classList.add('show');
+  }, 2200);
+  setTimeout(() => fireConfetti(), 2300);
+
+  // Footer
+  setTimeout(() => document.getElementById('s5-footer')?.classList.add('show'), 2800);
 }
+
+// ══════════════════════════
+//  REWARD: confetti + badge
+// ══════════════════════════
+const BADGE_MAP = {
+  // tipo → dolor → título (4 tipos × 4 dolores = 16 combinaciones)
+  'Retail': {
+    'Flujo de caja':    { name: 'Retail Cash Flow Pro',    emoji: '💰' },
+    'Conciliación':     { name: 'Retail Reconciliation Ace', emoji: '📊' },
+    'Controles':        { name: 'Retail Controls Champion',   emoji: '🛡️' },
+    'Fraude':           { name: 'Retail Fraud Shield',        emoji: '🔒' },
+  },
+  'Servicios': {
+    'Flujo de caja':    { name: 'Services Cash Flow Pro',   emoji: '💼' },
+    'Conciliación':     { name: 'Services Reconciliation Master', emoji: '📋' },
+    'Controles':        { name: 'Services Controls Pro',    emoji: '🛡️' },
+    'Fraude':           { name: 'Services Fraud Defender',  emoji: '🔒' },
+  },
+  'Restaurante': {
+    'Flujo de caja':    { name: 'Restaurant Cash Flow Hero', emoji: '🍽️' },
+    'Conciliación':     { name: 'Restaurant Reconciliation Star', emoji: '🧾' },
+    'Controles':        { name: 'Restaurant Controls Pro',  emoji: '🛡️' },
+    'Fraude':           { name: 'Restaurant Fraud Guardian', emoji: '🔒' },
+  },
+  'E-commerce': {
+    'Flujo de caja':    { name: 'E-commerce Cash Flow Pro', emoji: '🛒' },
+    'Conciliación':     { name: 'E-commerce Reconciliation Pro', emoji: '📊' },
+    'Controles':        { name: 'E-commerce Controls Pro',  emoji: '🛡️' },
+    'Fraude':           { name: 'E-commerce Fraud Shield',  emoji: '🔒' },
+  },
+};
+
+function renderReward() {
+  // Default badge
+  let badge = { name: 'Agent Pay Certified', emoji: '🏆' };
+  // Try to use config if present
+  try {
+    const cfg = window.demoConfig;
+    if (cfg && cfg.tipo && cfg.dolor) {
+      // find matching key in BADGE_MAP (first key starting with tipo)
+      const tipoKey = Object.keys(BADGE_MAP).find(k => k.startsWith(cfg.tipo)) || cfg.tipo;
+      if (BADGE_MAP[tipoKey] && BADGE_MAP[tipoKey][cfg.dolor]) {
+        badge = BADGE_MAP[tipoKey][cfg.dolor];
+      }
+    }
+  } catch (e) { /* keep default */ }
+
+  const medal = document.getElementById('s5-badge-medal');
+  const name  = document.getElementById('s5-badge-name');
+  const sub   = document.getElementById('s5-badge-sub');
+  if (medal) medal.textContent = badge.emoji;
+  if (name)  name.textContent  = badge.name;
+  if (sub)   sub.textContent   = 'Tu agente completó la transacción con éxito. Reconocimiento ' + badge.name + '.';
+}
+
+function fireConfetti() {
+  const container = document.querySelector('.confetti-container');
+  if (!container) return;
+  const colors = ['#EB001B', '#FF5F00', '#FFD700', '#ffffff'];
+  const N = 50;
+  for (let i = 0; i < N; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.background = colors[i % colors.length];
+    piece.style.animationDelay = (Math.random() * 0.5) + 's';
+    piece.style.width = (6 + Math.random() * 6) + 'px';
+    piece.style.height = (8 + Math.random() * 8) + 'px';
+    container.appendChild(piece);
+    setTimeout(() => piece.remove(), 3200);
+  }
+}
+
+// Reset button handler
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('s5-reset-btn')?.addEventListener('click', () => {
+    // Clean any leftover confetti
+    document.querySelectorAll('.confetti-piece').forEach(p => p.remove());
+    // Reset to step 0
+    goToStep(0);
+  });
+});
 
 function renderMessages(step) {
   // Hide step5 summary for steps 0-4
@@ -2803,7 +2167,10 @@ function renderMessages(step) {
       typingDiv.className = 'message';
       typingDiv.id = 'typing-' + i;
       const avatarClass = msg.type === 'agent' ? 'agent' : 'mastercard';
-      typingDiv.innerHTML = `<div class="msg-avatar ${avatarClass}">${avatarClass === 'agent' ? '<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="8" stroke="#B8962E" stroke-width="1"/><circle cx="10" cy="10" r="2.5" fill="#B8962E"/></svg>' : '<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="24" r="16" fill="#EB001B" opacity="0.95"/><circle cx="30" cy="24" r="16" fill="#F79E1B" opacity="0.95"/></svg>'}</div><div class="msg-bubble-wrap"><div class="msg-label">${msg.label}</div>
+      typingDiv.innerHTML = `
+        <div class="msg-avatar ${avatarClass}">${msg.type === 'agent' ? '🤖' : 'M'}</div>
+        <div class="msg-bubble-wrap">
+          <div class="msg-label">${msg.label}</div>
           <div class="msg-bubble ${avatarClass === 'agent' ? 'agent' : 'mastercard'}-bubble">
             <div class="typing-indicator">
               <div class="typing-dot"></div>
@@ -2843,11 +2210,11 @@ function renderMessages(step) {
 
         let avatar = '';
         if (msg.type === 'user') {
-          avatar = '<div class="msg-avatar user"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="8" stroke="#B8962E" stroke-width="1"/><circle cx="10" cy="7" r="2.5" fill="#B8962E"/></svg></div>';
+          avatar = '<div class="msg-avatar user">👤</div>';
         } else if (msg.type === 'mastercard') {
-          avatar = '<div class="msg-avatar mastercard"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="24" r="16" fill="#EB001B" opacity="0.95"/><circle cx="30" cy="24" r="16" fill="#F79E1B" opacity="0.95"/></svg></div>';
+          avatar = '<div class="msg-avatar mastercard">M</div>';
         } else {
-          avatar = '<div class="msg-avatar user" style="background:rgba(184,150,46,0.1);border:1px solid rgba(184,150,46,0.2);"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="7" stroke="#B8962E" stroke-width="1"/><path d="M7 9L10 6L13 9M10 9V14" stroke="#B8962E" stroke-width="1" stroke-linecap="round"/></svg></div>';
+          avatar = '<div class="msg-avatar user" style="background:rgba(255,95,0,0.2);">ℹ️</div>';
         }
 
         let bubbleClass = msg.type === 'user' ? 'user-bubble' :
