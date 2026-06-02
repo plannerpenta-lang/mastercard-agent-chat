@@ -39,8 +39,7 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: url('https://pentamarketing.co/mc/bgmcref.png') center/cover no-repeat, var(--mc-bg);
-  background-blend-mode: luminosity, normal;
+  background: url('img/bg3.png') center/cover no-repeat, var(--mc-bg);
   z-index: -2;
   pointer-events: none;
 }
@@ -204,8 +203,8 @@ body::after {
   position: relative;
 }
 
-.main:not(.step5-active) .chat-panel { grid-column: 1; }
-.main:not(.step5-active) .phone-panel { grid-column: 2; }
+.main:not(.step5-active) .chat-panel { grid-column: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; }
+.main:not(.step5-active) .phone-panel { grid-column: 2; min-height: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
 
 .main.step5-active { grid-template-columns: 1fr; }
 
@@ -214,15 +213,8 @@ body::after {
   display: none !important;
 }
 
-.main:not(.step5-active) .step5-summary {
-  display: none !important;
-}
-
-.main.step5-active .step5-summary {
-  display: flex;
-  grid-column: 1;
-}
-
+.main:not(.step5-active)
+.main.step5-active
 /* ════════════════════════════
    LEFT: Chat panel
 ═══════════════════════════ */
@@ -445,33 +437,30 @@ body::after {
 ═══════════════════════════ */
 #step5-screen {
   display: none;
-  position: absolute;
-  inset: 0;
+  position: fixed;
+  top: 5px;
+  left: 0;
+  right: 0;
+  bottom: 64px;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 48px 24px 88px;
-  z-index: 50;
+  justify-content: flex-start;
+  padding: 16px 24px 16px;
+  z-index: 40;
   opacity: 0;
   transition: opacity 0.6s;
   overflow-y: auto;
+  overflow-x: hidden;
   background: var(--mc-bg);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,95,0,0.4) transparent;
 }
 #step5-screen.show {
   display: flex;
   opacity: 1;
 }
 
-/* Logo */
-.s5-logo-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  margin-bottom: 28px;
-  position: relative;
-}
-.s5-logo-core {
+/* Logo */.s5-logo-core {
   width: 80px;
   height: 80px;
   border-radius: 50%;
@@ -488,73 +477,8 @@ body::after {
 }
 
 /* Separator */
-.s5-sep {
-  width: 100%;
-  max-width: 320px;
-  height: 1px;
-  background: var(--mc-gold);
-  opacity: 0.25;
-  margin: 24px 0;
-  opacity: 0;
-  transition: opacity 0.6s;
-}
-.s5-sep.show { opacity: 0.35; }
-
 /* Stats */
-.s5-stats {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin: 8px 0;
-}
-.s5-stat {
-  text-align: center;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.5s, transform 0.5s;
-}
-.s5-stat.show { opacity: 1; transform: translateY(0); }
-.s5-stat-num {
-  font-size: clamp(1.8rem, 5vw, 2.6rem);
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--mc-red), var(--mc-yellow));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1;
-  margin-bottom: 6px;
-  letter-spacing: -0.02em;
-}
-.s5-stat-label {
-  font-size: 0.6rem;
-  color: var(--mc-muted);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-weight: 500;
-}
-
 /* Steps list */
-.s5-steps {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  width: 100%;
-  max-width: 420px;
-}
-.s5-step-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 16px 0;
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.5s, transform 0.5s;
-  border-bottom: 1px solid var(--mc-border);
-  background: transparent;
-}
-.s5-step-item.show { opacity: 1; transform: translateY(0); }
-.s5-step-item:last-child { border-bottom: none; }
-
 .s5-step-icon {
   width: 44px;
   height: 44px;
@@ -577,11 +501,6 @@ body::after {
   color: var(--mc-muted);
   margin-bottom: 4px;
 }
-.s5-step-item:nth-child(1) .s5-step-num { color: rgba(255,95,0,0.65); }
-.s5-step-item:nth-child(2) .s5-step-num { color: rgba(0,168,90,0.65); }
-.s5-step-item:nth-child(3) .s5-step-num { color: rgba(235,0,27,0.65); }
-.s5-step-item:nth-child(4) .s5-step-num { color: rgba(184,150,46,0.75); }
-
 .s5-step-title {
   font-size: 1rem;
   font-weight: 700;
@@ -620,30 +539,6 @@ body::after {
 /* ════════════════════════════
    STEP 5: PREMIUM CARDS (Face ID inspired)
    ════════════════════════════ */
-.step5-summary {
-  display: none;
-  position: fixed;
-  top: 65px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 1080px;
-  padding: 16px 16px 100px;
-  overflow: visible;
-  gap: 12px;
-  opacity: 0;
-  transition: opacity 0.5s;
-  z-index: 10;
-  background: transparent;
-  box-sizing: border-box;
-}
-.step5-summary.show {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  opacity: 1;
-}
-
 /* Ambient glow system per card */
 @keyframes ambient-glow {
   0%   { opacity: 0; }
@@ -706,66 +601,16 @@ body::after {
 .step5-step:hover::before { opacity: 1; }
 
 /* Extra detail on hover */
-.step5-step .s5-extra {
-  display: none;
-  margin-top: 8px;
-  font-size: 0.62rem;
-  color: rgba(255,255,255,0.4);
-  padding-top: 8px;
-  border-top: 1px solid rgba(184,150,46,0.15);
-  letter-spacing: 0.04em;
-}
-.step5-step:hover .s5-extra { display: flex; align-items: center; gap: 5px; }
-
+.step5-step.step5-step:hover
 /* Glow blob behind card */
-.step5-step .glow-blob {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: -1;
-  filter: blur(40px);
-  opacity: 0;
-  animation: ambient-glow 1.5s ease forwards;
-}
-.s5-step1 .glow-blob { background: rgba(255,95,0,0.25); animation-delay: 0.3s; }
-.s5-step2 .glow-blob { background: rgba(0,168,90,0.25); animation-delay: 0.5s; }
-.s5-step3 .glow-blob { background: rgba(235,0,27,0.25); animation-delay: 0.7s; }
-.s5-step4 .glow-blob { background: rgba(184,150,46,0.25); animation-delay: 0.9s; }
-
+.step5-step.s5-step1.s5-step2.s5-step3.s5-step4
 /* Corner brackets */
-.step5-step .bracket {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  opacity: 0;
-  animation: s5-bracket-in 0.4s ease forwards;
-}
-.step5-step .bracket-tl { top: 8px; left: 8px; border-top: 2px solid rgba(184,150,46,0.5); border-left: 2px solid rgba(184,150,46,0.5); animation-delay: 0.1s; }
-.step5-step .bracket-tr { top: 8px; right: 8px; border-top: 2px solid rgba(184,150,46,0.5); border-right: 2px solid rgba(184,150,46,0.5); animation-delay: 0.15s; }
-.step5-step .bracket-bl { bottom: 8px; left: 8px; border-bottom: 2px solid rgba(184,150,46,0.5); border-left: 2px solid rgba(184,150,46,0.5); animation-delay: 0.2s; }
-.step5-step .bracket-br { bottom: 8px; right: 8px; border-bottom: 2px solid rgba(184,150,46,0.5); border-right: 2px solid rgba(184,150,46,0.5); animation-delay: 0.25s; }
-@keyframes s5-bracket-in {
+.step5-step.step5-step.step5-step.step5-step.step5-step@keyframes s5-bracket-in {
   from { opacity: 0; transform: scale(1.4); }
   to   { opacity: 1; transform: scale(1); }
 }
 
 /* Scan line across card */
-.step5-step::after {
-  content: '';
-  position: absolute;
-  left: -100%;
-  top: 0;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(184,150,46,0.12), transparent);
-  pointer-events: none;
-  opacity: 0;
-}
 @keyframes scan-line {
   from { left: -100%; }
   to   { left: 200%; }
@@ -835,223 +680,10 @@ body::after {
 }
 
 /* Time card premium */
-.time-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(184,150,46,0.3);
-  border-radius: 16px;
-  padding: 18px 20px;
-  width: 100%;
-  max-width: 1080px;
-  position: relative;
-  overflow: visible;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.5s, transform 0.5s, border-color 0.3s, box-shadow 0.3s;
-}
-.time-card.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-.time-card:hover {
-  transform: translateY(-4px) scale(1.01);
-  border-color: rgba(184,150,46,0.7);
-  box-shadow: 0 12px 40px rgba(184,150,46,0.15), 0 0 20px rgba(184,150,46,0.08);
-}
-.time-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(184,150,46,0.4), transparent);
-}
-
 /* Time card glow blob */
-.time-card .glow-blob {
-  position: absolute;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: -1;
-  filter: blur(50px);
-  opacity: 0;
-  background: rgba(255,77,0,0.15);
-  animation: ambient-glow 1.5s ease forwards;
-  animation-delay: 1s;
-}
-
 /* Corner brackets for time card */
-.time-card .bracket {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  opacity: 0;
-  animation: s5-bracket-in 0.4s ease forwards;
-}
-.time-card .bracket-tl { top: 8px; left: 8px; border-top: 2px solid rgba(184,150,46,0.5); border-left: 2px solid rgba(184,150,46,0.5); animation-delay: 0.3s; }
-.time-card .bracket-tr { top: 8px; right: 8px; border-top: 2px solid rgba(184,150,46,0.5); border-right: 2px solid rgba(184,150,46,0.5); animation-delay: 0.35s; }
-.time-card .bracket-bl { bottom: 8px; left: 8px; border-bottom: 2px solid rgba(184,150,46,0.5); border-left: 2px solid rgba(184,150,46,0.5); animation-delay: 0.4s; }
-.time-card .bracket-br { bottom: 8px; right: 8px; border-bottom: 2px solid rgba(184,150,46,0.5); border-right: 2px solid rgba(184,150,46,0.5); animation-delay: 0.45s; }
-
 /* Scan line for time card */
-.time-card::after {
-  content: '';
-  position: absolute;
-  left: -100%;
-  top: 0;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,77,0,0.15), transparent);
-  animation: scan-line 0.8s ease forwards;
-  animation-delay: 1.1s;
-  pointer-events: none;
-}
-
-/* Top shimmer line */
-.time-shimmer {
-  position: absolute;
-  top: -100%;
-  left: -100%;
-  width: 300%;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, rgba(184,150,46,0.3), rgba(184,150,46,0.6), rgba(184,150,46,0.3), transparent);
-  animation: time-shimmer 4s ease-in-out infinite;
-}
-@keyframes time-shimmer {
-  0%   { top: -100%; }
-  100% { top: calc(100% + 10px); }
-}
-
-.time-card-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(184,150,46,0.8);
-  margin-bottom: 10px;
-}
-.time-card-num {
-  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
-  font-weight: 800;
-  background: linear-gradient(135deg, rgba(255,77,0,0.9), #B8962E);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1;
-  margin-bottom: 14px;
-}
-.time-card-num span {
-  font-size: 0.65rem;
-  font-weight: 500;
-  color: rgba(255,255,255,0.4);
-  letter-spacing: 0.05em;
-  -webkit-text-fill-color: rgba(255,255,255,0.4);
-}
-.time-card-bars { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-.time-bar-row {
-  display: grid;
-  grid-template-columns: 120px 1fr 36px;
-  align-items: center;
-  gap: 10px;
-}
-.time-bar-label { font-size: 0.62rem; color: rgba(255,255,255,0.38); font-weight: 500; }
-.time-bar-track { height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
-.time-bar-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  width: 0;
-}
-.time-bar-fill:not(.gold) { background: rgba(255,255,255,0.15); }
-.time-bar-fill.gold {
-  background: linear-gradient(90deg, rgba(255,77,0,0.6), #B8962E);
-  box-shadow: 0 0 8px rgba(184,150,46,0.3);
-}
-.time-bar-val { font-size: 0.65rem; color: rgba(255,255,255,0.5); text-align: right; }
-.time-card-footer {
-  font-size: 0.68rem;
-  color: rgba(255,255,255,0.35);
-  margin-top: 4px;
-}
-.time-card-footer strong { color: rgba(184,150,46,0.8); font-weight: 700; }
-
-.time-card-body {
-  margin-bottom: 12px;
-}
-.time-card-num {
-  font-size: clamp(1.8rem, 4vw, 2.4rem);
-  font-weight: 800;
-  background: linear-gradient(135deg, #EB001B, #B8962E);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1;
-}
-.time-card-num span {
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: var(--mc-muted);
-  letter-spacing: 0.05em;
-  -webkit-text-fill-color: var(--mc-muted);
-}
-
-.time-card-bars {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-.time-bar-row {
-  display: grid;
-  grid-template-columns: 110px 1fr 30px;
-  align-items: center;
-  gap: 8px;
-}
-.time-bar-label {
-  font-size: 0.58rem;
-  color: var(--mc-muted);
-  font-weight: 500;
-}
-.time-bar-track {
-  height: 4px;
-  background: rgba(22,33,62,0.08);
-  border-radius: 3px;
-  overflow: hidden;
-}
-.time-bar-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  width: 0;
-}
-.time-bar-fill:not(.gold) {
-  background: rgba(22,33,62,0.2);
-}
-.time-bar-fill.gold {
-  background: var(--mc-gold);
-}
-.time-card.show .time-bar-fill:not(.gold) { width: 100%; }
-.time-card.show .time-bar-fill.gold { width: 51%; }
-.time-bar-val {
-  font-size: 0.62rem;
-  font-weight: 700;
-  color: var(--mc-text);
-  text-align: right;
-}
-
-.time-card-main {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-.time-big {
+/* Top shimmer line removed */.time-big {
   font-size: clamp(2.2rem, 5vw, 3rem);
   font-weight: 700;
   background: var(--mc-agent-gradient);
@@ -1065,55 +697,7 @@ body::after {
   color: var(--mc-muted);
   font-weight: 500;
   letter-spacing: 0.03em;
-}
-
-.time-card-bar {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 12px;
-}
-.time-bar-label {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.6rem;
-  color: var(--mc-muted);
-  font-weight: 500;
-}
-.time-bar-track {
-  height: 5px;
-  background: var(--mc-border);
-  border-radius: 3px;
-  overflow: hidden;
-}
-.time-bar-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.time-bar-fill.traditional {
-  width: 0;
-  background: rgba(22,33,62,0.2);
-}
-.time-bar-fill.agentpay {
-  width: 0;
-  background: var(--mc-gold);
-}
-.time-card.show .time-bar-fill.traditional { width: 100%; }
-.time-card.show .time-bar-fill.agentpay { width: 48%; }
-
-.time-card-footer {
-  font-size: 0.65rem;
-  color: var(--mc-muted);
-  text-align: center;
-  letter-spacing: 0.03em;
-}
-.time-card-footer strong {
-  color: var(--mc-text);
-  font-weight: 700;
-}
-
-/* Flow diagram [DEPRECATED - see premium at ~640] */
+}/* Flow diagram [DEPRECATED - see premium at ~640] */
 /*.step5-flow {
   display: flex;
   flex-direction: column;
@@ -1406,19 +990,7 @@ body::after {
   height: 200px;
   position: relative;
   margin-bottom: 24px;
-}
-.bracket {
-  position: absolute;
-  width: 28px;
-  height: 28px;
-  opacity: 0;
-  animation: bracket-in 0.4s ease forwards;
-}
-.bracket-tl { top: 0; left: 0; border-top: 2px solid #B8962E; border-left: 2px solid #B8962E; animation-delay: 0.2s; }
-.bracket-tr { top: 0; right: 0; border-top: 2px solid #B8962E; border-right: 2px solid #B8962E; animation-delay: 0.3s; }
-.bracket-bl { bottom: 0; left: 0; border-bottom: 2px solid #B8962E; border-left: 2px solid #B8962E; animation-delay: 0.4s; }
-.bracket-br { bottom: 0; right: 0; border-bottom: 2px solid #B8962E; border-right: 2px solid #B8962E; animation-delay: 0.5s; }
-@keyframes bracket-in {
+}@keyframes bracket-in {
   from { opacity: 0; transform: scale(1.5); }
   to   { opacity: 0.8; transform: scale(1); }
 }
@@ -1608,8 +1180,8 @@ body::after {
 .approved-amount { font-size: 1.5rem; font-weight: 700; color: var(--mc-text); }
 
 /* STEP 5: Summary (dark overlay) [DEPRECATED - using premium version at line ~608] */
-/*.step5-summary { display: none; position: fixed; top: 65px; left: 50%; transform: translateX(-50%); width: 100%; max-width: 1080px; padding: 16px 16px 100px; overflow-y: auto; gap: 16px; opacity: 0; transition: opacity 0.5s; z-index: 10; background: transparent; box-sizing: border-box; }*/
-/*.step5-summary.show { display: flex; flex-direction: column; align-items: center; opacity: 1; }*/
+/**/
+/**/
 
 .step5-stats { display: flex; gap: 12px; width: 100%; max-width: 1080px; }
 .step5-stat { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,77,0,0.25); border-radius: 16px; padding: 14px 8px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
@@ -1625,22 +1197,7 @@ body::after {
 .step5-step-desc { font-size: 0.68rem; color: var(--mc-muted); line-height: 1.5; }
 */
 
-/* Time card */
-.time-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,77,0,0.2); border-radius: 16px; padding: 14px; width: 100%; max-width: 1080px; }
-.time-card-header { display: flex; align-items: center; gap: 6px; font-size: 0.62rem; font-weight: 700; color: var(--mc-yellow); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; }
-.time-card-body { margin-bottom: 12px; }
-.time-card-num { font-size: 1.6rem; font-weight: 700; color: var(--mc-text); }
-.time-card-num span { font-size: 0.85rem; font-weight: 400; color: var(--mc-muted); }
-.time-card-bars { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-.time-bar-row { display: flex; align-items: center; gap: 8px; }
-.time-bar-label { font-size: 0.68rem; color: var(--mc-muted); min-width: 100px; }
-.time-bar-track { flex: 1; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
-.time-bar-fill { height: 100%; background: rgba(255,255,255,0.2); border-radius: 3px; }
-.time-bar-fill.gold { background: var(--mc-yellow); }
-.time-bar-val { font-size: 0.72rem; font-weight: 600; color: var(--mc-text); min-width: 30px; }
-.time-card-footer { font-size: 0.72rem; color: var(--mc-muted); text-align: center; }
-.time-card-footer strong { color: var(--mc-yellow); }
-.summary-header {
+/* Time card */.summary-header {
   padding: 10px 16px;
   font-size: 0.72rem;
   font-weight: 600;
@@ -1813,6 +1370,479 @@ body::after {
 @keyframes glow-pulse {
   0%,100% { filter: drop-shadow(0 0 20px rgba(255,95,0,0.4)); }
   50%     { filter: drop-shadow(0 0 40px rgba(255,95,0,0.7)); }
+}
+
+/* Logos pequenos del reward (max 120px) */
+.reward-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 8px auto 4px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reward-logos.show { opacity: 1; transform: translateY(0); }
+.reward-logos img { height: 50px; width: auto; display: block; }
+.reward-logos img.mc-logo { height: 40px; }
+.reward-ticket {
+  margin: 18px auto 14px;
+  width: 1080px;
+  max-width: 1080px;
+  background: #0a0a14;
+  border: 1px solid rgba(255,95,0,0.25);
+  border-radius: 18px;
+  font-family: 'Noto Sans', Arial, sans-serif;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+
+/* Linea naranja brillante en el top */
+.reward-ticket::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 5%, #FF5F00 50%, transparent 95%);
+  box-shadow: 0 0 12px rgba(255,95,0,0.6);
+}
+
+/* Esquinas tipo "tech" con pequeños angulos */
+.reward-ticket::after {
+  content: '';
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 10px; height: 10px;
+  border-top: 1.5px solid #FF5F00;
+  border-right: 1.5px solid #FF5F00;
+}
+.reward-ticket-corner-bl {
+  position: absolute;
+  bottom: 12px; left: 12px;
+  width: 10px; height: 10px;
+  border-bottom: 1.5px solid #FF5F00;
+  border-left: 1.5px solid #FF5F00;
+}
+
+/* Header con check + ID transaccion a la derecha */
+.reward-ticket-header {
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid rgba(255,95,0,0.12);
+}
+.reward-ticket-check {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #FF5F00;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(255,95,0,0.5);
+}
+.reward-ticket-title-block { flex: 1; }
+.reward-ticket-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1;
+}
+.reward-ticket-sub {
+  font-size: 0.65rem;
+  color: rgba(255,95,0,0.7);
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  margin-top: 6px;
+  font-weight: 600;
+}
+.reward-ticket-id {
+  text-align: right;
+  font-family: 'Courier New', monospace;
+}
+.reward-ticket-id-label {
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.reward-ticket-id-value {
+  font-size: 0.85rem;
+  color: #FF5F00;
+  font-weight: 700;
+  margin-top: 2px;
+  letter-spacing: 1px;
+}
+
+/* Producto comprado */
+.reward-product {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 24px;
+  background: rgba(255,95,0,0.06);
+  border: 1px solid rgba(255,95,0,0.2);
+  border-radius: 12px;
+  margin: 0 24px 20px;
+}
+.reward-product-thumb {
+  width: 64px;
+  height: 64px;
+  background: #000;
+  border: 1px solid rgba(255,95,0,0.3);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  flex-shrink: 0;
+}
+.reward-product-thumb img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.reward-product-info {
+  flex: 1;
+  min-width: 0;
+}
+.reward-product-label {
+  font-size: 0.55rem;
+  color: rgba(255,95,0,0.8);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.reward-product-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.reward-product-brand {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.5);
+}
+.reward-product-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #FF5F00;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 12px rgba(255,95,0,0.4);
+  flex-shrink: 0;
+  text-align: right;
+}
+
+/* Comparativo: huge numbers */
+.reward-compare {
+  padding: 32px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+}
+.reward-compare::before {
+  content: 'TIEMPO DE OPERACIÓN';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.55rem;
+  letter-spacing: 4px;
+  color: rgba(255,255,255,0.3);
+  font-weight: 600;
+}
+.reward-compare-cell {
+  text-align: center;
+  flex: 1;
+}
+.reward-compare-cell .who {
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.reward-compare-cell .num-row {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+}
+.reward-compare-cell .num {
+  font-size: 3.6rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.2);
+  line-height: 0.9;
+  letter-spacing: -2px;
+  font-variant-numeric: tabular-nums;
+}
+.reward-compare-cell .unit {
+  font-size: 1.2rem;
+  color: rgba(255,255,255,0.25);
+  font-weight: 600;
+}
+.reward-compare-cell.agent .num {
+  color: #FF5F00;
+  text-shadow: 0 0 24px rgba(255,95,0,0.5);
+}
+.reward-compare-cell.agent .unit {
+  color: rgba(255,95,0,0.7);
+}
+.reward-compare-cell.agent .who {
+  color: #FF5F00;
+}
+.reward-compare-arrow {
+  font-size: 1.6rem;
+  color: rgba(255,95,0,0.4);
+  font-weight: 300;
+  padding: 0 18px;
+}
+.reward-compare-saved {
+  font-size: 0.7rem;
+  color: #FF5F00;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-top: 12px;
+  display: inline-block;
+  padding: 4px 10px;
+  border: 1px solid rgba(255,95,0,0.3);
+  border-radius: 4px;
+  background: rgba(255,95,0,0.08);
+}
+
+/* 4 pasos en 2x2, mas detalle */
+.reward-steps {
+  padding: 22px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.reward-steps-label {
+  font-size: 0.6rem;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: rgba(255,95,0,0.7);
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.reward-steps-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.reward-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: rgba(255,95,0,0.03);
+  border: 1px solid rgba(255,95,0,0.12);
+  border-radius: 8px;
+  position: relative;
+}
+.reward-step-num {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #FF5F00;
+  letter-spacing: 1px;
+  min-width: 24px;
+  font-variant-numeric: tabular-nums;
+}
+.reward-step-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.95);
+  line-height: 1.2;
+  letter-spacing: 0.2px;
+}
+.reward-step-check {
+  margin-left: auto;
+  color: #FF5F00;
+  font-size: 0.7rem;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+/* CTA: con boton */
+.reward-ticket-cta {
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  background: rgba(255,95,0,0.05);
+  border-top: 1px solid rgba(255,95,0,0.15);
+}
+.reward-ticket-cta-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.reward-ticket-cta-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #FF5F00;
+  box-shadow: 0 0 10px rgba(255,95,0,0.9);
+  flex-shrink: 0;
+}
+.reward-ticket-cta-text {
+  font-size: 0.85rem;
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.reward-ticket-cta-text em {
+  font-style: normal;
+  color: #FF5F00;
+  font-weight: 700;
+}
+.reward-ticket-cta-btn {
+  padding: 8px 18px;
+  background: transparent;
+  border: 1px solid #FF5F00;
+  color: #FF5F00;
+  font-family: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+</style>
+<!-- ══════════════════════════════════════════
+   CATALOGO ECOMMERCE - CSS (inyectado)
+══════════════════════════════════════════ -->
+<style id="catalog-styles">
+* { box-sizing: border-box; margin: 0; padding: 0; }
+#catalog-screen {
+  font-family: 'Inter', 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #ffffff;
+  min-height: calc(100vh - 5px);
+  background: #0a0a14;
+  padding-bottom: 100px;
+}
+#catalog-screen .ecom-header { display: none; }
+#catalog-screen .ecom-hero { padding: 24px 32px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); background: linear-gradient(180deg, rgba(255,95,0,0.06) 0%, transparent 100%); }
+#catalog-screen .ecom-hero h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; color: #fff; }
+#catalog-screen .ecom-hero h1 .accent { color: #FF5F00; }
+#catalog-screen .ecom-hero p { color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-bottom: 16px; }
+#catalog-screen .fake-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,95,0,0.08); border: 1px solid rgba(255,95,0,0.2); padding: 4px 10px; border-radius: 999px; font-size: 0.7rem; color: #FF5F00; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 16px; }
+#catalog-screen .fake-badge .dot { width: 6px; height: 6px; background: #FF5F00; border-radius: 50%; box-shadow: 0 0 8px #FF5F00; }
+#catalog-screen .ecom-cats { display: flex; gap: 8px; flex-wrap: wrap; }
+#catalog-screen .ecom-cats .cat { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); padding: 7px 14px; border-radius: 999px; font-size: 0.78rem; font-weight: 500; cursor: pointer; }
+#catalog-screen .ecom-cats .cat.active { background: rgba(255,95,0,0.12); border-color: #FF5F00; color: #FF5F00; }
+#catalog-screen .ecom-layout { display: grid; grid-template-columns: 220px 1fr 280px; gap: 0; min-height: calc(100vh - 200px); }
+#catalog-screen .ecom-sidebar { background: rgba(255,255,255,0.02); border-right: 1px solid rgba(255,255,255,0.05); padding: 20px 0; position: sticky; top: 5px; height: calc(100vh - 5px); overflow-y: auto; }
+#catalog-screen .sidebar-section { padding: 0 20px 18px; border-bottom: 1px solid rgba(255,255,255,0.04); margin-bottom: 18px; }
+#catalog-screen .sidebar-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,95,0,0.7); font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+#catalog-screen .sidebar-title::before { content: ''; width: 3px; height: 12px; background: #FF5F00; border-radius: 2px; box-shadow: 0 0 6px rgba(255,95,0,0.6); }
+#catalog-screen .sidebar-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+#catalog-screen .sidebar-item { padding: 7px 10px; border-radius: 6px; font-size: 0.82rem; color: rgba(255,255,255,0.7); cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
+#catalog-screen .sidebar-item:hover { background: rgba(255,95,0,0.08); color: #fff; }
+#catalog-screen .sidebar-item.active { background: rgba(255,95,0,0.12); color: #FF5F00; font-weight: 600; }
+#catalog-screen .sidebar-item .count { font-size: 0.7rem; color: rgba(255,255,255,0.35); font-weight: 500; }
+#catalog-screen .sidebar-item .arrow { color: rgba(255,255,255,0.3); font-size: 0.7rem; }
+#catalog-screen .filter-group { display: flex; flex-direction: column; gap: 8px; }
+#catalog-screen .filter-checkbox { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.8rem; color: rgba(255,255,255,0.7); }
+#catalog-screen .filter-checkbox input { display: none; }
+#catalog-screen .filter-checkbox .box { width: 16px; height: 16px; border: 1.5px solid rgba(255,255,255,0.2); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: transparent; }
+#catalog-screen .filter-checkbox input:checked + .box { background: #FF5F00; border-color: #FF5F00; color: #fff; }
+#catalog-screen .price-range { display: flex; flex-direction: column; gap: 8px; }
+#catalog-screen .price-range .track { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; position: relative; }
+#catalog-screen .price-range .fill { position: absolute; left: 10%; right: 30%; top: 0; bottom: 0; background: linear-gradient(90deg, #FF5F00, #FF7A00); border-radius: 2px; }
+#catalog-screen .price-range .labels { display: flex; justify-content: space-between; font-size: 0.7rem; color: rgba(255,255,255,0.5); }
+#catalog-screen .promo-card { margin: 0 20px 18px; background: linear-gradient(135deg, rgba(255,95,0,0.15) 0%, rgba(255,95,0,0.05) 100%); border: 1px solid rgba(255,95,0,0.3); border-radius: 10px; padding: 14px; text-align: center; }
+#catalog-screen .promo-card .icon { font-size: 1.5rem; margin-bottom: 6px; }
+#catalog-screen .promo-card .title { font-size: 0.8rem; font-weight: 700; color: #FF5F00; margin-bottom: 4px; }
+#catalog-screen .promo-card .sub { font-size: 0.7rem; color: rgba(255,255,255,0.6); line-height: 1.3; }
+#catalog-screen .ecom-grid-wrap { padding: 24px 32px 32px; max-width: 1280px; margin: 0 auto; width: 100%; }
+#catalog-screen .grid-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+#catalog-screen .grid-toolbar > div { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+#catalog-screen .grid-toolbar strong { color: #fff; }
+#catalog-screen .grid-toolbar select { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 0.82rem; }
+#catalog-screen .ecom-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+#catalog-screen .product-card { background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; overflow: hidden; cursor: pointer; position: relative; transition: all 0.25s ease; }
+#catalog-screen .product-card:hover { border-color: rgba(255,95,0,0.4); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+#catalog-screen .product-card.selected { border-color: #FF5F00; box-shadow: 0 0 0 1px #FF5F00, 0 12px 32px rgba(255,95,0,0.2); }
+#catalog-screen .product-card .badge { position: absolute; top: 12px; left: 12px; background: #FF5F00; color: #fff; font-size: 0.65rem; font-weight: 700; padding: 4px 9px; border-radius: 4px; letter-spacing: 0.05em; text-transform: uppercase; z-index: 2; }
+#catalog-screen .product-card .check-overlay { position: absolute; top: 12px; right: 12px; width: 28px; height: 28px; border-radius: 50%; background: #FF5F00; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; z-index: 2; opacity: 0; transform: scale(0.6); transition: all 0.2s; box-shadow: 0 4px 12px rgba(255,95,0,0.5); }
+#catalog-screen .product-card.selected .check-overlay { opacity: 1; transform: scale(1); }
+#catalog-screen .product-card .img-wrap { background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%); aspect-ratio: 1; display: flex; align-items: center; justify-content: center; padding: 16px; position: relative; overflow: hidden; }
+#catalog-screen .product-card .img-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)); }
+#catalog-screen .product-card .info { padding: 14px 16px 16px; }
+#catalog-screen .product-card .brand { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,95,0,0.7); font-weight: 700; margin-bottom: 4px; }
+#catalog-screen .product-card .name { font-size: 0.88rem; font-weight: 500; line-height: 1.3; color: #fff; margin-bottom: 8px; min-height: 2.3em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+#catalog-screen .product-card .rating { display: flex; align-items: center; gap: 4px; margin-bottom: 10px; font-size: 0.72rem; color: rgba(255,255,255,0.5); }
+#catalog-screen .product-card .rating .stars { color: #FF5F00; letter-spacing: 1px; }
+#catalog-screen .product-card .price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+#catalog-screen .product-card .price { font-size: 1.25rem; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; }
+#catalog-screen .product-card .price-old { font-size: 0.8rem; color: rgba(255,255,255,0.4); text-decoration: line-through; }
+#catalog-screen .product-card .shipping { font-size: 0.7rem; color: #00c850; font-weight: 600; }
+#catalog-screen .ecom-aside { background: rgba(255,255,255,0.02); border-left: 1px solid rgba(255,255,255,0.05); position: sticky; top: 5px; height: calc(100vh - 5px); overflow-y: auto; padding: 20px 18px 100px; }
+#catalog-screen .aside-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+#catalog-screen .aside-avatar { width: 56px; height: 56px; border-radius: 50%; background: #000; border: 1.5px solid rgba(255,95,0,0.4); padding: 2px; flex-shrink: 0; position: relative; box-shadow: 0 0 16px rgba(255,95,0,0.25); }
+#catalog-screen .aside-avatar img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; }
+#catalog-screen .aside-avatar::after { content: ''; position: absolute; bottom: 2px; right: 2px; width: 10px; height: 10px; background: #00c850; border-radius: 50%; border: 2px solid #0a0a14; box-shadow: 0 0 6px #00c850; }
+#catalog-screen .aside-info { flex: 1; min-width: 0; }
+#catalog-screen .aside-name { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
+#catalog-screen .aside-name .badge { background: rgba(255,95,0,0.15); color: #FF5F00; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+#catalog-screen .aside-status { font-size: 0.72rem; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 6px; }
+#catalog-screen .aside-status .live-dot { width: 6px; height: 6px; background: #00c850; border-radius: 50%; box-shadow: 0 0 6px #00c850; animation: live-pulse 2s ease-in-out infinite; }
+@keyframes live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+#catalog-screen .aside-bubble { background: rgba(255,95,0,0.06); border: 1px solid rgba(255,95,0,0.15); border-radius: 4px 12px 12px 12px; padding: 12px 14px; font-size: 0.8rem; color: rgba(255,255,255,0.9); line-height: 1.4; margin-bottom: 16px; }
+#catalog-screen .aside-bubble strong { color: #FF5F00; }
+#catalog-screen .aside-section-label { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,95,0,0.7); font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+#catalog-screen .aside-section-label .count { background: rgba(255,95,0,0.12); color: #FF5F00; padding: 1px 7px; border-radius: 999px; font-size: 0.62rem; }
+#catalog-screen .aside-products { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+#catalog-screen .aside-product { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; cursor: pointer; transition: all 0.2s; text-align: left; width: 100%; color: inherit; font-family: inherit; }
+#catalog-screen .aside-product:hover { background: rgba(255,95,0,0.06); border-color: rgba(255,95,0,0.3); }
+#catalog-screen .aside-product.active { background: rgba(255,95,0,0.12); border-color: #FF5F00; }
+#catalog-screen .aside-product .thumb { width: 36px; height: 36px; background: rgba(255,255,255,0.04); border-radius: 6px; display: flex; align-items: center; justify-content: center; padding: 3px; flex-shrink: 0; }
+#catalog-screen .aside-product .thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+#catalog-screen .aside-product .text { flex: 1; min-width: 0; }
+#catalog-screen .aside-product .name { font-size: 0.75rem; color: #fff; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 1px; }
+#catalog-screen .aside-product .price { font-size: 0.7rem; color: rgba(255,95,0,0.9); font-weight: 600; font-variant-numeric: tabular-nums; }
+#catalog-screen .aside-product .check { width: 18px; height: 18px; border-radius: 50%; background: #FF5F00; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; flex-shrink: 0; opacity: 0; transform: scale(0.5); transition: all 0.2s; }
+#catalog-screen .aside-product.active .check { opacity: 1; transform: scale(1); }
+#catalog-screen .aside-cta { background: linear-gradient(135deg, #FF5F00 0%, #FF7A00 100%); color: #fff; border: none; padding: 12px 16px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; width: 100%; box-shadow: 0 6px 18px rgba(255,95,0,0.3), 0 0 0 1px rgba(255,95,0,0.4); transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; }
+#catalog-screen .aside-cta:disabled { background: rgba(255,95,255,0.08); color: rgba(255,255,255,0.3); box-shadow: none; cursor: not-allowed; }
+#catalog-screen .aside-tip { background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 12px; font-size: 0.72rem; color: rgba(255,255,255,0.5); line-height: 1.4; display: flex; gap: 8px; }
+#catalog-screen .aside-tip .icon { color: #FF5F00; font-size: 0.9rem; flex-shrink: 0; }
+#catalog-screen .aside-tip strong { color: rgba(255,255,255,0.8); }
+#catalog-screen .ecom-bottom { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,20,0.95); backdrop-filter: blur(16px); border-top: 1px solid rgba(255,95,0,0.25); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; z-index: 200; box-shadow: 0 -8px 24px rgba(0,0,0,0.4); }
+#catalog-screen .ecom-bottom .selected-info { display: flex; align-items: center; gap: 14px; flex: 1; min-width: 0; }
+#catalog-screen .ecom-bottom .selected-info .thumb { width: 48px; height: 48px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,95,0,0.2); display: flex; align-items: center; justify-content: center; padding: 4px; flex-shrink: 0; }
+#catalog-screen .ecom-bottom .selected-info .thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+#catalog-screen .ecom-bottom .selected-info .text { min-width: 0; }
+#catalog-screen .ecom-bottom .selected-info .text .label { font-size: 0.7rem; color: rgba(255,95,0,0.8); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-bottom: 2px; }
+#catalog-screen .ecom-bottom .selected-info .text .name { font-size: 0.9rem; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#catalog-screen .ecom-bottom .selected-info .text .price { font-size: 0.85rem; color: rgba(255,255,255,0.6); font-variant-numeric: tabular-nums; }
+#catalog-screen .ecom-bottom .selected-info .placeholder { color: rgba(255,255,255,0.4); font-size: 0.9rem; font-style: italic; }
+#catalog-screen .ecom-bottom .cta { background: linear-gradient(135deg, #FF5F00 0%, #FF7A00 100%); color: #fff; border: none; padding: 14px 32px; border-radius: 10px; font-size: 0.9rem; font-weight: 700; cursor: pointer; box-shadow: 0 6px 20px rgba(255,95,0,0.3), 0 0 0 1px rgba(255,95,0,0.4); white-space: nowrap; flex-shrink: 0; }
+#catalog-screen .ecom-bottom .cta:disabled { background: rgba(255,95,255,0.1); color: rgba(255,255,255,0.3); box-shadow: none; cursor: not-allowed; }
+@media (max-width: 1100px) {
+  #catalog-screen .ecom-layout { grid-template-columns: 220px 1fr; }
+  #catalog-screen .ecom-aside { display: none; }
 }
 </style>
 </head>
@@ -2037,387 +2067,218 @@ body::after {
 
   </div><!-- /main -->
 
-  <!-- Step 5: Full summary (Face ID premium style) -->
-  <div class="step5-summary" id="step5-summary">
+<!-- ══════════════════════════════════════
+     CATALOGO ECOMMERCE (pre-flujo)
+══════════════════════════════════════ -->
+<div id="catalog-screen" style="display:none;">
+<section class="ecom-hero">
+  <div class="fake-badge"><span class="dot"></span>Demo en vivo · Pagos seguros con Mastercard Agent Pay</div>
+  <h1>Elige tu próximo <span class="accent">producto favorito</span></h1>
+  <p>6 productos seleccionados · Envío gratis a todo Colombia · Paga con tu agente AI</p>
+  <div class="ecom-cats">
+    <button class="cat active" type="button">Todos</button>
+    <button class="cat" type="button">Tecnología</button>
+    <button class="cat" type="button">Audio</button>
+    <button class="cat" type="button">Hogar</button>
+    <button class="cat" type="button">Deportes</button>
+  </div>
+</section>
 
-    <div class="step5-flow">
-      <div class="step5-row">
-        <div class="step5-step s5-step1" id="s5-step1">
-          <div class="glow-blob"></div>
-          <div class="bracket bracket-tl"></div>
-          <div class="bracket bracket-tr"></div>
-          <div class="bracket bracket-bl"></div>
-          <div class="bracket bracket-br"></div>
-          <div class="step5-step-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="8" stroke="#B8962E" stroke-width="1"/><circle cx="10" cy="10" r="2.5" fill="#B8962E"/></svg></div>
-          <div class="step5-step-text">
-            <div class="step5-step-num">01</div>
-            <div class="step5-step-title">Agente verificado</div>
-            <div class="step5-step-desc">Solo agentes registrados en Mastercard pueden transactar</div>
-            <div class="s5-extra"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(184,150,46,0.5)" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Registro: Q4-2025</div>
-          </div>
-        </div>
-        <div class="step5-step s5-step2" id="s5-step2">
-          <div class="glow-blob"></div>
-          <div class="bracket bracket-tl"></div>
-          <div class="bracket bracket-tr"></div>
-          <div class="bracket bracket-bl"></div>
-          <div class="bracket bracket-br"></div>
-          <div class="step5-step-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L12.5 7.5L18.5 8.5L14 13L15.5 19L10 16L4.5 19L6 13L1.5 8.5L7.5 7.5L10 2Z" stroke="#B8962E" stroke-width="1" stroke-linejoin="round"/></svg></div>
-          <div class="step5-step-text">
-            <div class="step5-step-num">02</div>
-            <div class="step5-step-title">Intención verificada</div>
-            <div class="step5-step-desc">Tu intención de compra se verifica. Nunca se asume.</div>
-            <div class="s5-extra"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(184,150,46,0.5)" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> ML: 99.2% accuracy</div>
-          </div>
-        </div>
-      </div>
-      <div class="step5-row">
-        <div class="step5-step s5-step3" id="s5-step3">
-          <div class="glow-blob"></div>
-          <div class="bracket bracket-tl"></div>
-          <div class="bracket bracket-tr"></div>
-          <div class="bracket bracket-bl"></div>
-          <div class="bracket bracket-br"></div>
-          <div class="step5-step-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 4L10 16M4 10L16 10" stroke="#B8962E" stroke-width="1" stroke-linecap="round"/></svg></div>
-          <div class="step5-step-text">
-            <div class="step5-step-num">03</div>
-            <div class="step5-step-title">Tokenización</div>
-            <div class="step5-step-desc">Tu tarjeta real nunca se expone. Un token único por transacción.</div>
-            <div class="s5-extra"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(184,150,46,0.5)" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Token: ERC-7526</div>
-          </div>
-        </div>
-        <div class="step5-step s5-step4" id="s5-step4">
-          <div class="glow-blob"></div>
-          <div class="bracket bracket-tl"></div>
-          <div class="bracket bracket-tr"></div>
-          <div class="bracket bracket-bl"></div>
-          <div class="bracket bracket-br"></div>
-          <div class="step5-step-icon"><svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="8" stroke="#B8962E" stroke-width="1"/><circle cx="10" cy="10" r="4" stroke="#B8962E" stroke-width="1"/></svg></div>
-          <div class="step5-step-text">
-            <div class="step5-step-num">04</div>
-            <div class="step5-step-title">Tú autorizas</div>
-            <div class="step5-step-desc">Biometría. Huella o Face ID. Control absoluto siempre.</div>
-            <div class="s5-extra"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(184,150,46,0.5)" stroke-width="1.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Biometría: FIDO2</div>
-          </div>
-        </div>
+<div class="ecom-layout">
+  <aside class="ecom-sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Categorías</div>
+      <ul class="sidebar-list">
+        <li class="sidebar-item active"><span>Todos los productos</span><span class="count">6</span></li>
+        <li class="sidebar-item"><span>Tecnología</span><span class="count">1</span></li>
+        <li class="sidebar-item"><span>Audio</span><span class="count">3</span></li>
+        <li class="sidebar-item"><span>Hogar</span><span class="count">1</span></li>
+        <li class="sidebar-item"><span>Deportes</span><span class="count">1</span></li>
+        <li class="sidebar-item"><span>Moda</span><span class="count">0</span></li>
+        <li class="sidebar-item"><span>Salud y Belleza</span><span class="count">0</span></li>
+        <li class="sidebar-item"><span>Juguetes</span><span class="count">0</span></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Marcas populares</div>
+      <ul class="sidebar-list">
+        <li class="sidebar-item"><span>Apple</span><span class="count">2</span></li>
+        <li class="sidebar-item"><span>Samsung</span><span class="count">1</span></li>
+        <li class="sidebar-item"><span>Sony</span><span class="count">1</span></li>
+        <li class="sidebar-item"><span>Electrolux</span><span class="count">1</span></li>
+        <li class="sidebar-item"><span>GW</span><span class="count">1</span></li>
+        <li class="sidebar-item"><span>Ver todas las marcas</span><span class="arrow">→</span></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Rango de precio</div>
+      <div class="price-range">
+        <div class="track"><div class="fill"></div></div>
+        <div class="labels"><span>$399.000</span><span>$4.499.000</span></div>
       </div>
     </div>
-
-    <div class="time-card" id="time-card">
-      <div class="glow-blob"></div>
-      <div class="bracket bracket-tl"></div>
-      <div class="bracket bracket-tr"></div>
-      <div class="bracket bracket-bl"></div>
-      <div class="bracket bracket-br"></div>
-      <div class="time-shimmer"></div>
-      <div class="time-card-header">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(184,150,46,0.8)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-        <span>Tiempo ahorrado</span>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Envío</div>
+      <div class="filter-group">
+        <label class="filter-checkbox"><input type="checkbox" checked><span class="box">✓</span><span>Envío gratis</span></label>
+        <label class="filter-checkbox"><input type="checkbox"><span class="box">✓</span><span>Llega hoy</span></label>
+        <label class="filter-checkbox"><input type="checkbox"><span class="box">✓</span><span>Llega mañana</span></label>
+        <label class="filter-checkbox"><input type="checkbox"><span class="box">✓</span><span>Recoge en tienda</span></label>
       </div>
-      <div class="time-card-body">
-        <div class="time-card-num">2.3 <span>horas/semana</span></div>
-      </div>
-      <div class="time-card-bars">
-        <div class="time-bar-row">
-          <span class="time-bar-label">Compra tradicional</span>
-          <div class="time-bar-track"><div class="time-bar-fill" style="width:100%"></div></div>
-          <span class="time-bar-val">4.5h</span>
-        </div>
-        <div class="time-bar-row">
-          <span class="time-bar-label">Con Agent Pay</span>
-          <div class="time-bar-track"><div class="time-bar-fill gold" style="width:51%"></div></div>
-          <span class="time-bar-val">2.2h</span>
-        </div>
-      </div>
-      <div class="time-card-footer">Recuperas <strong>51%</strong> de tu tiempo en compras</div>
     </div>
-  </div><!-- /step5-summary -->
+    <div class="sidebar-section">
+      <div class="sidebar-title">Condición</div>
+      <div class="filter-group">
+        <label class="filter-checkbox"><input type="checkbox" checked><span class="box">✓</span><span>Nuevo</span></label>
+        <label class="filter-checkbox"><input type="checkbox"><span class="box">✓</span><span>Reacondicionado</span></label>
+        <label class="filter-checkbox"><input type="checkbox"><span class="box">✓</span><span>Usado</span></label>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Pago</div>
+      <div class="filter-group">
+        <label class="filter-checkbox"><input type="checkbox" checked><span class="box">✓</span><span>Mastercard Agent Pay</span></label>
+        <label class="filter-checkbox"><input type="checkbox" checked><span class="box">✓</span><span>PSE</span></label>
+        <label class="filter-checkbox"><input type="checkbox"><span class="box">✓</span><span>Contra entrega</span></label>
+      </div>
+    </div>
+    <div class="promo-card">
+      <div class="icon">⚡</div>
+      <div class="title">Paga con tu agente AI</div>
+      <div class="sub">Solo dile qué comprar.<br>Mastercard Agent Pay hace el resto.</div>
+    </div>
+  </aside>
+  <main class="ecom-grid-wrap">
+    <div class="grid-toolbar">
+      <div>Mostrando <strong>6</strong> de <strong>6</strong> productos</div>
+      <div>
+        <span>Ordenar: </span>
+        <select>
+          <option>Relevancia</option>
+          <option>Menor precio</option>
+          <option>Mayor precio</option>
+          <option>Más vendidos</option>
+          <option>Mejor calificados</option>
+        </select>
+      </div>
+    </div>
+    <div class="ecom-grid" id="productGrid"></div>
+  </main>
 
-<!-- Step 5: Old full overlay (unused, hidden) -->
-<div id="step5-screen" style="display:none;">
+  <aside class="ecom-aside">
+    <div class="aside-header">
+      <div class="aside-avatar"><img src="img/nexus.png" alt="FOJA"></div>
+      <div class="aside-info">
+        <div class="aside-name"><span>FOJA</span><span class="badge">AI</span></div>
+        <div class="aside-status"><span class="live-dot"></span><span>En línea · Asistente Mastercard</span></div>
+      </div>
+    </div>
+    <div class="aside-bubble">Hola, soy <strong>FOJA</strong>, tu asistente de compras. Elige un producto o pregúntame lo que necesites. También puedo ayudarte con <strong>Mastercard Agent Pay</strong> para pagar sin tarjeta.</div>
+    <div class="aside-section-label"><span>Productos</span><span class="count">6</span></div>
+    <div class="aside-products" id="asideProducts"></div>
+    <button class="aside-cta" id="asideCta" disabled type="button"><span>⚡</span><span>Iniciar pago con Mastercard</span></button>
+    <div class="aside-tip"><span class="icon">💡</span><span><strong>Tip:</strong> También puedes decirme qué necesitas en tus propias palabras. FOJA entiende lenguaje natural.</span></div>
+  </aside>
+</div>
 
-          <!-- STEP 0: Email agenda -->
-          <div class="phone-screen-content step-email" id="phone-0">
-            <div class="phone-status-bar">
-              <span style="color: var(--mc-text);">9:41</span>
-              <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
-            </div>
-            <div class="email-header">
-              <span>Correo · Agenda</span>
-            </div>
-            <div class="email-body">
-              <div class="email-from">Tu asistente</div>
-              <div class="email-subject">Recordatorio: Reunión en Bogotá</div>
-              <div class="email-text">
-                Tienes una reunión programada mañana a las 9:00 AM en Bogotá, Cundinamarca.<br><br>
-                ¿Quieres que organice tu transporte?
-              </div>
-              <div class="email-time">Recibido hace 2 minutos</div>
-            </div>
-          </div>
-
-          <!-- STEP 1: Agent searching -->
-          <div class="phone-screen-content step-search" id="phone-1" style="display:none;">
-            <div class="phone-status-bar">
-              <span style="color: #fff;">9:42</span>
-              <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
-            </div>
-            <div class="search-header">
-              <span>Buscando opciones...</span>
-              <div class="search-dots">
-                <span></span><span></span><span></span>
-              </div>
-            </div>
-            <div class="search-results">
-              <div class="flight-card" id="flight-0">
-                <div class="flight-info">
-                  <div class="flight-airline">Avianca</div>
-                  <div class="flight-time">6:30 AM → 7:45 AM</div>
-                </div>
-                <div class="flight-price">$420</div>
-              </div>
-              <div class="flight-card selected" id="flight-1">
-                <div class="flight-info">
-                  <div class="flight-airline">LATAM</div>
-                  <div class="flight-time">5:00 AM → 6:15 AM</div>
-                </div>
-                <div class="flight-price">$380</div>
-              </div>
-              <div class="flight-card" id="flight-2">
-                <div class="flight-info">
-                  <div class="flight-airline">Viva Air</div>
-                  <div class="flight-time">5:45 AM → 7:00 AM</div>
-                </div>
-                <div class="flight-price">$310</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- STEP 2: Notification -->
-          <div class="phone-screen-content step-notification" id="phone-2" style="display:none;">
-            <div class="phone-status-bar">
-              <span style="color: #fff;">9:43</span>
-              <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
-            </div>
-            <div class="notify-header">
-              <span>Notificaciones</span>
-            </div>
-            <div class="notify-app">
-              <div class="notify-icon">
-                <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;">
-                  <circle cx="18" cy="24" r="16" fill="#EB001B" opacity="0.95"/>
-                  <circle cx="30" cy="24" r="16" fill="#F79E1B" opacity="0.95"/>
-                </svg>
-              </div>
-              <div>
-                <div class="notify-app-name">Mastercard Agent Pay</div>
-                <div class="notify-app-sub">agentpay.mastercard.com</div>
-              </div>
-            </div>
-            <div class="notify-card" id="notify-card">
-              <div class="notify-card-header">
-                <span>Solicitud de pago</span>
-              </div>
-              <div class="notify-card-body">
-                <div class="notify-amount">$380 USD</div>
-                <div class="notify-concept">Vuelo BOG — LATAM · Agente: MiAsistente</div>
-                <div class="notify-token">
-                  <span>TOKEN</span>
-                  <span>Tu tarjeta real nunca se expone</span>
-                </div>
-                <button class="notify-btn auth">Autorizar con biometría</button>
-                <button class="notify-btn deny">Denegar</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- STEP 3: Biometric -->
-          <div class="phone-screen-content step-biometric" id="phone-3" style="display:none;">
-            <div class="phone-status-bar">
-              <span style="color: #fff;">9:43</span>
-              <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
-            </div>
-            <div class="biometric-header">
-              Autorización biométrica
-            </div>
-            <div class="biometric-body" id="biometric-body">
-              <div class="biometric-face"><svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="16" stroke="#B8962E" stroke-width="1"/><circle cx="20" cy="20" r="6" stroke="#B8962E" stroke-width="1"/></svg></div>
-              <div class="biometric-text">Verificación requerida</div>
-              <div class="biometric-sub">Usa Face ID o tu huella para autorizar</div>
-              <div class="biometric-scan">
-                <div class="biometric-scan-bar"></div>
-              </div>
-            </div>
-            <div class="biometric-ok" id="biometric-ok">
-              <div class="biometric-ok-icon">✓</div>
-              <div class="biometric-ok-text">Autorizado</div>
-            </div>
-          </div>
-
-          <!-- STEP 4: Approved -->
-          <div class="phone-screen-content step-approved" id="phone-4" style="display:none;">
-            <div class="phone-status-bar">
-              <span style="color: #fff;">9:44</span>
-              <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
-            </div>
-            <div class="approved-header">
-              <span>Pago procesado</span>
-              <span style="color:#00c850;">✓ Completado</span>
-            </div>
-            <div class="approved-body">
-              <div class="approved-icon">
-                <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" style="width:48px;height:48px;">
-                  <circle cx="18" cy="24" r="16" fill="#EB001B" opacity="0.95"/>
-                  <circle cx="30" cy="24" r="16" fill="#F79E1B" opacity="0.95"/>
-                </svg>
-              </div>
-              <div class="approved-title">Pago aprobado</div>
-              <div class="approved-sub">Vuelo LATAM · $380 USD · Bogotá</div>
-              <div class="approved-tokens">
-                <div class="approved-token-row">
-                  <span class="approved-token-label">Token usado</span>
-                  <span class="approved-token-val">#x7K2 · 9m4f</span>
-                </div>
-                <div class="approved-token-row">
-                  <span class="approved-token-label">Tarjeta real expuesta</span>
-                  <span class="approved-token-val" style="color:#00c850;">Nunca</span>
-                </div>
-                <div class="approved-token-row">
-                  <span class="approved-token-label">Agente verificado</span>
-                  <span class="approved-token-val">#REG-2847</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- STEP 5: Summary - orbital flow -->
-          <div class="phone-screen-content step-summary" id="phone-5" style="display:none;">
-            <div class="phone-status-bar">
-              <span style="color: #fff;">9:44</span>
-              <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
-            </div>
-            <div class="summary-header">Cómo funciona Agent Pay</div>
-            <div class="summary-center">
-              <!-- Central logo -->
-              <div class="token-core">
-                <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;">
-                  <circle cx="18" cy="24" r="16" fill="#EB001B"/>
-                  <circle cx="30" cy="24" r="16" fill="#F79E1B"/>
-                </svg>
-              </div>
-            </div>
-            <div class="summary-footer">Mastercard Agent Pay · Seguridad en cada transacción</div>
-          </div>
-
-        </div><!-- /phone-screen -->
-      </div><!-- /phone-body -->
-      <div class="phone-label" id="phone-label">Tu teléfono</div>
-    </div><!-- /phone-wrapper -->
-
-  </div><!-- /phone-panel -->
-</div><!-- /main -->
+<div class="ecom-bottom">
+  <div class="selected-info" id="selectedInfo">
+    <span class="placeholder">Selecciona un producto para continuar</span>
+  </div>
+  <button class="cta" id="ctaBtn" disabled type="button"><span class="icon">→</span>Pagar con mi agente AI</button>
+</div>
+</div>
+<!-- /catalog-screen placeholder -->
 
 <!-- Step 5: Full summary overlay -->
 <div id="step5-screen">
-  <div class="s5-logo-wrap">
-    <div class="s5-logo-core" style="width:80px;height:80px;">
-      <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" style="width:80px;height:80px;">
-        <circle cx="28" cy="40" r="22" fill="#EB001B"/>
-        <circle cx="52" cy="40" r="22" fill="#F79E1B"/>
-      </svg>
-    </div>
-    <img src="https://pentamarketing.co/mc/bancolombialogo.webp" alt="Bancolombia" style="height:80px;width:auto;">
-  </div>
-  <div class="s5-sep" id="s5-sep1"></div>
-  <div class="s5-sep" id="s5-sep2"></div>
-
-  <!-- Time card -->
-  <div class="time-card" id="time-card">
-    <div class="time-card-header">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B8962E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <polyline points="12 6 12 12 16 14"/>
-      </svg>
-      <span>Tiempo ahorrado</span>
-    </div>
-    <div class="time-card-body">
-                <div class="time-card-num">2.3 <span>horas/semana</span></div>
-              </div>
-              <div class="time-card-bars">
-                <div class="time-bar-row">
-                  <span class="time-bar-label">Compra tradicional</span>
-                  <div class="time-bar-track"><div class="time-bar-fill" style="width:100%"></div></div>
-                  <span class="time-bar-val">4.5h</span>
-                </div>
-                <div class="time-bar-row">
-                  <span class="time-bar-label">Con Agent Pay</span>
-                  <div class="time-bar-track"><div class="time-bar-fill gold" style="width:51%"></div></div>
-                  <span class="time-bar-val">2.2h</span>
-                </div>
-              </div>
-    <div class="time-card-footer">
-      Recuperas <strong>51%</strong> de tu tiempo en compras
-    </div>
+  <div class="reward-logos">
+    <img class="mc-logo" src="https://pentamarketing.co/mc/logo-Mastercard.png" alt="Mastercard">
+    <img src="https://pentamarketing.co/mc/bancolombialogo.webp" alt="Bancolombia">
   </div>
 
-  <div class="s5-steps">
-    <div class="s5-step-item" id="s5-item1">
-      <div class="s5-step-icon">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="11" cy="11" r="9" stroke="#B8962E" stroke-width="1"/>
-          <circle cx="11" cy="11" r="3" fill="#B8962E"/>
-        </svg>
+  <div class="reward-ticket">
+    <div class="reward-ticket-corner-bl"></div>
+    <div class="reward-ticket-header">
+      <div class="reward-ticket-check">&#10003;</div>
+      <div class="reward-ticket-title-block">
+        <div class="reward-ticket-title">Compra aprobada</div>
+        <div class="reward-ticket-sub">Mastercard Agent Pay · Bancolombia</div>
       </div>
-      <div class="s5-step-body">
-        <div class="s5-step-num">Paso 01</div>
-        <div class="s5-step-title">Agente verificado</div>
-        <div class="s5-step-desc">Solo agentes registrados en Mastercard pueden iniciar pagos en tu nombre.</div>
-      </div>
-    </div>
-    <div class="s5-step-item" id="s5-item2">
-      <div class="s5-step-icon">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11 2L13.5 7.5L19.5 8.5L15 13L16.5 19L11 16L5.5 19L7 13L2.5 8.5L8.5 7.5L11 2Z" stroke="#B8962E" stroke-width="1" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div class="s5-step-body">
-        <div class="s5-step-num">Paso 02</div>
-        <div class="s5-step-title">Intención verificada</div>
-        <div class="s5-step-desc">Tu intención de compra se verifica antes de cada transacción. Nunca se asume.</div>
+      <div class="reward-ticket-id">
+        <div class="reward-ticket-id-label">ID Transacción</div>
+        <div class="reward-ticket-id-value">MC-7H3K-2X</div>
       </div>
     </div>
-    <div class="s5-step-item" id="s5-item3">
-      <div class="s5-step-icon">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11 4L11 18M4 11L18 11" stroke="#B8962E" stroke-width="1" stroke-linecap="round"/>
-        </svg>
+
+    <div class="reward-product" id="rewardProduct">
+      <div class="reward-product-thumb"><img id="rewardProductImg" src="" alt=""></div>
+      <div class="reward-product-info">
+        <div class="reward-product-label">Producto</div>
+        <div class="reward-product-name" id="rewardProductName">—</div>
+        <div class="reward-product-brand" id="rewardProductBrand">—</div>
       </div>
-      <div class="s5-step-body">
-        <div class="s5-step-num">Paso 03</div>
-        <div class="s5-step-title">Tokenización</div>
-        <div class="s5-step-desc">Tu tarjeta real nunca se expone. Se genera un token único e irrepetible para cada pago.</div>
+      <div class="reward-product-price" id="rewardProductPrice">—</div>
+    </div>
+
+    <div class="reward-compare">
+      <div class="reward-compare-cell human">
+        <div class="who">Humano</div>
+        <div class="num-row"><span class="num">50</span><span class="unit">m</span></div>
+      </div>
+      <div class="reward-compare-arrow">&#8594;</div>
+      <div class="reward-compare-cell agent">
+        <div class="who">Agente</div>
+        <div class="num-row"><span class="num">5</span><span class="unit">m</span></div>
+        <div class="reward-compare-saved">−90%</div>
       </div>
     </div>
-    <div class="s5-step-item" id="s5-item4">
-      <div class="s5-step-icon">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="11" cy="11" r="8" stroke="#B8962E" stroke-width="1"/>
-          <circle cx="11" cy="11" r="4" stroke="#B8962E" stroke-width="1"/>
-        </svg>
+
+    <div class="reward-steps">
+      <div class="reward-steps-label">Procesado en 4 pasos</div>
+      <div class="reward-steps-grid">
+        <div class="reward-step">
+          <div class="reward-step-num">01</div>
+          <div class="reward-step-title">Agente verificado</div>
+          <div class="reward-step-check">&#10003;</div>
+        </div>
+        <div class="reward-step">
+          <div class="reward-step-num">02</div>
+          <div class="reward-step-title">Intención verificada</div>
+          <div class="reward-step-check">&#10003;</div>
+        </div>
+        <div class="reward-step">
+          <div class="reward-step-num">03</div>
+          <div class="reward-step-title">Tokenización</div>
+          <div class="reward-step-check">&#10003;</div>
+        </div>
+        <div class="reward-step">
+          <div class="reward-step-num">04</div>
+          <div class="reward-step-title">Autorización biométrica</div>
+          <div class="reward-step-check">&#10003;</div>
+        </div>
       </div>
-      <div class="s5-step-body">
-        <div class="s5-step-num">Paso 04</div>
-        <div class="s5-step-title">Autorización biométrica</div>
-        <div class="s5-step-desc">Huella o Face ID. Tú autorizas cada transacción. Control absoluto, siempre.</div>
+    </div>
+
+    <div class="reward-ticket-cta">
+      <div class="reward-ticket-cta-left">
+        <div class="reward-ticket-cta-dot"></div>
+        <div class="reward-ticket-cta-text">Reclama tu <em>premio</em> en el stand</div>
       </div>
+      <button class="reward-ticket-cta-btn">Escanear QR</button>
     </div>
   </div>
-  <div class="s5-sep" id="s5-sep3"></div>
+
+  <div style="text-align:center; margin-top: 14px;">
+    <button class="s5-reset-btn" style="border-color:#FF5F00;color:#FF5F00;background:transparent;padding:10px 22px;border-radius:999px;font-size:0.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;">&#8634; Nueva demo</button>
+  </div>
+
   <div class="s5-footer" id="s5-footer">
     <div class="s5-footer-brand">Mastercard Agent Pay</div>
     <div class="s5-footer-tagline">Seguridad en cada transacción</div>
   </div>
 </div>
+<!-- /step5-screen -->
 
 <!-- ═══════════════════════════
      NAV BAR
@@ -2451,101 +2312,115 @@ const TOTAL_STEPS = 6;
 // ══════════════════════════
 //  DATA: Messages per step
 // ══════════════════════════
-const MESSAGES = [
-  // STEP 0: Email / Agenda
-  [
-    {
-      type: 'system',
-      label: 'Tu agenda recibe un recordatorio',
-      bubble: 'Reunión mañana a las 9:00 AM en Bogotá.',
-      time: 'Hace 2 min',
-      phone: 'email',
-    }
-  ],
-  // STEP 1: Agent searching
-  [
-    {
-      type: 'user',
-      label: 'Tú',
-      bubble: 'Sí, reserva el vuelo más económico que llegue a tiempo.',
-      time: '9:41',
-    },
-    {
-      type: 'agent',
-      label: 'Agente AI',
-      bubble: 'Entendido. Estoy buscando las mejores opciones de vuelo a Bogotá para mañana.',
-      time: '9:42',
-    },
-    {
-      type: 'agent',
-      label: 'Agente AI',
-      bubble: 'Encontré 3 opciones. El más económico que llega a tiempo:',
-      time: '9:42',
-      highlight: 'LATAM · $380 USD · 5:00 AM → 6:15 AM',
-    },
-  ],
-  // STEP 2: Notification
-  [
-    {
-      type: 'agent',
-      label: 'Agente AI',
-      bubble: 'Reservo el vuelo LATAM por $380 USD. Solicitando tu autorización a Mastercard Agent Pay...',
-      time: '9:43',
-    },
-    {
-      type: 'mastercard',
-      label: 'Mastercard Agent Pay',
-      bubble: 'Reservo el vuelo LATAM por $380 USD. Solicitando tu autorización a Mastercard Agent Pay...',
-      time: '9:43',
-    },
-  ],
-  // STEP 3: Biometric
-  [
-    {
-      type: 'mastercard',
-      label: 'Mastercard Agent Pay',
-      bubble: 'Solicitando verificación biométrica para confirmar tu identidad y autorizar la transacción.',
-      time: '9:43',
-    },
-    {
-      type: 'system',
-      label: 'Tu teléfono requiere verificación',
-      bubble: 'Face ID / Huella activado. Esperando tu confirmación biométrica...',
-      time: '9:43',
-    },
-  ],
-  // STEP 4: Approved
-  [
-    {
-      type: 'mastercard',
-      label: 'Mastercard Agent Pay',
-      bubble: 'Pago aprobado. Token utilizado: #x7K2 · 9m4f. Tu tarjeta real no fue expuesta.',
-      time: '9:44',
-    },
-    {
-      type: 'agent',
-      label: 'Agente AI',
-      bubble: 'Reserva confirmada. Itinerario enviado a tu correo. Listo para tu reunión en Bogotá.',
-      time: '9:44',
-    },
-  ],
-  // STEP 5: Summary
-  [
-    {
-      type: 'summary',
-      label: 'Así funciona Mastercard Agent Pay',
-      bubble: 'El agente preparó la intención de pago → Mastercard Agent Pay verificó al agente → Tokenizó la transacción → Tú autorizaste con tu biometría.',
-      time: '',
-    },
-  ],
-];
+// ══════════════════════════════════════
+//  MESSAGES - dinámico por producto
+// ══════════════════════════════════════
+function formatPriceCOP(n) { return '$' + n.toLocaleString('es-CO'); }
+
+function buildMessages(p) {
+  const pName = p ? p.name.split(' · ')[0] : 'tu producto';
+  const pPrice = p ? formatPriceCOP(p.price) : '$0';
+  const pShortPrice = p ? formatPriceCOP(p.price) : '$0';
+  const pBrand = p ? p.brand : '';
+  return [
+    // STEP 0: Intención de compra
+    [
+      {
+        type: 'system',
+        label: 'Tu agente recibe un encargo',
+        bubble: 'Comprar ' + pName + ' por ' + pPrice + '.',
+        time: 'Hace 2 min',
+        phone: 'email',
+      }
+    ],
+    // STEP 1: Agente buscando
+    [
+      {
+        type: 'user',
+        label: 'Tú',
+        bubble: 'Sí, cómpralo. Prefiero la opción más confiable con envío rápido.',
+        time: '9:41',
+      },
+      {
+        type: 'agent',
+        label: 'Agente AI',
+        bubble: 'Entendido. Estoy comparando opciones de ' + pName + ' con envío a tu dirección.',
+        time: '9:42',
+      },
+      {
+        type: 'agent',
+        label: 'Agente AI',
+        bubble: 'Encontré la mejor opción:',
+        time: '9:42',
+        highlight: pBrand + ' · ' + pShortPrice + ' · ' + (p ? p.shipping : 'Envío gratis'),
+      },
+    ],
+    // STEP 2: Autorización
+    [
+      {
+        type: 'agent',
+        label: 'Agente AI',
+        bubble: 'Procedo a comprar ' + pName + ' por ' + pPrice + '. Solicitando tu autorización a Mastercard Agent Pay...',
+        time: '9:43',
+      },
+      {
+        type: 'mastercard',
+        label: 'Mastercard Agent Pay',
+        bubble: 'Iniciando compra de ' + pName + ' (' + pPrice + '). Solicitando tu autorización a Mastercard Agent Pay...',
+        time: '9:43',
+      },
+    ],
+    // STEP 3: Biometría
+    [
+      {
+        type: 'mastercard',
+        label: 'Mastercard Agent Pay',
+        bubble: 'Solicitando verificación biométrica para confirmar tu identidad y autorizar la compra de ' + pPrice + '.',
+        time: '9:43',
+      },
+      {
+        type: 'system',
+        label: 'Tu teléfono requiere verificación',
+        bubble: 'Face ID / Huella activado. Esperando tu confirmación biométrica...',
+        time: '9:43',
+      },
+    ],
+    // STEP 4: Aprobado
+    [
+      {
+        type: 'mastercard',
+        label: 'Mastercard Agent Pay',
+        bubble: 'Pago aprobado. Token utilizado: #x7K2 · 9m4f. Tu tarjeta real no fue expuesta.',
+        time: '9:44',
+      },
+      {
+        type: 'agent',
+        label: 'Agente AI',
+        bubble: 'Compra confirmada: ' + pName + ' por ' + pPrice + '. Confirmación enviada a tu correo.',
+        time: '9:44',
+      },
+    ],
+    // STEP 5: Summary
+    [
+      {
+        type: 'summary',
+        label: 'Así funciona Mastercard Agent Pay',
+        bubble: 'El agente preparó la intención de compra de ' + pName + ' → Mastercard Agent Pay verificó al agente → Tokenizó la transacción → Tú autorizaste con tu biometría.',
+        time: '',
+      },
+    ],
+  ];
+}
+
+// Compatibilidad: si por alguna razon MESSAGES se accede como array, lo generamos
+const MESSAGES = buildMessages(null);
 
 // ══════════════════
 //  STATE
 // ══════════════════
 let currentStep = -1; // -1 = loading
 let normalMsgContainer = document.getElementById('chat-messages-normal');
-let step5Container = document.getElementById('step5-summary');
+let step5Container = document.getElementById('step5-screen');
 let msgContainer = normalMsgContainer;
 let particlesSpawned = false;
 
@@ -2668,18 +2543,19 @@ function updateUI() {
   const chatPanel = document.querySelector('.chat-panel');
   const phonePanel = document.querySelector('.phone-panel');
   const step5Screen = document.getElementById('step5-screen');
-  const step5Summary = document.getElementById('step5-summary');
   const normalMsgs = document.getElementById('chat-messages-normal');
 
   if (currentStep === 5) {
     mainEl.classList.add('step5-active');
-    step5Screen.classList.remove('show');
-    step5Summary.classList.add('show');
+    step5Screen.classList.add('show');
+    chatPanel.style.display = 'none';
+    phonePanel.style.display = 'none';
     setTimeout(animateStep5, 100);
   } else {
     mainEl.classList.remove('step5-active');
     step5Screen.classList.remove('show');
-    step5Summary.classList.remove('show');
+    chatPanel.style.display = '';
+    phonePanel.style.display = '';
   }
 
   // Phone: show correct screen (steps 0-4 only)
@@ -2759,13 +2635,24 @@ function updateUI() {
 //  ANIMATE STEP 5
 // ══════════════════
 function animateStep5() {
-  // Step cards stagger (4 cards in grid, 2 cols)
-  ['s5-step1','s5-step2','s5-step3','s5-step4'].forEach((id, i) => {
-    setTimeout(() => document.getElementById(id)?.classList.add('show'), 200 + i * 180);
-  });
-
-  // Time card appears after cards
-  setTimeout(() => document.getElementById('time-card')?.classList.add('show'), 900);
+  // Llenar info del producto comprado
+  const p = catalogSelected ? CATALOG_PRODUCTS.find(x => x.id === catalogSelected) : null;
+  if (p) {
+    const img = document.getElementById('rewardProductImg');
+    const name = document.getElementById('rewardProductName');
+    const brand = document.getElementById('rewardProductBrand');
+    const price = document.getElementById('rewardProductPrice');
+    if (img) { img.src = p.image; img.alt = p.name; }
+    if (name) name.textContent = p.name.split(' · ')[0];
+    if (brand) brand.textContent = p.brand + (p.shipping.includes('mañana') ? ' · Llega mañana' : p.shipping.includes('5 días') ? ' · 5 días hábiles' : ' · Envío gratis');
+    if (price) price.textContent = catalogFormatPrice(p.price);
+  }
+  // Logos appear first
+  setTimeout(() => document.querySelector('.reward-logos')?.classList.add('show'), 100);
+  // Ticket fades in
+  setTimeout(() => document.querySelector('.reward-ticket')?.classList.add('show'), 300);
+  // Footer
+  setTimeout(() => document.getElementById('s5-footer')?.classList.add('show'), 900);
 }
 
 function renderMessages(step) {
@@ -2776,7 +2663,9 @@ function renderMessages(step) {
   if (step === 5) return; // Step 5 uses the visual summary, not messages
 
   // Clear messages (keep fade)
-  const msgs = MESSAGES[step] || [];
+  const currentProduct = catalogSelected ? CATALOG_PRODUCTS.find(x => x.id === catalogSelected) : null;
+  const currentMessages = buildMessages(currentProduct);
+  const msgs = currentMessages[step] || [];
   const existing = normalMsgContainer.querySelectorAll('.message');
   existing.forEach(m => m.remove());
 
@@ -2866,14 +2755,105 @@ function renderMessages(step) {
   });
 }
 
-// ══════════════════
+// ══════════════════════════════════════
+//  CATALOGO - JS
+// ══════════════════════════════════════
+const CATALOG_PRODUCTS = [
+  { id: 'iphone-17', name: 'iPhone 17 256GB · Chip Apple A19 · 5G', brand: 'Apple', price: 4499000, priceOld: 4999000, shipping: 'Envío gratis hoy', rating: 4.8, reviews: 1284, badge: '-10%', image: 'img/products/iphone-17.jpg' },
+  { id: 'sony-wh1000xm5', name: 'Audífonos Sony WH-1000XM5 · Cancelación de ruido', brand: 'Sony', price: 1799000, priceOld: 2199000, shipping: 'Envío gratis hoy', rating: 4.9, reviews: 856, badge: '-18%', image: 'img/products/sony-wh1000xm5.jpg' },
+  { id: 'airpods-pro-2', name: 'Apple AirPods Pro 2 · Audio espacial', brand: 'Apple', price: 1299000, priceOld: 1499000, shipping: 'Envío gratis hoy', rating: 4.7, reviews: 2103, badge: '-13%', image: 'img/products/airpods-pro-2.jpg' },
+  { id: 'galaxy-buds-fe', name: 'Samsung Galaxy Buds FE · ANC · 30h batería', brand: 'Samsung', price: 399000, priceOld: 499000, shipping: 'Envío gratis hoy', rating: 4.5, reviews: 542, badge: '-20%', image: 'img/products/galaxy-buds-fe.jpg' },
+  { id: 'aspiradora-electrolux', name: 'Aspiradora Robot Electrolux · Mapeo láser', brand: 'Electrolux', price: 1799000, priceOld: 2299000, shipping: 'Envío gratis · Llega mañana', rating: 4.6, reviews: 327, badge: '-22%', image: 'img/products/aspiradora-electrolux.jpg' },
+  { id: 'bici-gw', name: 'Bicicleta GW Hyena Rin 27.5" · 21 velocidades', brand: 'GW', price: 1499000, priceOld: 1899000, shipping: 'Envío gratis · 5 días hábiles', rating: 4.7, reviews: 198, badge: '-21%', image: 'img/products/bici-gw-falabella.jpg' }
+];
+let catalogSelected = null;
+
+function catalogFormatPrice(n) { return '$' + n.toLocaleString('es-CO'); }
+function catalogRenderStars(r) { const f = Math.floor(r); return '★'.repeat(f) + (r % 1 >= 0.5 ? '½' : ''); }
+
+function renderCatalog() {
+  const grid = document.getElementById('productGrid');
+  const aside = document.getElementById('asideProducts');
+  if (!grid || !aside) return;
+  grid.innerHTML = CATALOG_PRODUCTS.map(p => {
+    const isSel = catalogSelected === p.id;
+    return '<div class="product-card ' + (isSel ? 'selected' : '') + '" data-id="' + p.id + '">' +
+      '<span class="badge">' + p.badge + '</span>' +
+      '<span class="check-overlay">✓</span>' +
+      '<div class="img-wrap"><img src="' + p.image + '" alt="' + p.name + '" loading="lazy"></div>' +
+      '<div class="info">' +
+        '<div class="brand">' + p.brand + '</div>' +
+        '<div class="name">' + p.name + '</div>' +
+        '<div class="rating"><span class="stars">' + catalogRenderStars(p.rating) + '</span><span>' + p.rating + '</span><span>·</span><span>(' + p.reviews.toLocaleString('es-CO') + ')</span></div>' +
+        '<div class="price-row"><span class="price">' + catalogFormatPrice(p.price) + '</span><span class="price-old">' + catalogFormatPrice(p.priceOld) + '</span></div>' +
+        '<div class="shipping">⚡ ' + p.shipping + '</div>' +
+      '</div></div>';
+  }).join('');
+  aside.innerHTML = CATALOG_PRODUCTS.map(p => {
+    const isSel = catalogSelected === p.id;
+    return '<button class="aside-product ' + (isSel ? 'active' : '') + '" data-id="' + p.id + '" type="button">' +
+      '<div class="thumb"><img src="' + p.image + '" alt="' + p.name + '"></div>' +
+      '<div class="text"><div class="name">' + p.name + '</div><div class="price">' + catalogFormatPrice(p.price) + '</div></div>' +
+      '<span class="check">✓</span></button>';
+  }).join('');
+  grid.querySelectorAll('.product-card').forEach(c => c.addEventListener('click', () => catalogSelect(c.dataset.id)));
+  aside.querySelectorAll('.aside-product').forEach(b => b.addEventListener('click', () => catalogSelect(b.dataset.id)));
+  catalogUpdateUI();
+}
+
+function catalogSelect(id) {
+  catalogSelected = catalogSelected === id ? null : id;
+  renderCatalog();
+}
+
+function catalogUpdateUI() {
+  const info = document.getElementById('selectedInfo');
+  const cta = document.getElementById('ctaBtn');
+  const asideCta = document.getElementById('asideCta');
+  if (!catalogSelected) {
+    if (info) info.innerHTML = '<span class="placeholder">Selecciona un producto para continuar</span>';
+    if (cta) cta.disabled = true;
+    if (asideCta) asideCta.disabled = true;
+    return;
+  }
+  const p = CATALOG_PRODUCTS.find(x => x.id === catalogSelected);
+  if (info) {
+    info.innerHTML = '<div class="thumb"><img src="' + p.image + '" alt="' + p.name + '"></div>' +
+      '<div class="text"><div class="label">✓ Producto seleccionado</div>' +
+      '<div class="name">' + p.name + '</div><div class="price">' + catalogFormatPrice(p.price) + '</div></div>';
+  }
+  if (cta) cta.disabled = false;
+  if (asideCta) asideCta.disabled = false;
+}
+
+function catalogStartCheckout() {
+  if (!catalogSelected) return;
+  document.getElementById('catalog-screen').style.display = 'none';
+  document.querySelector('.main').style.display = '';
+  document.getElementById('step5-screen').classList.remove('show');
+  goToStep(0);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const cta = document.getElementById('ctaBtn');
+  const asideCta = document.getElementById('asideCta');
+  if (cta) cta.addEventListener('click', catalogStartCheckout);
+  if (asideCta) asideCta.addEventListener('click', catalogStartCheckout);
+});
+
+// ══════════════════════════════════════
 //  INIT
-// ══════════════════
+// ══════════════════════════════════════
 window.addEventListener('load', () => {
   setTimeout(() => {
     document.getElementById('loading').classList.add('hidden');
     setTimeout(() => {
-      goToStep(0);
+      // Mostrar el catálogo en vez de ir directo al step 0
+      document.getElementById('catalog-screen').style.display = 'block';
+      document.querySelector('.main').style.display = 'none';
+      document.getElementById('step5-screen').classList.remove('show');
+      // Renderizar el catálogo
+      renderCatalog();
     }, 400);
   }, 800);
 });
