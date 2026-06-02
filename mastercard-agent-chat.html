@@ -268,6 +268,16 @@ body::after {
   color: var(--mc-muted);
   font-weight: 300;
 }
+.header-logos {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.header-logos img {
+  height: 32px;
+  width: auto;
+}
 
 .chat-messages {
   width: 100%;
@@ -1834,6 +1844,10 @@ body::after {
 
       <div class="chat-header" id="chat-header">
         <h1>Pagos a través de <span class="accent">Agentes</span></h1>
+        <div class="header-logos">
+          <img src="https://pentamarketing.co/mc/logo-Mastercard.png" alt="Mastercard">
+          <img src="https://pentamarketing.co/mc/bancolombialogo.webp" alt="Bancolombia">
+        </div>
         <p>Recorre el flujo real de una transacción con Mastercard Agent Pay</p>
       </div>
 
