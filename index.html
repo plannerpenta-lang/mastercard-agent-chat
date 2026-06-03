@@ -894,22 +894,14 @@ body::after {
 .email-header { padding: 14px 16px 10px; border-bottom: 1px solid rgba(255,255,255,0.08); }
 .email-header span { font-size: 0.7rem; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; }
 .email-body { padding: 16px; flex: 1; }
-.email-from { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--mc-text); }
+.email-product-img { display: block; width: auto; height: 120px; max-width: 100%; object-fit: contain; margin: 0 auto 12px; border-radius: 8px; background: rgba(255,255,255,0.04); }
 .email-subject { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; color: var(--mc-text); }
 .email-text { font-size: 0.82rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
-.email-time { font-size: 0.68rem; color: rgba(255,255,255,0.35); margin-top: 14px; }
+.email-confirm-btn { display: block; width: 100%; margin-top: 14px; padding: 10px 14px; background: linear-gradient(135deg, #FF5F00 0%, #FF7A00 100%); color: #fff; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+.email-confirm-btn:hover { filter: brightness(1.1); }
 
-/* STEP 1: Agent searching */
-.step-search { display: flex; flex-direction: column; height: 100%; padding-top: 28px; }
-.search-header { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; }
-.search-header span { font-size: 0.8rem; font-weight: 600; color: var(--mc-text); }
-.search-dots { display: flex; gap: 4px; }
-.search-dots span { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.4); animation: dot-bounce 1.4s infinite; }
-.search-dots span:nth-child(2) { animation-delay: 0.2s; }
-.search-dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes dot-bounce { 0%,80%,100% { opacity: 0.3; } 40% { opacity: 1; } }
+/* STEP 1 eliminado: agente busca */
 
-.search-results { padding: 12px 16px; flex: 1; overflow: hidden; }
 .flight-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; opacity: 0; transform: translateX(-10px); transition: opacity 0.4s, transform 0.4s; }
 .flight-card.show { opacity: 1; transform: translateX(0); }
 .flight-card.selected { border-color: var(--mc-yellow); background: rgba(255,77,0,0.08); }
@@ -957,16 +949,12 @@ body::after {
 .notify-token { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
 .notify-token span:first-child { font-size: 0.68rem; background: rgba(255,77,0,0.15); border: 1px solid rgba(255,77,0,0.3); border-radius: 4px; padding: 2px 6px; color: var(--mc-yellow); font-weight: 600; }
 .notify-token span:last-child { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
-.notify-btn { width: 100%; padding: 12px; border-radius: 10px; border: none; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: 'Noto Sans', Arial, sans-serif; transition: transform 0.2s, box-shadow 0.2s; }
+.notify-btn { width: 100%; padding: 12px; border-radius: 10px; border: none; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: 'Noto Sans', Arial, sans-serif; transition: filter 0.2s; }
 .notify-btn.auth {
-  background: linear-gradient(135deg, var(--mc-red), var(--mc-yellow));
+  background: linear-gradient(135deg, #FF5F00 0%, #FF7A00 100%);
   color: white;
-  animation: btn-pulse 2s ease-in-out infinite;
 }
-@keyframes btn-pulse {
-  0%,100% { box-shadow: 0 0 0 0 rgba(255,77,0,0.4); }
-  50%     { box-shadow: 0 0 0 8px rgba(255,77,0,0); }
-}
+.notify-btn.auth:hover { filter: brightness(1.1); }
 .notify-btn.deny { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.4); margin-top: 6px; font-weight: 400; }
 
 /* STEP 3: Biometric - iOS Face ID style */
@@ -990,23 +978,51 @@ body::after {
   height: 200px;
   position: relative;
   margin-bottom: 24px;
-}@keyframes bracket-in {
-  from { opacity: 0; transform: scale(1.5); }
-  to   { opacity: 0.8; transform: scale(1); }
+  transition: transform 0.4s ease-in, opacity 0.4s ease-in;
 }
+.face-brackets.close {
+  transform: scale(0.6);
+  opacity: 0.4;
+}
+.bracket {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border: 2.5px solid #FF5F00;
+  box-shadow: 0 0 6px rgba(255,95,0,0.5);
+}
+.bracket-tl { top: 0; left: 0; border-right: none; border-bottom: none; }
+.bracket-tr { top: 0; right: 0; border-left: none; border-bottom: none; }
+.bracket-bl { bottom: 0; left: 0; border-right: none; border-top: none; }
+.bracket-br { bottom: 0; right: 0; border-left: none; border-top: none; }
 
 /* Face oval - dashed outline */
 .face-oval {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 90px;
   height: 110px;
-  border: 1.5px dashed rgba(184,150,46,0.4);
+  border: 1.5px dashed rgba(255,95,0,0.4);
   border-radius: 50%;
-  margin-bottom: 20px;
-  animation: oval-pulse 2s ease-in-out infinite;
+  overflow: hidden;
 }
-@keyframes oval-pulse {
-  0%,100% { border-color: rgba(184,150,46,0.2); box-shadow: none; }
-  50%      { border-color: rgba(184,150,46,0.6); box-shadow: 0 0 12px rgba(184,150,46,0.1); }
+.face-scan-line {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255,95,0,0) 0%, #FF5F00 50%, rgba(255,95,0,0) 100%);
+  box-shadow: 0 0 8px rgba(255,95,0,0.7);
+  animation: scan-down 2.5s ease-in-out forwards;
+}
+@keyframes scan-down {
+  0%   { top: 0%;   opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
 }
 
 /* White ring animation around brackets */
@@ -1018,27 +1034,21 @@ body::after {
   height: 180px;
   border-radius: 50%;
   border: 1px solid rgba(255,255,255,0);
-  animation: ring-expand 2s ease-out infinite;
+  animation: ring-expand 1.5s ease-out infinite;
   pointer-events: none;
 }
 @keyframes ring-expand {
-  0%   { border-color: rgba(255,255,255,0.3); transform: translate(-50%,-50%) scale(0.85); opacity: 1; }
-  100% { border-color: rgba(255,255,255,0);   transform: translate(-50%,-50%) scale(1.1);  opacity: 0; }
+  0%   { border-color: rgba(255,95,0,0.4); transform: translate(-50%,-50%) scale(0.85); opacity: 1; }
+  100% { border-color: rgba(255,95,0,0);   transform: translate(-50%,-50%) scale(1.15); opacity: 0; }
 }
 
 /* Status text */
 .face-status {
   font-size: 0.78rem;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.55);
   letter-spacing: 0.03em;
   margin-bottom: 10px;
-  transition: opacity 0.3s;
   text-align: center;
-}
-.face-status.scanning { animation: text-fade 3s ease-in-out infinite; }
-@keyframes text-fade {
-  0%,100% { opacity: 0.45; }
-  50%      { opacity: 0.8; }
 }
 
 /* Progress bar */
@@ -1053,7 +1063,7 @@ body::after {
 .face-progress-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, rgba(184,150,46,0.5), #B8962E);
+  background: linear-gradient(90deg, rgba(255,95,0,0.5), #FF5F00);
   border-radius: 2px;
   animation: face-progress-fill 2.5s ease forwards;
   position: relative;
@@ -1063,14 +1073,22 @@ body::after {
   position: absolute;
   right: 0; top: -2px;
   width: 2px; height: 7px;
-  background: #B8962E;
+  background: #FF5F00;
   border-radius: 1px;
-  box-shadow: 0 0 6px rgba(184,150,46,0.8);
+  box-shadow: 0 0 6px rgba(255,95,0,0.8);
 }
 @keyframes face-progress-fill {
   0%   { width: 0%; }
   70%  { width: 85%; }
   100% { width: 100%; }
+}
+
+/* Brackets close when success */
+.face-brackets.close {
+  animation: bracket-close 0.4s ease-in forwards;
+}
+@keyframes bracket-close {
+  to { transform: scale(0.6); opacity: 0.4; }
 }
 
 /* Face ID label */
@@ -1100,18 +1118,13 @@ body::after {
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background: rgba(0,168,90,0.08);
-  border: 2px solid #00A85A;
+  background: rgba(255,95,0,0.08);
+  border: 2px solid #FF5F00;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 14px;
-  box-shadow: 0 0 30px rgba(0,168,90,0.25), inset 0 0 20px rgba(0,168,90,0.05);
-  animation: ring-glow 1s ease infinite;
-}
-@keyframes ring-glow {
-  0%,100% { box-shadow: 0 0 20px rgba(0,168,90,0.2), inset 0 0 15px rgba(0,168,90,0.05); }
-  50%      { box-shadow: 0 0 35px rgba(0,168,90,0.35), inset 0 0 25px rgba(0,168,90,0.08); }
+  box-shadow: 0 0 30px rgba(255,95,0,0.25), inset 0 0 20px rgba(255,95,0,0.05);
 }
 .success-check {
   width: 44px;
@@ -1120,9 +1133,11 @@ body::after {
 .success-text {
   font-size: 0.82rem;
   font-weight: 600;
-  color: #00A85A;
+  color: #FF5F00;
   letter-spacing: 0.05em;
 }
+.success-continue { width: auto !important; min-width: 160px; margin-top: 18px; }
+.approved-continue { width: auto !important; min-width: 160px; margin-top: 18px; }
 .success-sub {
   font-size: 0.68rem;
   color: rgba(255,255,255,0.35);
@@ -1176,8 +1191,9 @@ body::after {
 .approved-check { animation: approve-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
 @keyframes approve-pop { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 .approved-mc-logo { margin: 4px 0; }
-.approved-from { font-size: 0.85rem; font-weight: 600; color: var(--mc-text); }
-.approved-amount { font-size: 1.5rem; font-weight: 700; color: var(--mc-text); }
+.approved-mc-logo img { display: block; width: 120px; max-width: 100%; height: 120px; object-fit: cover; border-radius: 12px; background: rgba(255,255,255,0.04); }
+.approved-from { font-size: 0.85rem; font-weight: 600; color: var(--mc-text); text-align: center; width: 100%; }
+.approved-amount { font-size: 1.5rem; font-weight: 700; color: var(--mc-text); text-align: center; width: 100%; }
 
 /* STEP 5: Summary (dark overlay) [DEPRECATED - using premium version at line ~608] */
 /**/
@@ -1762,11 +1778,6 @@ body::after {
 #catalog-screen .sidebar-item.active { background: rgba(255,95,0,0.12); color: #FF5F00; font-weight: 600; }
 #catalog-screen .sidebar-item .count { font-size: 0.7rem; color: rgba(255,255,255,0.35); font-weight: 500; }
 #catalog-screen .sidebar-item .arrow { color: rgba(255,255,255,0.3); font-size: 0.7rem; }
-#catalog-screen .filter-group { display: flex; flex-direction: column; gap: 8px; }
-#catalog-screen .filter-checkbox { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.8rem; color: rgba(255,255,255,0.7); }
-#catalog-screen .filter-checkbox input { display: none; }
-#catalog-screen .filter-checkbox .box { width: 16px; height: 16px; border: 1.5px solid rgba(255,255,255,0.2); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: transparent; }
-#catalog-screen .filter-checkbox input:checked + .box { background: #FF5F00; border-color: #FF5F00; color: #fff; }
 #catalog-screen .price-range { display: flex; flex-direction: column; gap: 8px; }
 #catalog-screen .price-range .track { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; position: relative; }
 #catalog-screen .price-range .fill { position: absolute; left: 10%; right: 30%; top: 0; bottom: 0; background: linear-gradient(90deg, #FF5F00, #FF7A00); border-radius: 2px; }
@@ -1850,12 +1861,6 @@ body::after {
 
 <!-- Loading -->
 <div id="loading">
-  <div class="loading-logo">
-    <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" style="width:56px;height:56px;">
-      <circle cx="28" cy="40" r="22" fill="#EB001B"/>
-      <circle cx="52" cy="40" r="22" fill="#F79E1B"/>
-    </svg>
-  </div>
   <div class="loading-text">Cargando...</div>
 </div>
 
@@ -1908,55 +1913,20 @@ body::after {
                 <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
               </div>
               <div class="email-header">
-                <span>Correo · Agenda</span>
+                <span>Preparando</span>
               </div>
               <div class="email-body">
-                <div class="email-from">Tu asistente</div>
-                <div class="email-subject">Recordatorio: Reunión en Bogotá</div>
-                <div class="email-text">
-                  Tienes una reunión programada mañana a las 9:00 AM en Bogotá, Cundinamarca.<br><br>
-                  ¿Quieres que organice tu transporte?
+                <img class="email-product-img" id="phone-email-img" src="" alt="">
+                <div class="email-subject" id="phone-email-subject">Producto seleccionado</div>
+                <div class="email-text" id="phone-email-text">
+                  Detectamos un producto en tu catálogo.<br><br>
+                  ¿Procedo con la compra?
                 </div>
-                <div class="email-time">Recibido hace 2 minutos</div>
+                <button class="email-confirm-btn" id="phone-email-confirm" type="button" onclick="nextStep()">Confirmar</button>
               </div>
             </div>
 
-            <!-- STEP 1: Agent searching -->
-            <div class="phone-screen-content step-search" id="phone-1" style="display:none;">
-              <div class="phone-status-bar">
-                <span style="color: #fff;">9:42</span>
-                <span style="color: rgba(255,255,255,0.5);">● ● ●</span>
-              </div>
-              <div class="search-header">
-                <span>Buscando opciones...</span>
-                <div class="search-dots">
-                  <span></span><span></span><span></span>
-                </div>
-              </div>
-              <div class="search-results">
-                <div class="flight-card" id="flight-0">
-                  <div class="flight-info">
-                    <div class="flight-airline">Avianca</div>
-                    <div class="flight-time">6:30 AM → 7:45 AM</div>
-                  </div>
-                  <div class="flight-price">$420</div>
-                </div>
-                <div class="flight-card selected" id="flight-1">
-                  <div class="flight-info">
-                    <div class="flight-airline">LATAM</div>
-                    <div class="flight-time">5:00 AM → 6:15 AM</div>
-                  </div>
-                  <div class="flight-price">$380</div>
-                </div>
-                <div class="flight-card" id="flight-2">
-                  <div class="flight-info">
-                    <div class="flight-airline">Viva Air</div>
-                    <div class="flight-time">5:45 AM → 7:00 AM</div>
-                  </div>
-                  <div class="flight-price">$310</div>
-                </div>
-              </div>
-            </div>
+            <!-- STEP 1 eliminado: agente busca -->
 
             <!-- STEP 2: Notification -->
             <div class="phone-screen-content step-notification" id="phone-2" style="display:none;">
@@ -1978,13 +1948,13 @@ body::after {
                   <span>AGENT PAY</span>
                 </div>
                 <div class="notify-card-body">
-                  <div class="notify-amount">$380 USD</div>
-                  <div class="notify-concept">LATAM Airlines · Bogotá</div>
+                  <div class="notify-amount" id="phone-notify-amount">$0 COP</div>
+                  <div class="notify-concept" id="phone-notify-concept">Producto</div>
                   <div class="notify-token">
                     <span>TOKEN ÚNICO</span>
                     <span>Visa••••4242</span>
                   </div>
-                  <div class="notify-btn auth">✓ Autorizar</div>
+                  <button class="notify-btn auth" type="button" onclick="nextStep()">✓ Autorizar</button>
                   <div class="notify-btn deny">✗ Rechazar</div>
                 </div>
               </div>
@@ -2001,15 +1971,17 @@ body::after {
 
               <!-- Scanning state -->
               <div class="face-scan-area" id="face-scan-area">
-                <div class="face-brackets">
+                <div class="face-brackets" id="face-brackets">
                   <div class="bracket bracket-tl"></div>
                   <div class="bracket bracket-tr"></div>
                   <div class="bracket bracket-bl"></div>
                   <div class="bracket bracket-br"></div>
+                  <div class="face-oval">
+                    <div class="face-scan-line" id="face-scan-line"></div>
+                  </div>
                   <div class="face-ring"></div>
                 </div>
-                <div class="face-oval"></div>
-                <div class="face-status scanning">Buscando rostro...</div>
+                <div class="face-status" id="face-status">Buscando rostro...</div>
                 <div class="face-progress">
                   <div class="face-progress-fill" id="face-progress-fill"></div>
                 </div>
@@ -2026,11 +1998,12 @@ body::after {
               <div class="biometric-success" id="biometric-success">
                 <div class="success-ring">
                   <svg class="success-check" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <polyline points="13,22 20,29 31,15" stroke="#00A85A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <polyline points="13,22 20,29 31,15" stroke="#FF5F00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </div>
                 <div class="success-text">Verificado</div>
                 <div class="success-sub">identidad confirmada</div>
+                <button class="email-confirm-btn success-continue" type="button" onclick="nextStep()">Continuar</button>
               </div>
             </div>
 
@@ -2046,15 +2019,16 @@ body::after {
               <div class="approved-body">
                 <div class="approved-check">
                   <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" style="width:50px;height:50px;">
-                    <circle cx="25" cy="25" r="22" fill="#00A85A" opacity="0.15"/>
-                    <polyline points="15,25 22,32 35,19" stroke="#00A85A" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="25" cy="25" r="22" fill="#FF5F00" opacity="0.15"/>
+                    <polyline points="15,25 22,32 35,19" stroke="#FF5F00" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </div>
                 <div class="approved-mc-logo">
-                  <img src="https://pentamarketing.co/mc/logo-Mastercard.png" alt="Mastercard" style="width:60px;height:auto;">
+                  <img id="approved-product-img" src="" alt="">
                 </div>
-                <div class="approved-from">LATAM Airlines</div>
-                <div class="approved-amount">$380 USD</div>
+                <div class="approved-from" id="phone-approved-from">Producto</div>
+                <div class="approved-amount" id="phone-approved-amount">$0 COP</div>
+                <button class="email-confirm-btn approved-continue" type="button" onclick="nextStep()">Continuar</button>
               </div>
             </div>
 
@@ -2100,46 +2074,10 @@ body::after {
       </ul>
     </div>
     <div class="sidebar-section">
-      <div class="sidebar-title">Marcas populares</div>
-      <ul class="sidebar-list">
-        <li class="sidebar-item"><span>Apple</span><span class="count">2</span></li>
-        <li class="sidebar-item"><span>Samsung</span><span class="count">1</span></li>
-        <li class="sidebar-item"><span>Sony</span><span class="count">1</span></li>
-        <li class="sidebar-item"><span>Electrolux</span><span class="count">1</span></li>
-        <li class="sidebar-item"><span>GW</span><span class="count">1</span></li>
-        <li class="sidebar-item"><span>Ver todas las marcas</span><span class="arrow">→</span></li>
-      </ul>
-    </div>
-    <div class="sidebar-section">
       <div class="sidebar-title">Rango de precio</div>
       <div class="price-range">
         <div class="track"><div class="fill"></div></div>
         <div class="labels"><span>$399.000</span><span>$4.499.000</span></div>
-      </div>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-title">Envío</div>
-      <div class="filter-group">
-        <label class="filter-checkbox"><input type="checkbox" checked><span class="box">✓</span><span>Envío gratis</span></label>
-        <label class="filter-checkbox"><input type="checkbox"><span class="box">✓</span><span>Llega hoy</span></label>
-        <label class="filter-checkbox"><input type="checkbox"><span class="box">✓</span><span>Llega mañana</span></label>
-        <label class="filter-checkbox"><input type="checkbox"><span class="box">✓</span><span>Recoge en tienda</span></label>
-      </div>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-title">Condición</div>
-      <div class="filter-group">
-        <label class="filter-checkbox"><input type="checkbox" checked><span class="box">✓</span><span>Nuevo</span></label>
-        <label class="filter-checkbox"><input type="checkbox"><span class="box">✓</span><span>Reacondicionado</span></label>
-        <label class="filter-checkbox"><input type="checkbox"><span class="box">✓</span><span>Usado</span></label>
-      </div>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-title">Pago</div>
-      <div class="filter-group">
-        <label class="filter-checkbox"><input type="checkbox" checked><span class="box">✓</span><span>Mastercard Agent Pay</span></label>
-        <label class="filter-checkbox"><input type="checkbox" checked><span class="box">✓</span><span>PSE</span></label>
-        <label class="filter-checkbox"><input type="checkbox"><span class="box">✓</span><span>Contra entrega</span></label>
       </div>
     </div>
     <div class="promo-card">
@@ -2185,7 +2123,7 @@ body::after {
   <div class="selected-info" id="selectedInfo">
     <span class="placeholder">Selecciona un producto para continuar</span>
   </div>
-  <button class="cta" id="ctaBtn" disabled type="button"><span class="icon">→</span>Pagar con mi agente AI</button>
+  <button class="cta" id="ctaBtn" disabled type="button"><span class="icon">→</span>Pagar</button>
 </div>
 </div>
 <!-- /catalog-screen placeholder -->
@@ -2270,7 +2208,7 @@ body::after {
   </div>
 
   <div style="text-align:center; margin-top: 14px;">
-    <button class="s5-reset-btn" style="border-color:#FF5F00;color:#FF5F00;background:transparent;padding:10px 22px;border-radius:999px;font-size:0.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;">&#8634; Nueva demo</button>
+    <button class="s5-reset-btn" id="s5ResetBtn" style="border-color:#FF5F00;color:#FF5F00;background:transparent;padding:10px 22px;border-radius:999px;font-size:0.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;">&#8634; Nueva demo</button>
   </div>
 
   <div class="s5-footer" id="s5-footer">
@@ -2327,7 +2265,7 @@ function buildMessages(p) {
     [
       {
         type: 'system',
-        label: 'Tu agente recibe un encargo',
+        label: 'El agente recibe el encargo',
         bubble: 'Comprar ' + pName + ' por ' + pPrice + '.',
         time: 'Hace 2 min',
         phone: 'email',
@@ -2501,8 +2439,16 @@ function goToStep(n) {
   updateUI();
 }
 
-function nextStep() { goToStep(currentStep + 1); }
-function prevStep() { goToStep(currentStep - 1); }
+function nextStep() { goToStep(currentStep === 0 ? 2 : currentStep + 1); }
+function prevStep() {
+  if (currentStep === 0) {
+    document.getElementById('catalog-screen').style.display = 'block';
+    document.querySelector('.main').style.display = 'none';
+    document.getElementById('step5-screen').classList.remove('show');
+    return;
+  }
+  goToStep(currentStep === 2 ? 0 : currentStep - 1);
+}
 
 document.getElementById('nav-prev').addEventListener('click', prevStep);
 document.getElementById('nav-next').addEventListener('click', nextStep);
@@ -2511,6 +2457,43 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextStep(); }
   if (e.key === 'ArrowLeft') { e.preventDefault(); prevStep(); }
 });
+
+// ══════════════════
+//  PHONE: render product info
+// ══════════════════
+function formatPriceCOP(cop) {
+  if (!cop) return '$0 COP';
+  return '$' + cop.toLocaleString('es-CO') + ' COP';
+}
+
+function updatePhone(product) {
+  if (!product) return;
+  const name = product.name;
+  const brand = product.brand || '';
+  const price = formatPriceCOP(product.price);
+  const img = product.image || '';
+
+  const emailSubj = document.getElementById('phone-email-subject');
+  const emailText = document.getElementById('phone-email-text');
+  const emailImg = document.getElementById('phone-email-img');
+  if (emailSubj) emailSubj.textContent = name;
+  if (emailImg) emailImg.src = img;
+  if (emailText) emailText.innerHTML = 'Procedo a comprar <strong>' + name + '</strong> por <strong>' + price + '</strong>.';
+
+  const notifyAmount = document.getElementById('phone-notify-amount');
+  const notifyConcept = document.getElementById('phone-notify-concept');
+  if (notifyAmount) notifyAmount.textContent = price;
+  if (notifyConcept) {
+    notifyConcept.textContent = name.split(' ').slice(0, 3).join(' ');
+  }
+
+  const approvedFrom = document.getElementById('phone-approved-from');
+  const approvedAmount = document.getElementById('phone-approved-amount');
+  const approvedImg = document.getElementById('approved-product-img');
+  if (approvedFrom) approvedFrom.textContent = name;
+  if (approvedAmount) approvedAmount.textContent = price;
+  if (approvedImg) approvedImg.src = img;
+}
 
 // ══════════════════
 //  UPDATE UI
@@ -2525,11 +2508,11 @@ function updateUI() {
 
   // Update step label
   const labels = [
-    'PASO 1 · AGENDA',
+    'EL AGENTE RECIBE EL ENCARGO',
     'PASO 2 · EL AGENTE BUSCA',
-    'PASO 3 · AUTORIZACIÓN',
-    'PASO 4 · VERIFICACIÓN',
-    'PASO 5 · APROBADO',
+    'AUTORIZACIÓN',
+    'VERIFICACIÓN',
+    'APROBADO',
     'RESUMEN',
   ];
   document.querySelector('.nav-step-label')?.remove();
@@ -2585,13 +2568,6 @@ function updateUI() {
   if (phoneLabel) phoneLabel.textContent = phoneLabels[currentStep] || '';
 
   // Phone step-specific animations
-  if (currentStep === 1) {
-    document.querySelectorAll('.flight-card').forEach((card, i) => {
-      card.classList.remove('show');
-      setTimeout(() => card.classList.add('show'), 300 + i * 400);
-    });
-  }
-
   if (currentStep === 2) {
     setTimeout(() => {
       const card = document.getElementById('notify-card');
@@ -2604,16 +2580,29 @@ function updateUI() {
     const faceArea = document.getElementById('face-scan-area');
     const success = document.getElementById('biometric-success');
     const progressFill = document.getElementById('face-progress-fill');
+    const scanLine = document.getElementById('face-scan-line');
+    const statusEl = document.getElementById('face-status');
+    const brackets = document.getElementById('face-brackets');
     if (faceArea) faceArea.style.display = 'flex';
     if (success) success.classList.remove('show');
+    if (brackets) brackets.classList.remove('close');
+    if (statusEl) statusEl.textContent = 'Buscando rostro...';
     // Reset and retrigger progress bar animation
     if (progressFill) {
       progressFill.style.animation = 'none';
       progressFill.offsetHeight; // trigger reflow
       progressFill.style.animation = 'face-progress-fill 2.5s ease forwards';
     }
-    // Show success after progress completes
+    // Reset and retrigger scan line animation
+    if (scanLine) {
+      scanLine.style.animation = 'none';
+      scanLine.offsetHeight;
+      scanLine.style.animation = 'scan-down 2.5s ease-in-out forwards';
+    }
+    // Status text evolves with progress
+    setTimeout(() => { if (statusEl) statusEl.textContent = 'Verificando...'; }, 1100);
     setTimeout(() => {
+      if (brackets) brackets.classList.add('close');
       if (faceArea) faceArea.style.display = 'none';
       if (success) success.classList.add('show');
     }, 2500);
@@ -2828,17 +2817,29 @@ function catalogUpdateUI() {
 
 function catalogStartCheckout() {
   if (!catalogSelected) return;
+  const p = CATALOG_PRODUCTS.find(x => x.id === catalogSelected);
+  if (p) updatePhone(p);
   document.getElementById('catalog-screen').style.display = 'none';
   document.querySelector('.main').style.display = '';
   document.getElementById('step5-screen').classList.remove('show');
   goToStep(0);
 }
 
+function resetDemo() {
+  catalogSelected = null;
+  document.getElementById('step5-screen').classList.remove('show');
+  document.querySelector('.main').style.display = 'none';
+  document.getElementById('catalog-screen').style.display = 'block';
+  renderCatalog();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const cta = document.getElementById('ctaBtn');
   const asideCta = document.getElementById('asideCta');
+  const s5Reset = document.getElementById('s5ResetBtn');
   if (cta) cta.addEventListener('click', catalogStartCheckout);
   if (asideCta) asideCta.addEventListener('click', catalogStartCheckout);
+  if (s5Reset) s5Reset.addEventListener('click', resetDemo);
 });
 
 // ══════════════════════════════════════
